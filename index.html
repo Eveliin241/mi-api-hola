@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mi API</title>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial;">
+    
+    <h1 id="mensaje">Esperando a la API...</h1>
+
+    <script>
+        fetch('http://localhost:3000/datos')
+            .then(respuesta => respuesta.json())
+            .then(contenido => {
+                document.getElementById('mensaje').innerText = contenido.texto;
+            })
+            .catch(error => {
+                document.getElementById('mensaje').innerText = "Error al conectar";
+                console.error(error);
+            });
+    </script>
+</body>
+</html>
