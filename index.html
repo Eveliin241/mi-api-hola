@@ -9,7 +9,7 @@
     <h1 id="mensaje">Esperando a la API...</h1>
 
     <script>
-        fetch('https://mi-api-hola.onrender.com')
+        fetch('https://mi-api-hola.onrender.com/datos')
             .then(respuesta => respuesta.json())
             .then(contenido => {
                 document.getElementById('mensaje').innerText = contenido.texto;
