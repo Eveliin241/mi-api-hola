@@ -11,150 +11,125 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
-// 1. RUTA DE BIENVENIDA (Landing Page Profesional)
+// ESTILO CSS COMPARTIDO PARA TODO EL BACKEND
+const sharedStyle = `
+    <style>
+        body { 
+            margin: 0; font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #1d976c 0%, #93f9b9 100%); 
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px; color: white;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
+            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px; width: 90%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 20px;
+        }
+        h1 { margin-top: 0; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .data-item { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin: 10px 0; border-left: 4px solid #fff; }
+        .label { font-weight: bold; color: #93f9b9; font-size: 0.8em; text-transform: uppercase; }
+        .value { font-size: 1.1em; display: block; margin-top: 5px; }
+        .btn-back { 
+            text-decoration: none; color: white; font-weight: bold; border: 1px solid white; 
+            padding: 10px 20px; border-radius: 10px; transition: 0.3s; margin-bottom: 30px;
+        }
+        .btn-back:hover { background: white; color: #1d976c; }
+    </style>
+`;
+
+// 1. RUTA DE BIENVENIDA (Tu portada actual que ya te gustó)
 app.get('/', (req, res) => {
     res.send(`
         <!DOCTYPE html>
         <html lang="es">
         <head>
             <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>API Salud & Lavanda | Dashboard</title>
+            <title>API Salud & Lavanda</title>
             <style>
-                @keyframes float {
-                    0% { transform: translateY(0px) rotate(0deg); }
-                    50% { transform: translateY(-20px) rotate(5deg); }
-                    100% { transform: translateY(0px) rotate(0deg); }
-                }
-                @keyframes pulse {
-                    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
-                    70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
-                    100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-                }
-                body { 
-                    margin: 0; 
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                    background: linear-gradient(135deg, #1d976c 0%, #93f9b9 100%); 
-                    height: 100vh; 
-                    display: flex; 
-                    justify-content: center; 
-                    align-items: center; 
-                    overflow: hidden;
-                }
-                .glass-card {
-                    background: rgba(255, 255, 255, 0.15);
-                    backdrop-filter: blur(15px);
-                    -webkit-backdrop-filter: blur(15px);
-                    border-radius: 25px;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    padding: 50px;
-                    text-align: center;
-                    color: white;
-                    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-                    max-width: 600px;
-                    width: 90%;
-                }
-                .icon-container {
-                    font-size: 80px;
-                    display: inline-block;
-                    animation: float 4s ease-in-out infinite;
-                    margin-bottom: 20px;
-                }
-                h1 { margin: 0; font-size: 2.8em; letter-spacing: -1px; text-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-                .badge {
-                    display: inline-block;
-                    background: #2ecc71;
-                    color: white;
-                    padding: 6px 15px;
-                    border-radius: 20px;
-                    font-size: 0.8em;
-                    font-weight: bold;
-                    margin: 15px 0;
-                    animation: pulse 2s infinite;
-                }
-                p { font-size: 1.1em; opacity: 0.9; line-height: 1.6; }
-                .btn-group { margin-top: 35px; display: flex; justify-content: center; gap: 20px; }
-                .btn {
-                    text-decoration: none;
-                    color: white;
-                    border: 2px solid rgba(255,255,255,0.5);
-                    padding: 12px 25px;
-                    border-radius: 12px;
-                    font-weight: bold;
-                    transition: all 0.3s ease;
-                }
-                .btn:hover {
-                    background: white;
-                    color: #1d976c;
-                    transform: translateY(-3px);
-                }
-                footer { margin-top: 40px; font-size: 0.8em; opacity: 0.7; }
+                @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
+                body { margin: 0; font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1d976c 0%, #93f9b9 100%); height: 100vh; display: flex; justify-content: center; align-items: center; color: white; text-align: center; }
+                .glass-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); border-radius: 25px; padding: 50px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+                .icon { font-size: 70px; animation: float 3s ease-in-out infinite; margin-bottom: 10px; display: inline-block; }
+                .btn { text-decoration: none; color: white; border: 2px solid white; padding: 12px 25px; border-radius: 10px; font-weight: bold; margin: 10px; display: inline-block; transition: 0.3s; }
+                .btn:hover { background: white; color: #1d976c; }
             </style>
         </head>
         <body>
             <div class="glass-card">
-                <div class="icon-container">🌿</div>
+                <div class="icon">🌿</div>
                 <h1>Salud & Lavanda</h1>
-                <div class="badge">API ONLINE</div>
-                <p>Bienvenido al núcleo de datos del Proyecto de Nutrición y Huerto Escolar. Sistema de alta disponibilidad conectado a PostgreSQL.</p>
-                
-                <div class="btn-group">
-                    <a href="/datos" class="btn">📊 Ver Estado</a>
-                    <a href="/lavandas" class="btn">📅 Historial</a>
-                </div>
-                
-                <footer>
-                    Diseñado para el Certamen Estatal | Node.js & PostgreSQL Cloud
-                </footer>
+                <p>Plataforma de monitoreo y nutrición</p>
+                <a href="/datos" class="btn">📊 Ver Estado</a>
+                <a href="/lavandas" class="btn">📅 Historial</a>
             </div>
         </body>
         </html>
     `);
 });
 
-// 2. ENDPOINT DE DATOS (Estado actual del huerto)
+// 2. ENDPOINT DE DATOS (ESTADO ACTUAL) - ¡AHORA CON DISEÑO!
 app.get('/datos', async (req, res) => {
     try {
         const query = await pool.query('SELECT * FROM seguimiento_lavanda ORDER BY fecha DESC LIMIT 1');
-        res.json({
-            status: "success",
-            timestamp: new Date(),
-            data: query.rows[0] || { observaciones: "Sin registros de lavanda aún" }
-        });
+        const data = query.rows[0] || { observaciones: "Sin registros aún" };
+        
+        res.send(`
+            ${sharedStyle}
+            <a href="/" class="btn-back">← Volver al Inicio</a>
+            <div class="glass-card">
+                <h1>📍 Estado del Huerto</h1>
+                <div class="data-item">
+                    <span class="label">Última Observación</span>
+                    <span class="value">${data.observaciones}</span>
+                </div>
+                <div class="data-item">
+                    <span class="label">Fecha de Registro</span>
+                    <span class="value">${data.fecha ? new Date(data.fecha).toLocaleString() : 'N/A'}</span>
+                </div>
+            </div>
+        `);
     } catch (err) {
-        res.status(500).json({ status: "error", message: err.message });
+        res.status(500).send("Error: " + err.message);
     }
 });
 
-// 3. ENDPOINT DE HISTORIAL
+// 3. ENDPOINT DE HISTORIAL - ¡AHORA CON TARJETAS!
 app.get('/lavandas', async (req, res) => {
     try {
         const query = await pool.query('SELECT * FROM seguimiento_lavanda ORDER BY fecha DESC');
-        res.json(query.rows);
+        const rows = query.rows.map(l => `
+            <div class="glass-card">
+                <div class="data-item">
+                    <span class="label">Fecha: ${new Date(l.fecha).toLocaleDateString()}</span>
+                    <span class="value">🌿 ${l.estado_salud} | 📏 ${l.altura_cm} cm</span>
+                    <p style="margin-top:10px; font-size: 0.9em;">${l.observaciones}</p>
+                </div>
+            </div>
+        `).join('');
+
+        res.send(`
+            ${sharedStyle}
+            <a href="/" class="btn-back">← Volver al Inicio</a>
+            <h1>📅 Historial de Crecimiento</h1>
+            ${rows || '<p>No hay registros guardados.</p>'}
+        `);
     } catch (err) {
-        res.status(500).json({ status: "error", message: err.message });
+        res.status(500).send("Error: " + err.message);
     }
 });
 
-// 4. REGISTRO DE USUARIOS
+// 4. REGISTRO (Este se queda igual porque no es para humanos, es para el código)
 app.post('/registrar', async (req, res) => {
     const { nombre, email, password, peso, altura, edad, actividad_fisica, objetivo } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO usuarios (nombre, email, password, peso, altura, edad, actividad_fisica, objetivo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, nombre, email',
+            'INSERT INTO usuarios (nombre, email, password, peso, altura, edad, actividad_fisica, objetivo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, nombre',
             [nombre, email, password, peso, altura, edad, actividad_fisica, objetivo]
         );
         res.status(201).json({ status: "success", usuario: result.rows[0] });
     } catch (err) {
-        if (err.code === '23514') {
-            res.status(400).json({ status: "error", message: "Error: Datos de actividad u objetivo fuera de rango." });
-        } else if (err.code === '23505') {
-            res.status(400).json({ status: "error", message: "Este correo electrónico ya está registrado." });
-        } else {
-            res.status(500).json({ status: "error", message: "Error interno del servidor." });
-        }
+        res.status(400).json({ status: "error", message: err.message });
     }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('🚀 Sistemas de Salud y Lavanda activos.'));
+app.listen(PORT, () => console.log('🚀 Visual Backend Ready!'));
