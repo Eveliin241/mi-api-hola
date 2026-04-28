@@ -1,23 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salud & Lavanda - Proyecto Escolar</title>
+    <style>
+        :root { --verde: #4CAF50; --lavanda: #9575cd; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: var(--verde); text-align: center; }
+        h2 { color: var(--lavanda); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        button { grid-column: span 2; padding: 15px; background: var(--verde); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #388E3C; }
+        .status-card { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 5px solid var(--verde); }
+        #lista-lavandas { margin-top: 20px; font-size: 0.9em; color: #666; }
+    </style>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial;">
-    
-    <h1 id="mensaje">Esperando a la API...</h1>
+<body>
 
-    <script>
-        fetch('https://mi-api-hola.onrender.com/datos')
-            .then(respuesta => respuesta.json())
-            .then(contenido => {
-                document.getElementById('mensaje').innerText = contenido.texto;
-            })
-            .catch(error => {
-                document.getElementById('mensaje').innerText = "Error al conectar";
-                console.error(error);
-            });
-    </script>
+<div class="container">
+    <h1>🌱 Proyecto Salud & Lavanda</h1>
+    
+    <div class="status-card">
+        <strong>Estado del Huerto:</strong>
+        <p id="mensaje-huerto">Cargando datos del huerto escolar...</p>
+    </div>
+
+    <h2>🥗 Registro de Sana Alimentación</h2>
+    <p>Ingresa tus datos para recibir recomendaciones personalizadas.</p>
+    
+    <form id="registroForm" class="grid-form">
+        <input type="text" id="nombre" placeholder="Nombre completo" required>
+        <input type="email" id="email" placeholder="Correo electrónico" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <input type="number" id="edad" placeholder="Edad" required>
+        <input type="number" step="0.1" id="peso" placeholder="Peso (kg)" required>
+        <input type="number" step="0.01" id="altura" placeholder="Altura (m)" required>
+        
+        <select id="actividad_fisica" required>
+            <option value="">Selecciona tu actividad</option>
+            <option value="baja">Baja (Sedentario)</option>
+            <option value="media">Media (Activo 3 veces/semana)</option>
+            <option value="alta">Alta (Deportista diario)</option>
+        </select>
+
+        <select id="objetivo" required>
+            <option value="">¿Cuál es tu objetivo?</option>
+            <option value="bajar_peso">Bajar de peso</option>
+            <option value="mantenerse">Mantenerme saludable</option>
+            <option value="ganar_musculo">Ganar masa muscular</option>
+        </select>
+
+        <button type="button" onclick="registrarUsuario()">Crear mi Perfil de Salud</button>
+    </form>
+
+    <h2>🐝 Historial del Huerto Polinizador</h2>
+    <div id="lista-lavandas">No hay registros recientes de las plantitas.</div>
+</div>
+
+<script>
+    const URL_API = 'https://mi-api-hola.onrender.com';
+
+    // 1. Cargar datos iniciales (Estado del huerto)
+    fetch(`${URL_API}/datos`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('mensaje-huerto').innerText = data.mensaje;
+        })
+        .catch(() => document.getElementById('mensaje-huerto').innerText = "Huerto desconectado temporalmente.");
+
+    // 2. Función para registrar usuario
+    function registrarUsuario() {
+        const datos = {
+            nombre: document.getElementById('nombre').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            edad: parseInt(document.getElementById('edad').value),
+            peso: parseFloat(document.getElementById('peso').value),
+            altura: parseFloat(document.getElementById('altura').value),
+            actividad_fisica: document.getElementById('actividad_fisica').value,
+            objetivo: document.getElementById('objetivo').value
+        };
+
+        fetch(`${URL_API}/registrar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        })
+        .then(res => res.json())
+        .then(result => {
+            if(result.mensaje) {
+                alert("¡Felicidades " + result.usuario.nombre + "! Tu perfil ha sido creado.");
+            } else {
+                alert("Error: " + result.error);
+            }
+        })
+        .catch(err => alert("Error al conectar con el servidor"));
+    }
+
+    // 3. Obtener historial de lavandas
+    fetch(`${URL_API}/lavandas`)
+        .then(res => res.json())
+        .then(lavandas => {
+            const div = document.getElementById('lista-lavandas');
+            if(lavandas.length > 0) {
+                div.innerHTML = lavandas.map(l => `
+                    <p>📍 Fecha: ${new Date(l.fecha).toLocaleDateString()} | Altura: ${l.altura_cm}cm | Estado: ${l.estado_salud}</p>
+                `).join('');
+            }
+        });
+</script>
+
 </body>
 </html>

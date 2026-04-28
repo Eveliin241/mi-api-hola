@@ -4,39 +4,41 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // Necesario para recibir datos de registro
+app.use(express.json());
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
-// --- 1. ENDPOINT DE BIENVENIDA (HISTÓRICO) ---
+// --- 1. ENDPOINT DE BIENVENIDA (Muestra la última lavanda) ---
 app.get('/datos', async (req, res) => {
     try {
-        // Consultamos la tabla de lavandas en lugar del mensaje viejo para que se actualice la web
         const query = await pool.query('SELECT * FROM seguimiento_lavanda ORDER BY fecha DESC LIMIT 1');
         if (query.rows.length > 0) {
-            res.json({ mensaje: "Estado actual del huerto: " + query.rows[0].observaciones });
+            res.json({ mensaje: "Estado del huerto: " + query.rows[0].observaciones });
         } else {
-            res.json({ mensaje: "Bienvenido al sistema de salud y huerto escolar." });
+            res.json({ mensaje: "Sistema de Salud y Lavandas Activo." });
         }
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-// --- 2. ENDPOINT: REGISTRO DE USUARIOS ---
+// --- 2. ENDPOINT: REGISTRO DE USUARIOS (9 CAMPOS) ---
 app.post('/registrar', async (req, res) => {
-    const { nombre, email, password, peso, altura, edad, actividad_fisica } = req.body;
+    // Extraemos los 9 campos del cuerpo de la petición
+    const { nombre, email, password, peso, altura, edad, actividad_fisica, objetivo } = req.body;
+    
     try {
         const result = await pool.query(
-            'INSERT INTO usuarios (nombre, email, password, peso, altura, edad, actividad_fisica) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-            [nombre, email, password, peso, altura, edad, actividad_fisica]
+            'INSERT INTO usuarios (nombre, email, password, peso, altura, edad, actividad_fisica, objetivo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+            [nombre, email, password, peso, altura, edad, actividad_fisica, objetivo]
         );
         res.json({ mensaje: "Usuario registrado con éxito", usuario: result.rows[0] });
     } catch (err) {
-        res.status(500).json({ error: "Error en el registro o email duplicado" });
+        console.error(err); // Esto te ayuda a ver errores en la terminal de Render
+        res.status(500).json({ error: "Error en el registro. Verifica si el email ya existe." });
     }
 });
 
@@ -55,7 +57,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// --- 4. ENDPOINT: VER TODO EL HUERTO (LAVANDAS) ---
+// --- 4. ENDPOINT: VER HISTORIAL DE LAVANDAS ---
 app.get('/lavandas', async (req, res) => {
     try {
         const query = await pool.query('SELECT * FROM seguimiento_lavanda ORDER BY fecha DESC');
@@ -66,4 +68,4 @@ app.get('/lavandas', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor activo en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor profesional activo en puerto ${PORT}`));
