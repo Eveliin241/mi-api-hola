@@ -9,13 +9,14 @@
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
         .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h1 { color: var(--verde); text-align: center; }
-        h2 { color: var(--lavanda); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: var(--lavanda); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
         .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        button { grid-column: span 2; padding: 15px; background: var(--verde); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { background: #388E3C; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        button { grid-column: span 2; padding: 15px; background: var(--verde); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 16px; }
+        button:hover { background: #388E3C; transform: translateY(-2px); }
         .status-card { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 5px solid var(--verde); }
-        #lista-lavandas { margin-top: 20px; font-size: 0.9em; color: #666; }
+        #lista-lavandas { margin-top: 20px; font-size: 0.9em; color: #666; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+        .registro-item { border-bottom: 1px solid #eee; padding: 8px 0; }
     </style>
 </head>
 <body>
@@ -24,12 +25,12 @@
     <h1>🌱 Proyecto Salud & Lavanda</h1>
     
     <div class="status-card">
-        <strong>Estado del Huerto:</strong>
-        <p id="mensaje-huerto">Cargando datos del huerto escolar...</p>
+        <strong>📢 Estado Actual:</strong>
+        <p id="mensaje-huerto">Conectando con el huerto...</p>
     </div>
 
     <h2>🥗 Registro de Sana Alimentación</h2>
-    <p>Ingresa tus datos para recibir recomendaciones personalizadas.</p>
+    <p>Completa tu perfil para calcular tu IMC y recibir seguimiento.</p>
     
     <form id="registroForm" class="grid-form">
         <input type="text" id="nombre" placeholder="Nombre completo" required>
@@ -40,38 +41,39 @@
         <input type="number" step="0.01" id="altura" placeholder="Altura (m)" required>
         
         <select id="actividad_fisica" required>
-            <option value="">Selecciona tu actividad</option>
+            <option value="">Actividad Física</option>
             <option value="baja">Baja (Sedentario)</option>
-            <option value="media">Media (Activo 3 veces/semana)</option>
-            <option value="alta">Alta (Deportista diario)</option>
+            <option value="media">Media (Activo)</option>
+            <option value="alta">Alta (Atleta)</option>
         </select>
 
         <select id="objetivo" required>
-            <option value="">¿Cuál es tu objetivo?</option>
-            <option value="bajar_peso">Bajar de peso</option>
-            <option value="mantenerse">Mantenerme saludable</option>
-            <option value="ganar_musculo">Ganar masa muscular</option>
+            <option value="">Objetivo de Salud</option>
+            <option value="bajar">Bajar de peso</option>
+            <option value="mantener">Mantener salud</option>
+            <option value="subir">Subir masa muscular</option>
         </select>
 
-        <button type="button" onclick="registrarUsuario()">Crear mi Perfil de Salud</button>
+        <button type="button" onclick="registrarUsuario()">🚀 GUARDAR PERFIL PROFESIONAL</button>
     </form>
 
-    <h2>🐝 Historial del Huerto Polinizador</h2>
-    <div id="lista-lavandas">No hay registros recientes de las plantitas.</div>
+    <h2>🐝 Diario del Huerto Polinizador</h2>
+    <div id="lista-lavandas">Buscando registros de las lavandas...</div>
 </div>
 
 <script>
     const URL_API = 'https://mi-api-hola.onrender.com';
 
-    // 1. Cargar datos iniciales (Estado del huerto)
+    // 1. Cargar el mensaje dinámico de bienvenida
     fetch(`${URL_API}/datos`)
         .then(res => res.json())
         .then(data => {
-            document.getElementById('mensaje-huerto').innerText = data.mensaje;
+            // Ajustamos para leer la nueva estructura que te di en el index.js
+            document.getElementById('mensaje-huerto').innerText = data.data ? data.data.observaciones : data.mensaje;
         })
-        .catch(() => document.getElementById('mensaje-huerto').innerText = "Huerto desconectado temporalmente.");
+        .catch(() => document.getElementById('mensaje-huerto').innerText = "Servidor en mantenimiento.");
 
-    // 2. Función para registrar usuario
+    // 2. Función de Registro
     function registrarUsuario() {
         const datos = {
             nombre: document.getElementById('nombre').value,
@@ -84,6 +86,12 @@
             objetivo: document.getElementById('objetivo').value
         };
 
+        // Verificación simple antes de enviar
+        if(!datos.nombre || !datos.email || !datos.actividad_fisica || !datos.objetivo) {
+            alert("Por favor, llena todos los campos correctamente.");
+            return;
+        }
+
         fetch(`${URL_API}/registrar`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -91,24 +99,31 @@
         })
         .then(res => res.json())
         .then(result => {
-            if(result.mensaje) {
-                alert("¡Felicidades " + result.usuario.nombre + "! Tu perfil ha sido creado.");
+            if(result.status === "success") {
+                alert("✅ ¡Éxito! Perfil creado para: " + result.usuario.nombre);
+                document.getElementById('registroForm').reset();
             } else {
-                alert("Error: " + result.error);
+                alert("❌ Error: " + result.message);
             }
         })
-        .catch(err => alert("Error al conectar con el servidor"));
+        .catch(err => alert("Error de conexión con la API"));
     }
 
-    // 3. Obtener historial de lavandas
+    // 3. Cargar historial de lavandas al inicio
     fetch(`${URL_API}/lavandas`)
         .then(res => res.json())
         .then(lavandas => {
             const div = document.getElementById('lista-lavandas');
             if(lavandas.length > 0) {
                 div.innerHTML = lavandas.map(l => `
-                    <p>📍 Fecha: ${new Date(l.fecha).toLocaleDateString()} | Altura: ${l.altura_cm}cm | Estado: ${l.estado_salud}</p>
+                    <div class="registro-item">
+                        <strong>📅 ${new Date(l.fecha).toLocaleDateString()}</strong> - 
+                        📏 ${l.altura_cm}cm | 🌿 Estado: ${l.estado_salud} <br>
+                        <small>📝 ${l.observaciones}</small>
+                    </div>
                 `).join('');
+            } else {
+                div.innerText = "Aún no hay registros en el diario de campo.";
             }
         });
 </script>
