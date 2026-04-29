@@ -2,140 +2,169 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Salud & Lavanda | Gestión Profesional</title>
+    <title>Salud & Lavanda | Elite System</title>
     <link rel="icon" href="https://fonts.gstatic.com/s/i/short-term/release/googlestylesheet/leaf/default/24px.svg">
     <style>
-        :root { --verde: #4CAF50; --lavanda: #9575cd; --fondo: #f0f4f8; --rojo: #ff5252; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); padding: 20px; }
-        .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2 { color: var(--lavanda); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; color: white; margin-top: 10px; transition: 0.3s; }
-        .btn-verde { background: var(--verde); }
-        .btn-lavanda { background: var(--lavanda); }
-        .item-card { background: #fff; border-left: 5px solid var(--lavanda); padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; }
-        .btn-borrar { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
-        .admin-section { margin-top: 50px; padding: 20px; border: 1px solid #ffcdd2; border-radius: 15px; background: #fff9f9; }
+        :root { --grad: linear-gradient(135deg, #1b5e20 0%, #4a148c 100%); --glass: rgba(255, 255, 255, 0.1); }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--grad); color: white; min-height: 100vh; overflow-x: hidden; }
+        
+        /* Pantalla de Portada */
+        #portada { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--grad); transition: 0.8s; }
+        .btn-enter { padding: 15px 40px; border: 2px solid white; background: none; color: white; border-radius: 50px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .btn-enter:hover { background: white; color: #4a148c; }
+
+        /* Contenedor Principal */
+        #app { display: none; padding: 20px; max-width: 900px; margin: auto; animation: fadeIn 1s; }
+        .card { background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        h2 { color: #b39ddb; border-left: 4px solid #81c784; padding-left: 15px; }
+        input, select, textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 12px; border-radius: 10px; width: 100%; margin: 10px 0; outline: none; }
+        option { background: #4a148c; color: white; }
+        
+        .btn-save { background: #66bb6a; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
+        
+        /* Historial Pro */
+        .registro-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin: 10px 0; border-bottom: 3px solid #81c784; }
+        
+        /* Panel Oculto */
+        #admin-panel { display: none; margin-top: 50px; background: rgba(255, 82, 82, 0.1); padding: 20px; border-radius: 20px; border: 1px dashed #ff5252; }
+        .admin-trigger { position: fixed; bottom: 10px; right: 10px; opacity: 0.3; cursor: pointer; font-size: 0.7rem; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 style="text-align:center; color: var(--verde);">🌿 Huerto de Lavandas</h1>
-    
-    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
-        <strong>📢 Estado del Proyecto:</strong> Monitoreo de Lavandas Escolar.
+    <div id="portada">
+        <h1 style="font-size: 4rem; margin: 0;">🌿</h1>
+        <h1 style="letter-spacing: 5px;">SALUD & LAVANDA</h1>
+        <p style="opacity: 0.8; margin-bottom: 30px;">Sistema de Inteligencia Vegetal y Monitoreo Escolar</p>
+        <button class="btn-enter" onclick="entrar()">ACCEDER AL SISTEMA</button>
     </div>
 
-    <h2>👤 Registro de Nuevo Participante</h2>
-    <input type="text" id="reg_nombre" placeholder="Escribe tu nombre completo">
-    <button class="btn-verde" onclick="registrar()">✨ DAR DE ALTA</button>
+    <div id="app">
+        <div class="card">
+            <h2>👤 Registro de Identidad</h2>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="reg_nombre" placeholder="Nombre del Investigador">
+                <button class="btn-save" style="width: 200px;" onclick="registrar()">REGISTRAR</button>
+            </div>
+        </div>
 
-    <h2>📝 Diario de Campo</h2>
-    <label>¿Quién registra hoy?</label>
-    <select id="sel_usuario"><option>Cargando lista...</option></select>
-    
-    <input type="number" id="obs_altura" placeholder="Altura de la planta (cm)">
-    <select id="obs_estado">
-        <option>Saludable</option>
-        <option>Excelente</option>
-        <option>Necesita Riego</option>
-        <option>Enferma</option>
-    </select>
-    <textarea id="obs_notas" placeholder="Escribe tus observaciones aquí..."></textarea>
-    <button class="btn-lavanda" onclick="subirNota()">💾 GUARDAR EN BITÁCORA</button>
+        <div class="card">
+            <h2>📝 Bitácora de Campo</h2>
+            <label>Investigador:</label>
+            <select id="sel_usuario"><option>Cargando...</option></select>
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="obs_altura" placeholder="Altura (cm)">
+                <select id="obs_estado">
+                    <option>Saludable</option>
+                    <option>Excelente</option>
+                    <option>Estrés Hídrico</option>
+                    <option>Plaga Detectada</option>
+                </select>
+            </div>
+            <textarea id="obs_notas" rows="3" placeholder="Detalles de la observación..."></textarea>
+            <button class="btn-save" style="background: #7e57c2;" onclick="subirNota()">GUARDAR EN NUBE</button>
+        </div>
 
-    <h2>📅 Historial de Observaciones</h2>
-    <div id="historial"></div>
+        <h2>📅 Registro Histórico</h2>
+        <div id="historial"></div>
 
-    <div class="admin-section">
-        <h3 style="color: var(--rojo); margin-top: 0;">🛠️ Zona de Limpieza (Borrar Usuarios)</h3>
-        <p style="font-size: 0.8rem; color: #666;">Usa esto para borrar los nombres de prueba. Se borrarán también todas sus notas.</p>
-        <div id="lista_usuarios_borrar"></div>
+        <div id="admin-panel">
+            <h3 style="color: #ff5252;">🛠️ Panel Maestro de Usuarios</h3>
+            <div id="lista_admin"></div>
+        </div>
     </div>
-</div>
+
+    <div class="admin-trigger" onclick="abrirAdmin()">Configuración Crítica</div>
 
 <script>
     const API = 'https://mi-api-hola.onrender.com';
 
-    async function cargarTodo() {
-        // Cargar usuarios en el selector del diario
+    function entrar() {
+        document.getElementById('portada').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        cargarDatos();
+    }
+
+    async function cargarDatos() {
         const uRes = await fetch(`${API}/lista-usuarios`);
         const usuarios = await uRes.json();
-        const select = document.getElementById('sel_usuario');
-        select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-
-        // Cargar usuarios en la zona de limpieza
-        const adminDiv = document.getElementById('lista_usuarios_borrar');
-        adminDiv.innerHTML = usuarios.map(u => `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:8px; margin:5px 0; border-radius:8px; border:1px solid #eee;">
+        
+        // Actualizar Selectores
+        document.getElementById('sel_usuario').innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+        
+        // Actualizar Lista Admin
+        document.getElementById('lista_admin').innerHTML = usuarios.map(u => `
+            <div style="display:flex; justify-content:space-between; margin:5px 0; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px;">
                 <span>${u.nombre}</span>
-                <button onclick="borrarUsuario(${u.id})" style="width:auto; padding:5px 10px; background:var(--rojo); margin:0;">Eliminar</button>
+                <button onclick="borrarUsuario(${u.id})" style="background:#ff5252; color:white; border:none; border-radius:5px; cursor:pointer;">Eliminar</button>
             </div>
         `).join('');
 
-        // Cargar historial de notas
+        // Cargar Historial
         const hRes = await fetch(`${API}/lavandas_json`);
-        const historial = await hRes.json();
-        document.getElementById('historial').innerHTML = historial.map(h => `
-            <div class="item-card">
-                <button class="btn-borrar" onclick="borrarNota(${h.id})">🗑️</button>
-                <strong>👤 ${h.nombre}</strong> <small>📅 ${new Date(h.fecha).toLocaleDateString()}</small><br>
-                <span>📏 ${h.altura_cm}cm | 🌿 ${h.estado_salud}</span><br>
-                <p style="margin:5px 0; font-style:italic;">"${h.observaciones}"</p>
+        const data = await hRes.json();
+        document.getElementById('historial').innerHTML = data.map(l => `
+            <div class="registro-item">
+                <div style="display:flex; justify-content:space-between; color:#81c784; font-weight:bold;">
+                    <span>👤 ${l.nombre}</span>
+                    <span>📅 ${new Date(l.fecha).toLocaleDateString()}</span>
+                </div>
+                <div style="margin:10px 0;">📏 ${l.altura_cm}cm | ✨ ${l.estado_salud}</div>
+                <div style="font-style:italic; opacity:0.8;">"${l.observaciones}"</div>
             </div>
         `).join('');
     }
 
     async function registrar() {
         const nombre = document.getElementById('reg_nombre').value;
-        if(!nombre) return alert("Escribe un nombre");
-        
+        if(!nombre) return;
         await fetch(`${API}/registrar`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({nombre, email: nombre+'@huerto.com', password: '123'})
+            body: JSON.stringify({nombre})
         });
         document.getElementById('reg_nombre').value = "";
-        alert("¡Participante añadido!");
-        await cargarTodo(); // Esto refresca el selector abajo
-    }
-
-    async function borrarUsuario(id) {
-        if(confirm("¿Seguro que quieres borrar este usuario y todas sus notas?")) {
-            await fetch(`${API}/borrar-usuario/${id}`, { method: 'DELETE' });
-            await cargarTodo();
-        }
+        alert("Investigador Autorizado");
+        cargarDatos(); // Actualiza todo instantáneamente
     }
 
     async function subirNota() {
-        const data = {
+        const payload = {
             usuario_id: document.getElementById('sel_usuario').value,
             altura: document.getElementById('obs_altura').value,
             estado: document.getElementById('obs_estado').value,
             notas: document.getElementById('obs_notas').value
         };
-        if(!data.usuario_id || !data.notas) return alert("Completa los datos");
-
         await fetch(`${API}/nueva-observacion`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
+            body: JSON.stringify(payload)
         });
         document.getElementById('obs_altura').value = "";
         document.getElementById('obs_notas').value = "";
-        alert("¡Nota guardada!");
-        await cargarTodo();
+        alert("Datos Sincronizados");
+        cargarDatos();
     }
 
-    async function borrarNota(id) {
-        if(confirm("¿Borrar esta nota del historial?")) {
-            await fetch(`${API}/borrar-observacion/${id}`, { method: 'DELETE' });
-            await cargarTodo();
+    function abrirAdmin() {
+        const pass = prompt("Ingrese Clave Maestra:");
+        if(pass === "osio2023") {
+            document.getElementById('admin-panel').style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        } else {
+            alert("Acceso Denegado");
         }
     }
 
-    cargarTodo();
+    async function borrarUsuario(id) {
+        if(confirm("¿Eliminar usuario y registros permanentemente?")) {
+            await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
+            cargarDatos();
+        }
+    }
 </script>
 </body>
 </html>
