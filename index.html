@@ -2,169 +2,260 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Salud & Lavanda | Elite System</title>
-    <link rel="icon" href="https://fonts.gstatic.com/s/i/short-term/release/googlestylesheet/leaf/default/24px.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huerto de Lavanda</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    
     <style>
-        :root { --grad: linear-gradient(135deg, #1b5e20 0%, #4a148c 100%); --glass: rgba(255, 255, 255, 0.1); }
-        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--grad); color: white; min-height: 100vh; overflow-x: hidden; }
+        :root {
+            --soft-green: #e8f5e9;
+            --deep-green: #2e7d32;
+            --soft-purple: #f3e5f5;
+            --lavender: #9575cd;
+            --text: #2c3e50;
+        }
         
-        /* Pantalla de Portada */
-        #portada { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--grad); transition: 0.8s; }
-        .btn-enter { padding: 15px 40px; border: 2px solid white; background: none; color: white; border-radius: 50px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
-        .btn-enter:hover { background: white; color: #4a148c; }
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
 
-        /* Contenedor Principal */
-        #app { display: none; padding: 20px; max-width: 900px; margin: auto; animation: fadeIn 1s; }
-        .card { background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        
-        h2 { color: #b39ddb; border-left: 4px solid #81c784; padding-left: 15px; }
-        input, select, textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 12px; border-radius: 10px; width: 100%; margin: 10px 0; outline: none; }
-        option { background: #4a148c; color: white; }
-        
-        .btn-save { background: #66bb6a; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
-        
-        /* Historial Pro */
-        .registro-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin: 10px 0; border-bottom: 3px solid #81c784; }
-        
-        /* Panel Oculto */
-        #admin-panel { display: none; margin-top: 50px; background: rgba(255, 82, 82, 0.1); padding: 20px; border-radius: 20px; border: 1px dashed #ff5252; }
-        .admin-trigger { position: fixed; bottom: 10px; right: 10px; opacity: 0.3; cursor: pointer; font-size: 0.7rem; }
+        /* Pantalla de Inicio */
+        #portada {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            text-align: center;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-principal {
+            padding: 15px 35px;
+            background: var(--deep-green);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Contenedor principal */
+        #app { display: none; padding: 20px; max-width: 800px; margin: auto; }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--lavender);
+        }
+
+        h2 { color: var(--lavender); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--lavender); }
+
+        .btn-accion {
+            background: var(--lavender);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-accion:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Historial */
+        .registro-item {
+            background: var(--soft-green);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 5px solid var(--deep-green);
+        }
+
+        .admin-trigger { 
+            text-align: center; 
+            margin-top: 40px; 
+            font-size: 0.7rem; 
+            color: #ccc; 
+            cursor: pointer; 
+        }
+
+        #admin-panel { display: none; background: #fff1f1; padding: 20px; border-radius: 15px; border: 1px solid #ffcdd2; }
     </style>
 </head>
 <body>
 
     <div id="portada">
-        <h1 style="font-size: 4rem; margin: 0;">🌿</h1>
-        <h1 style="letter-spacing: 5px;">SALUD & LAVANDA</h1>
-        <p style="opacity: 0.8; margin-bottom: 30px;">Sistema de Inteligencia Vegetal y Monitoreo Escolar</p>
-        <button class="btn-enter" onclick="entrar()">ACCEDER AL SISTEMA</button>
+        <div style="font-size: 80px;">🌿</div>
+        <h1 style="color: var(--deep-green); margin: 0;">Salud & Lavanda</h1>
+        <p style="color: #666; margin-bottom: 30px;">Sistema de Seguimiento de Cultivo</p>
+        <button class="btn-principal" onclick="activarApp()">INGRESAR AL DIARIO</button>
     </div>
 
     <div id="app">
-        <div class="card">
-            <h2>👤 Registro de Identidad</h2>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="reg_nombre" placeholder="Nombre del Investigador">
-                <button class="btn-save" style="width: 200px;" onclick="registrar()">REGISTRAR</button>
-            </div>
+        <div class="card" style="border-top-color: var(--deep-green);">
+            <h2>👤 Registro de Investigador</h2>
+            <input type="text" id="reg_nombre" placeholder="Escribe tu nombre aquí...">
+            <button class="btn-accion" style="background: var(--deep-green);" onclick="registrarUsuario()">REGISTRAR NOMBRE</button>
         </div>
 
         <div class="card">
-            <h2>📝 Bitácora de Campo</h2>
-            <label>Investigador:</label>
-            <select id="sel_usuario"><option>Cargando...</option></select>
-            <div style="display: flex; gap: 10px;">
-                <input type="number" id="obs_altura" placeholder="Altura (cm)">
-                <select id="obs_estado">
-                    <option>Saludable</option>
-                    <option>Excelente</option>
-                    <option>Estrés Hídrico</option>
-                    <option>Plaga Detectada</option>
-                </select>
-            </div>
-            <textarea id="obs_notas" rows="3" placeholder="Detalles de la observación..."></textarea>
-            <button class="btn-save" style="background: #7e57c2;" onclick="subirNota()">GUARDAR EN NUBE</button>
+            <h2>📝 Diario de Campo</h2>
+            <label>Selecciona tu nombre:</label>
+            <select id="sel_usuario">
+                <option value="">Cargando lista...</option>
+            </select>
+            
+            <input type="number" id="obs_altura" placeholder="Altura de la planta (cm)">
+            
+            <label>Estado de salud:</label>
+            <select id="obs_estado">
+                <option>Saludable</option>
+                <option>Crecimiento Rápido</option>
+                <option>Necesita Riego</option>
+                <option>En Observación</option>
+            </select>
+            
+            <textarea id="obs_notas" rows="3" placeholder="Escribe tus observaciones del día..."></textarea>
+            <button class="btn-accion" onclick="guardarNota()">GUARDAR EN EL HISTORIAL</button>
         </div>
 
-        <h2>📅 Registro Histórico</h2>
+        <h2 style="color: var(--deep-green);">📅 Notas Recientes</h2>
         <div id="historial"></div>
 
+        <div class="admin-trigger" onclick="checkAdmin()">Panel de Control Externo</div>
+        
         <div id="admin-panel">
-            <h3 style="color: #ff5252;">🛠️ Panel Maestro de Usuarios</h3>
+            <h3 style="color: #d32f2f;">Eliminar Usuarios</h3>
             <div id="lista_admin"></div>
         </div>
     </div>
 
-    <div class="admin-trigger" onclick="abrirAdmin()">Configuración Crítica</div>
-
 <script>
     const API = 'https://mi-api-hola.onrender.com';
 
-    function entrar() {
+    async function activarApp() {
         document.getElementById('portada').style.display = 'none';
         document.getElementById('app').style.display = 'block';
-        cargarDatos();
+        await actualizarTodo();
     }
 
-    async function cargarDatos() {
-        const uRes = await fetch(`${API}/lista-usuarios`);
-        const usuarios = await uRes.json();
-        
-        // Actualizar Selectores
-        document.getElementById('sel_usuario').innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-        
-        // Actualizar Lista Admin
-        document.getElementById('lista_admin').innerHTML = usuarios.map(u => `
-            <div style="display:flex; justify-content:space-between; margin:5px 0; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px;">
-                <span>${u.nombre}</span>
-                <button onclick="borrarUsuario(${u.id})" style="background:#ff5252; color:white; border:none; border-radius:5px; cursor:pointer;">Eliminar</button>
-            </div>
-        `).join('');
+    async function actualizarTodo() {
+        try {
+            // 1. Cargar Usuarios
+            const resU = await fetch(`${API}/lista-usuarios`);
+            const usuarios = await resU.json();
+            const select = document.getElementById('sel_usuario');
+            const adminList = document.getElementById('lista_admin');
 
-        // Cargar Historial
-        const hRes = await fetch(`${API}/lavandas_json`);
-        const data = await hRes.json();
-        document.getElementById('historial').innerHTML = data.map(l => `
-            <div class="registro-item">
-                <div style="display:flex; justify-content:space-between; color:#81c784; font-weight:bold;">
-                    <span>👤 ${l.nombre}</span>
-                    <span>📅 ${new Date(l.fecha).toLocaleDateString()}</span>
+            if (usuarios.length > 0) {
+                select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+                adminList.innerHTML = usuarios.map(u => `
+                    <div style="display:flex; justify-content:space-between; margin:5px 0; border-bottom:1px solid #eee; padding:5px;">
+                        <span>${u.nombre}</span>
+                        <button onclick="eliminarU(${u.id})" style="color:red; border:none; background:none; cursor:pointer;">Borrar</button>
+                    </div>
+                `).join('');
+            } else {
+                select.innerHTML = '<option value="">Primero registra un nombre</option>';
+            }
+
+            // 2. Cargar Historial
+            const resH = await fetch(`${API}/lavandas_json`);
+            const notas = await resH.json();
+            const histDiv = document.getElementById('historial');
+            
+            histDiv.innerHTML = notas.map(n => `
+                <div class="registro-item">
+                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:bold;">
+                        <span>👤 ${n.nombre}</span>
+                        <span style="color:#888;">📅 ${new Date(n.fecha).toLocaleDateString()}</span>
+                    </div>
+                    <div style="margin:8px 0;">📏 ${n.altura_cm} cm | ✨ ${n.estado_salud}</div>
+                    <div style="font-style:italic; font-size:0.95rem; color:#444;">"${n.observaciones}"</div>
                 </div>
-                <div style="margin:10px 0;">📏 ${l.altura_cm}cm | ✨ ${l.estado_salud}</div>
-                <div style="font-style:italic; opacity:0.8;">"${l.observaciones}"</div>
-            </div>
-        `).join('');
+            `).join('');
+
+        } catch (e) {
+            console.error("Error cargando datos");
+        }
     }
 
-    async function registrar() {
+    async function registrarUsuario() {
         const nombre = document.getElementById('reg_nombre').value;
-        if(!nombre) return;
+        if(!nombre) return alert("Escribe un nombre");
+        
         await fetch(`${API}/registrar`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({nombre})
+            body: JSON.stringify({ nombre })
         });
+        
         document.getElementById('reg_nombre').value = "";
-        alert("Investigador Autorizado");
-        cargarDatos(); // Actualiza todo instantáneamente
+        alert("¡Nombre registrado correctamente!");
+        await actualizarTodo(); // Actualiza el selector inmediatamente
     }
 
-    async function subirNota() {
-        const payload = {
-            usuario_id: document.getElementById('sel_usuario').value,
+    async function guardarNota() {
+        const user_id = document.getElementById('sel_usuario').value;
+        if(!user_id) return alert("Selecciona un investigador");
+
+        const data = {
+            usuario_id: user_id,
             altura: document.getElementById('obs_altura').value,
             estado: document.getElementById('obs_estado').value,
             notas: document.getElementById('obs_notas').value
         };
+
         await fetch(`${API}/nueva-observacion`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
+            body: JSON.stringify(data)
         });
+
         document.getElementById('obs_altura').value = "";
         document.getElementById('obs_notas').value = "";
-        alert("Datos Sincronizados");
-        cargarDatos();
+        alert("Nota guardada en el historial");
+        await actualizarTodo();
     }
 
-    function abrirAdmin() {
-        const pass = prompt("Ingrese Clave Maestra:");
-        if(pass === "osio2023") {
+    function checkAdmin() {
+        const p = prompt("Clave de seguridad:");
+        if(p === "osio2023") {
             document.getElementById('admin-panel').style.display = 'block';
-            window.scrollTo(0, document.body.scrollHeight);
-        } else {
-            alert("Acceso Denegado");
         }
     }
 
-    async function borrarUsuario(id) {
-        if(confirm("¿Eliminar usuario y registros permanentemente?")) {
+    async function eliminarU(id) {
+        if(confirm("¿Eliminar investigador?")) {
             await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
-            cargarDatos();
+            await actualizarTodo();
         }
     }
+
 </script>
 </body>
 </html>
