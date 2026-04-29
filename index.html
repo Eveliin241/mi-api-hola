@@ -5,86 +5,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Botánica OS | Elite System</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
-            --sidebar-bg: #1a3c34;
-            --main-bg: #f4f1de;
-            --accent-lavender: #6d597a;
+            /* Tonos oscuros profundos y mate */
+            --sidebar-bg: #0d1a16; /* Verde casi negro mate */
+            --main-bg: #e0e0d5; /* Crema apagado/texturizado */
+            --glass-mate: rgba(13, 26, 22, 0.85); /* El fondo mate transparente */
+            --accent-lavender: #83677b; /* Lavanda polvoriento mate */
             --white: #ffffff;
-            --danger: #e63946;
+            --danger: #a63a50; /* Rojo polvoriento mate */
         }
 
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--main-bg); overflow: hidden; }
 
-        /* --- PORTADA ORIGINAL --- */
+        /* --- PORTADA MATE & TRASPARENTOSA --- */
         #portada {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(26,60,52,0.6), rgba(26,60,52,0.8)), 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), 
                         url('https://images.unsplash.com/photo-1596003906949-67221c37965c?auto=format&fit=crop&w=1200&q=80');
             background-size: cover; background-position: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000;
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
             transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        .hero-text { font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); letter-spacing: 15px; color: white; margin: 0; text-align: center; }
+        /* El cuadrado pequeño, mate y transparente */
+        .welcome-panel {
+            background: var(--glass-mate);
+            border-radius: 30px;
+            padding: 50px 70px;
+            text-align: center;
+            backdrop-filter: blur(10px); /* Efecto borroso detrás */
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative; /* Para la platita */
+        }
 
-        /* --- LAYOUT PRINCIPAL --- */
+        /* Tu platita de hasta arriba */
+        .welcome-panel::before {
+            content: "🌿";
+            font-size: 3rem;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.8;
+        }
+
+        /* Letra bonita manoescrita */
+        .brand-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            color: white;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .sub-text {
+            font-size: 1rem;
+            color: white;
+            letter-spacing: 5px;
+            opacity: 0.6;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .btn-start {
+            margin-top: 40px;
+            padding: 18px 50px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 3px;
+            background: var(--accent-lavender);
+            color: white;
+            transition: 0.3s;
+        }
+        .btn-start:hover { transform: scale(1.05); background: white; color: var(--sidebar-bg); }
+
+        /* --- DASHBOARD --- */
         #app-wrapper { display: flex; width: 100vw; height: 100vh; }
 
         nav { width: 280px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 40px 0; color: white; flex-shrink: 0; }
-        .nav-item { padding: 18px 30px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 15px; transition: 0.3s; font-size: 0.85rem; letter-spacing: 1px; }
-        .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 5px solid var(--accent-lavender); }
+        .nav-item { padding: 18px 30px; cursor: pointer; opacity: 0.5; display: flex; align-items: center; gap: 15px; transition: 0.3s; font-size: 0.9rem; }
+        .nav-item.active { opacity: 1; background: rgba(255,255,255,0.05); border-left: 5px solid var(--accent-lavender); }
 
-        main { flex-grow: 1; padding: 50px; overflow-y: auto; box-sizing: border-box; background: var(--main-bg); }
+        main { flex-grow: 1; padding: 50px; overflow-y: auto; box-sizing: border-box; }
         .view-section { display: none; width: 100%; max-width: 900px; margin: 0 auto; }
         .view-section.active { display: block; animation: fadeIn 0.4s; }
 
-        .glass-panel { background: white; border-radius: 30px; padding: 35px; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); position: relative; }
-        .glass-panel::after { content: "🌿"; position: absolute; top: 15px; right: 25px; font-size: 25px; opacity: 0.15; }
+        /* Paneles de datos, también con un toque mate */
+        .glass-panel { background: white; border-radius: 30px; padding: 40px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
 
-        h2 { font-family: 'Cinzel', serif; color: var(--sidebar-bg); font-size: 1.3rem; margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        h2 { font-weight: 300; font-size: 1.5rem; color: var(--sidebar-bg); margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
-        .card-obs { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 6px solid var(--accent-lavender); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-
-        .user-pill { padding: 10px 20px; background: white; border: 1px solid #eee; border-radius: 50px; cursor: pointer; transition: 0.3s; font-size: 0.8rem; font-weight: 600; display: inline-block; margin: 5px; }
-        .user-pill.active { background: var(--sidebar-bg); color: white; }
-
-        input, select, textarea { width: 100%; padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid #eee; background: #fdfdfd; font-size: 1rem; font-family: inherit; box-sizing: border-box; }
+        /* Inputs mate */
+        input, select, textarea { width: 100%; padding: 16px; margin: 12px 0; border-radius: 12px; border: 1px solid #ddd; background: #fafaf8; font-family: inherit; }
+        
         .btn-pro { background: var(--sidebar-bg); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.3s; }
-        .btn-pro:hover { filter: brightness(1.2); transform: translateY(-1px); }
+        .btn-pro:hover { filter: brightness(1.2); }
 
-        .admin-trigger { margin-top: auto; padding: 20px; opacity: 0.05; cursor: pointer; text-align: center; font-size: 0.7rem; color: white; }
+        /* El trigger secreto */
+        .admin-trigger { margin-top: auto; padding: 20px; opacity: 0.01; cursor: pointer; text-align: center; font-size: 0.7rem; color: white; }
+        .admin-trigger:hover { opacity: 0.3; }
 
-        /* --- RESPONSIVE (MÓVIL) --- */
-        @media (max-width: 768px) {
-            #app-wrapper { flex-direction: column; overflow-y: auto; }
-            nav { width: 100%; height: auto; padding: 10px 0; flex-direction: row; flex-wrap: wrap; justify-content: center; position: sticky; top: 0; z-index: 100; }
-            .nav-item { padding: 10px; flex: 1 1 40%; font-size: 0.7rem; gap: 8px; border-left: none !important; }
-            .nav-item.active { border-bottom: 3px solid var(--accent-lavender); }
-            main { padding: 20px; }
-            .hero-text { font-size: 2.2rem; letter-spacing: 5px; }
-            .admin-trigger { width: 100%; padding: 10px; }
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="portada">
-        <h1 class="hero-text animate__animated animate__fadeInDown">BOTÁNICA</h1>
-        <p style="color: white; letter-spacing: 5px; opacity: 0.8; margin-top: 10px;">SALUD & LAVANDA</p>
-        <button style="margin-top:40px; padding:18px 60px; border-radius:50px; border:none; cursor:pointer; font-weight:bold; letter-spacing:3px; background: var(--white); color: var(--sidebar-bg);" onclick="iniciarApp()">ENTRAR</button>
+        <div class="welcome-panel animate__animated animate__zoomIn">
+            <h1 class="brand-text">Botánica</h1>
+            <p class="sub-text">Elite System</p>
+            <button class="btn-start" onclick="iniciarApp()">ENTRAR</button>
+        </div>
     </div>
 
     <div id="app-wrapper">
         <nav>
-            <div style="padding: 10px 30px 20px; font-family: 'Cinzel'; color: var(--accent-lavender); font-size: 1rem; width: 100%;" class="desktop-only">OSIO v6</div>
+            <div style="padding: 0 30px 40px; font-weight: 100; color: var(--accent-lavender); letter-spacing: 2px;">OSIO v6</div>
             <div class="nav-item active" onclick="showSection('reg-user-section', this)"><i class="fas fa-user-plus"></i> REGISTRO</div>
             <div class="nav-item" onclick="showSection('reg-obs-section', this)"><i class="fas fa-pen-nib"></i> OBSERVACIÓN</div>
             <div class="nav-item" onclick="showSection('history-section', this)"><i class="fas fa-list"></i> HISTORIAL</div>
@@ -108,11 +154,7 @@
                     <select id="sel_usuario"><option>Cargando lista...</option></select>
                     <div style="display:flex; gap:10px;">
                         <input type="number" id="obs_altura" placeholder="Altura (cm)">
-                        <select id="obs_estado">
-                            <option>Saludable</option>
-                            <option>Floración</option>
-                            <option>Estrés</option>
-                        </select>
+                        <select id="obs_estado"><option>Saludable</option><option>Floración</option><option>Estrés</option></select>
                     </div>
                     <textarea id="obs_notas" rows="3" placeholder="Observaciones..." onkeydown="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); guardarObs(); }"></textarea>
                     <button class="btn-pro" style="background: var(--accent-lavender);" onclick="guardarObs()">GUARDAR</button>
@@ -171,9 +213,9 @@
 
     function renderGeneral() {
         document.getElementById('grid-total').innerHTML = dataCache.observaciones.map(o => `
-            <div class="card-obs animate__animated animate__fadeIn">
+            <div style="background:white; padding:20px; border-radius:20px; margin-bottom:15px; border-left:5px solid var(--accent-lavender);">
                 <small style="color:var(--accent-lavender); font-weight:700;">${o.nombre.toUpperCase()}</small>
-                <div style="margin:5px 0;">📏 ${o.altura_cm}cm — <b>${o.estado_salud}</b></div>
+                <div style="margin:5px 0;">📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
                 <p style="opacity:0.8; font-size:0.9rem; margin:0;">"${o.observaciones}"</p>
             </div>
         `).join('');
@@ -184,15 +226,15 @@
         el.classList.add('active');
         const filtrados = dataCache.observaciones.filter(o => o.usuario_id == id);
         document.getElementById('grid-especifico').innerHTML = filtrados.length ? filtrados.map(o => `
-            <div class="card-obs animate__animated animate__fadeIn">
+            <div style="background:white; padding:20px; border-radius:20px; margin-bottom:15px;">
                 <div>📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
                 <p>"${o.observaciones}"</p>
             </div>
-        `).join('') : '<p>No hay registros para este usuario.</p>';
+        `).join('') : '<p>No hay registros.</p>';
     }
 
     async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({ title: 'Seguridad', input: 'password', confirmButtonColor: '#1a3c34' });
+        const { value: pass } = await Swal.fire({ title: 'Seguridad', input: 'password', confirmButtonColor: '#0d1a16' });
         if (pass === 'osio2023') {
             showSection('admin-panel');
             document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `
@@ -205,7 +247,7 @@
     }
 
     async function borrarU(id) {
-        if(confirm("¿Eliminar usuario y sus datos?")) {
+        if(confirm("¿Eliminar usuario?")) {
             await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
             actualizarDatos();
             showSection('reg-user-section');
@@ -218,7 +260,7 @@
         await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
         document.getElementById('reg_nombre').value = "";
         actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Registrado', showConfirmButton: false, timer: 1500 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Listo', showConfirmButton: false, timer: 1000 });
     }
 
     async function guardarObs() {
@@ -232,7 +274,7 @@
         document.getElementById('obs_altura').value = "";
         document.getElementById('obs_notas').value = "";
         actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Guardado', showConfirmButton: false, timer: 1500 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Guardado', showConfirmButton: false, timer: 1000 });
     }
 </script>
 </body>
