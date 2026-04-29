@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Botánica OS | Elite System</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:italic,wght@0,400;1,700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -14,50 +17,61 @@
             --main-bg: #f8faf9;
             --accent-lavender: #8e74ae;
             --emerald: #1e5544;
-            --danger: #e63946;
         }
 
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; background: var(--main-bg); overflow: hidden; display: flex; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--main-bg); overflow: hidden; display: flex; }
 
-        /* PORTADA */
+        /* PORTADA MEJORADA */
         #portada {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(13, 33, 27, 0.8), rgba(13, 33, 27, 0.95)), 
-                        url('https://images.unsplash.com/photo-1591811804257-2e1d09e74bb7?auto=format&fit=crop&w=1500&q=80');
+            background: linear-gradient(rgba(13, 33, 27, 0.7), rgba(13, 33, 27, 0.9)), 
+                        url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1500&q=80');
             background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000;
-            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        .title-block { text-align: center; color: white; border: 1px solid rgba(255,255,255,0.2); padding: 50px; border-radius: 40px; backdrop-filter: blur(10px); }
+        .hero-text { 
+            font-family: 'Cinzel', serif; 
+            font-size: 5rem; 
+            letter-spacing: 20px; 
+            color: white; 
+            margin: 0;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .sub-hero {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--accent-lavender);
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            margin-top: -10px;
+        }
 
         /* SIDEBAR */
-        nav { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 30px 0; color: white; transition: 0.3s; }
-        .nav-item { padding: 18px 30px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 15px; }
+        nav { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 30px 0; color: white; }
+        .nav-item { padding: 18px 30px; cursor: pointer; opacity: 0.5; display: flex; align-items: center; gap: 15px; transition: 0.3s; }
         .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 4px solid var(--accent-lavender); }
 
-        /* CONTENIDO */
         main { flex: 1; padding: 40px; overflow-y: auto; }
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeIn 0.4s; }
 
         .glass-panel { background: white; border-radius: 25px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
 
-        /* BOTONES DE USUARIO */
         .user-pill {
             padding: 12px 25px; background: white; border: 1px solid #eee; border-radius: 50px;
             cursor: pointer; transition: 0.3s; font-weight: 500; color: var(--sidebar-bg);
         }
-        .user-pill:hover, .user-pill.active { background: var(--sidebar-bg); color: white; border-color: var(--sidebar-bg); }
+        .user-pill.active { background: var(--sidebar-bg); color: white; }
 
-        .card-obs { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 4px solid var(--accent-lavender); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .card-obs { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 4px solid var(--accent-lavender); }
 
-        /* INPUTS */
-        input, select, textarea { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1.5px solid #eee; background: #fafafa; }
-        .btn-pro { background: var(--sidebar-bg); color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 600; }
+        input, select, textarea { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1.5px solid #eee; background: #fafafa; font-family: inherit; }
+        .btn-pro { background: var(--sidebar-bg); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.3s; }
+        .btn-pro:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        /* ELIMINAR INVISIBLE */
-        .admin-trigger { margin-top: auto; padding: 20px; opacity: 0.03; cursor: default; font-size: 0.7rem; text-align: center; color: white; }
-        .admin-trigger:hover { opacity: 0.2; cursor: pointer; }
+        .admin-trigger { margin-top: auto; padding: 20px; opacity: 0.02; cursor: pointer; font-size: 0.7rem; text-align: center; color: white; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -65,27 +79,24 @@
 <body>
 
     <div id="portada">
-        <div class="title-block">
-            <h1 style="font-size: 3rem; letter-spacing: 10px; margin: 0;">BOTÁNICA</h1>
-            <p style="letter-spacing: 4px; color: var(--accent-lavender);">SISTEMA DE CONTROL</p>
-            <button style="margin-top:30px; padding:15px 50px; border-radius:50px; border:none; cursor:pointer;" onclick="iniciarApp()">ENTRAR</button>
-        </div>
+        <h1 class="hero-text animate__animated animate__fadeInDown">BOTÁNICA</h1>
+        <p class="sub-hero animate__animated animate__fadeInUp animate__delay-1s">Elite Research System</p>
+        <button style="margin-top:50px; padding:18px 60px; border-radius:50px; border:none; cursor:pointer; font-weight:bold; letter-spacing:2px;" onclick="iniciarApp()">ENTRAR AL SISTEMA</button>
     </div>
 
     <nav>
-        <div style="padding: 0 30px 40px; font-weight: 100; letter-spacing: 2px;">ELITE SYSTEM</div>
+        <div style="padding: 0 30px 40px; font-family: 'Cinzel'; letter-spacing: 2px; color: var(--accent-lavender);">OSIO v5</div>
         <div class="nav-item active" onclick="showSection('reg-section', this)"><i class="fas fa-plus"></i> REGISTRO</div>
         <div class="nav-item" onclick="showSection('obs-section', this)"><i class="fas fa-leaf"></i> HISTORIAL</div>
         <div class="nav-item" onclick="showSection('users-section', this)"><i class="fas fa-search"></i> EXPLORAR</div>
-        
-        <div class="admin-trigger" onclick="abrirAdmin()">Mantenimiento</div>
+        <div class="admin-trigger" onclick="abrirAdmin()">Admin Tool</div>
     </nav>
 
     <main>
         <div id="reg-section" class="view-section active">
             <div class="glass-panel">
                 <h2>Persona a Cargo</h2>
-                <input type="text" id="reg_nombre" placeholder="Nombre completo...">
+                <input type="text" id="reg_nombre" placeholder="Nombre completo..." onkeydown="if(event.key==='Enter') registrarUser()">
                 <button class="btn-pro" onclick="registrarUser()">DAR DE ALTA</button>
             </div>
             <div class="glass-panel">
@@ -95,7 +106,7 @@
                     <input type="number" id="obs_altura" placeholder="Altura (cm)">
                     <select id="obs_estado"><option>Saludable</option><option>Floración</option><option>Estrés</option></select>
                 </div>
-                <textarea id="obs_notas" rows="3" placeholder="Observaciones..."></textarea>
+                <textarea id="obs_notas" rows="3" placeholder="Observaciones..." onkeydown="if(event.key==='Enter' && !event.shiftKey) guardarObs()"></textarea>
                 <button class="btn-pro" style="background: var(--accent-lavender);" onclick="guardarObs()">GUARDAR DATOS</button>
             </div>
         </div>
@@ -108,13 +119,11 @@
         <div id="users-section" class="view-section">
             <h2>Registros por Investigador</h2>
             <div id="pills-usuarios" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:30px;"></div>
-            <div id="grid-especifico">
-                <p style="opacity:0.4; text-align:center; margin-top:50px;">Selecciona un nombre para ver sus notas.</p>
-            </div>
+            <div id="grid-especifico"></div>
         </div>
 
         <div id="admin-panel" class="view-section">
-            <h2 style="color:var(--danger)">Panel de Eliminación</h2>
+            <h2 style="color:#e63946">Eliminar Registros</h2>
             <div id="lista-borrar" class="glass-panel"></div>
         </div>
     </main>
@@ -146,19 +155,14 @@
     }
 
     function renderTodo() {
-        // Llenar Selectores
         document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-
-        // Historial General
         document.getElementById('grid-total').innerHTML = dataCache.observaciones.map(o => `
             <div class="card-obs">
-                <div style="color:var(--accent-lavender); font-weight:bold;">${o.nombre}</div>
+                <div style="color:var(--accent-lavender); font-weight:bold; font-size:0.8rem;">${o.nombre.toUpperCase()}</div>
                 <div>📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
-                <p style="opacity:0.7; font-size:0.9rem;">"${o.observaciones}"</p>
+                <p style="opacity:0.7;">"${o.observaciones}"</p>
             </div>
         `).join('');
-
-        // Pills de Usuarios para Filtrar
         document.getElementById('pills-usuarios').innerHTML = dataCache.usuarios.map(u => `
             <div class="user-pill" onclick="verRegistrosUser(${u.id}, this)">${u.nombre}</div>
         `).join('');
@@ -167,47 +171,30 @@
     function verRegistrosUser(id, el) {
         document.querySelectorAll('.user-pill').forEach(p => p.classList.remove('active'));
         el.classList.add('active');
-        
         const filtrados = dataCache.observaciones.filter(o => o.usuario_id == id);
-        const grid = document.getElementById('grid-especifico');
-        
-        if(filtrados.length === 0) {
-            grid.innerHTML = "<p>Sin registros.</p>";
-        } else {
-            grid.innerHTML = filtrados.map(o => `
-                <div class="card-obs animate__animated animate__fadeInUp">
-                    <div>📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
-                    <p>"${o.observaciones}"</p>
-                    <small>${new Date(o.fecha).toLocaleDateString()}</small>
-                </div>
-            `).join('');
-        }
+        document.getElementById('grid-especifico').innerHTML = filtrados.map(o => `
+            <div class="card-obs animate__animated animate__fadeIn">
+                <div>📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
+                <p>"${o.observaciones}"</p>
+            </div>
+        `).join('');
     }
 
-    // --- SEGURIDAD ---
     async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({
-            title: 'Acceso Admin',
-            input: 'password',
-            inputPlaceholder: 'Contraseña...',
-            confirmButtonColor: var(--sidebar-bg)
-        });
-
+        const { value: pass } = await Swal.fire({ title: 'Password', input: 'password', confirmButtonColor: '#0d211b' });
         if (pass === 'osio2023') {
             showSection('admin-panel');
             document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `
                 <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
                     <span>${u.nombre}</span>
-                    <button onclick="borrarU(${u.id})" style="color:red; background:none; border:none; cursor:pointer;">Borrar</button>
+                    <button onclick="borrarU(${u.id})" style="color:red; background:none; border:none; cursor:pointer;">Eliminar</button>
                 </div>
             `).join('');
-        } else {
-            Swal.fire('Error', 'Contraseña incorrecta', 'error');
         }
     }
 
     async function borrarU(id) {
-        if(confirm("¿Borrar todo lo de este usuario?")) {
+        if(confirm("¿Seguro?")) {
             await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
             actualizarDatos();
             showSection('reg-section');
@@ -220,7 +207,7 @@
         await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
         document.getElementById('reg_nombre').value = "";
         actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Registrado', showConfirmButton: false, timer: 1500 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Listo', showConfirmButton: false, timer: 1000 });
     }
 
     async function guardarObs() {
@@ -231,8 +218,10 @@
             notas: document.getElementById('obs_notas').value
         };
         await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        document.getElementById('obs_altura').value = "";
+        document.getElementById('obs_notas').value = "";
         actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Guardado', showConfirmButton: false, timer: 1500 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Sincronizado', showConfirmButton: false, timer: 1000 });
     }
 </script>
 </body>
