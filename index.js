@@ -1,6 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const path = require('path'); // Importante para manejar rutas de archivos
 
 const app = express();
 app.use(cors());
@@ -11,29 +12,10 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
-// Diseño de la Landing Page de la API
-const headHTML = `
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://fonts.gstatic.com/s/i/short-term/release/googlestylesheet/leaf/default/24px.svg">
-    <style>
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1d976c 0%, #93f9b9 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
-        .card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.2); max-width: 500px; }
-        .btn { text-decoration: none; color: white; border: 2px solid white; padding: 12px 25px; border-radius: 10px; font-weight: bold; display: inline-block; margin: 10px; transition: 0.3s; }
-        .btn:hover { background: white; color: #1d976c; }
-    </style>
-`;
-
-// RUTA PRINCIPAL
+// --- RUTA PRINCIPAL PROFESIONAL ---
+// En lugar de enviar texto, enviamos el archivo HTML real
 app.get('/', (req, res) => {
-    res.send(`<html><head>${headHTML}</head><body>
-        <div class="card">
-            <h1 style="font-size: 60px; margin: 0;">🌿</h1>
-            <h1>Salud & Lavanda API</h1>
-            <p>Servidor de Datos Activo</p>
-            <a href="/lavandas" class="btn">📅 Ver Historial</a>
-        </div>
-    </body></html>`);
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // LISTA DE USUARIOS PARA EL SELECTOR
@@ -56,7 +38,7 @@ app.post('/nueva-observacion', async (req, res) => {
     } catch (err) { res.status(500).json({ status: "error", message: err.message }); }
 });
 
-// OBTENER ÚLTIMO DATO
+// OBTENER ÚLTIMO DATO (Para el mensaje principal)
 app.get('/datos', async (req, res) => {
     try {
         const query = await pool.query('SELECT observaciones FROM seguimiento_lavanda ORDER BY fecha DESC LIMIT 1');
@@ -64,7 +46,7 @@ app.get('/datos', async (req, res) => {
     } catch (err) { res.status(500).json({ data: { observaciones: "Error de conexión" } }); }
 });
 
-// HISTORIAL EN JSON PARA EL HTML
+// HISTORIAL EN JSON PARA QUE EL HTML HAGA LA LISTA BONITA
 app.get('/lavandas_json', async (req, res) => {
     try {
         const query = await pool.query(`
@@ -77,16 +59,7 @@ app.get('/lavandas_json', async (req, res) => {
     } catch (err) { res.status(500).json([]); }
 });
 
-// HISTORIAL VISUAL (Para el botón de la API)
-app.get('/lavandas', async (req, res) => {
-    const query = await pool.query('SELECT s.*, u.nombre FROM seguimiento_lavanda s JOIN usuarios u ON s.usuario_id = u.id ORDER BY s.fecha DESC');
-    const list = query.rows.map(l => `<div style="background:rgba(255,255,255,0.1); padding:15px; margin:10px; border-radius:10px; text-align:left;">
-        <b>${l.nombre}</b> - ${new Date(l.fecha).toLocaleDateString()}<br>
-        <i>"${l.observaciones}"</i></div>`).join('');
-    res.send(`<html><head>${headHTML}</head><body><a href="/" class="btn">Volver</a>${list}</body></html>`);
-});
-
-// REGISTRO DE USUARIOS
+// REGISTRO DE USUARIOS (Perfil de salud)
 app.post('/registrar', async (req, res) => {
     const { nombre, email, password, peso, altura, edad, actividad_fisica, objetivo } = req.body;
     try {
@@ -99,6 +72,4 @@ app.post('/registrar', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('🚀 API Lista'));
-
-// Actualización forzada.
+app.listen(PORT, () => console.log('🚀 Sistema Profesional Online'));
