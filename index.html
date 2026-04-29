@@ -5,350 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Botánica OS | Elite System</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
-            /* Paleta Mate Profunda */
-            --bg-deep: #050a09; /* Negro botánico mate */
-            --sidebar-mate: #0d1a16; /* Verde oscuro mate */
-            --glass-panel: rgba(20, 35, 30, 0.6); /* Vidrio oscuro transparente */
-            --accent-mate: #7a6a75; /* Lavanda polvoriento mate */
-            --text-mate: #c0c0b5; /* Crema apagado mate */
-            --text-bright: #ffffff;
-            --danger-mate: #a63a50;
+            --sidebar-bg: #1a3c34; 
+            --main-bg: #f4f1de;    
+            --accent-lavender: #6d597a;
         }
 
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text-mate); overflow: hidden; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--main-bg); overflow: hidden; }
 
-        /* --- FONDO BOTÁNICO GLOBAL (ADIÓS CAFÉ) --- */
-        #global-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1501004318641-729e8e398642?auto=format&fit=crop&w=1600&q=80');
-            background-size: cover; background-position: center; z-index: -1;
-        }
-
-        /* --- PORTADA FROSTED GLASS (TRANSPARENTOSA) --- */
+        /* --- PORTADA (TAL CUAL LA TIENES) --- */
         #portada {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center; z-index: 1000;
-            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            background: linear-gradient(rgba(26,60,52,0.6), rgba(26,60,52,0.8)), 
+                        url('https://images.unsplash.com/photo-1596003906949-67221c37965c?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
+        .hero-text { font-size: 4rem; letter-spacing: 10px; color: white; margin: 0; font-weight: 300; }
+        .btn-entrar { margin-top:30px; padding:15px 50px; border-radius:50px; border:none; cursor:pointer; font-weight:bold; background: white; color: var(--sidebar-bg); }
 
-        .welcome-card {
-            background: rgba(255, 255, 255, 0.03); /* Base muy transparente */
-            border-radius: 40px;
-            padding: 60px 80px;
-            text-align: center;
-            backdrop-filter: blur(20px) saturate(180%); /* Efecto Vidrio Esmerilado Profundo */
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            position: relative;
-        }
-
-        /* Platita 🌿 */
-        .welcome-card::before {
-            content: "🌿"; font-size: 3.5rem; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); opacity: 0.9;
-        }
-
-        .brand-script { font-family: 'Great Vibes', cursive; font-size: 5.5rem; color: var(--text-bright); margin: 0; line-height: 1; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .sub-brand { font-size: 1rem; color: var(--text-mate); letter-spacing: 6px; text-transform: uppercase; margin-top: 10px; opacity: 0.7; }
-
-        .btn-enter {
-            margin-top: 50px; padding: 20px 60px; border-radius: 50px; border: none; cursor: pointer;
-            font-weight: 600; font-size: 1rem; letter-spacing: 3px; text-transform: uppercase;
-            background: var(--accent-mate); color: var(--text-bright); transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .btn-enter:hover { background: var(--text-bright); color: var(--bg-deep); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
-
-        /* --- MAIN LAYOUT PRO --- */
-        #app-wrapper { display: flex; width: 100vw; height: 100vh; position: relative; }
-
-        /* BARRA SUPERIOR (TOP BAR) */
-        #top-bar {
-            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-            background: transparent; display: flex; align-items: center; padding: 0 25px;
-            z-index: 900; box-sizing: border-box;
-        }
-
-        /* Botón de Barras (Hamburguesa) Magico */
+        /* --- BOTÓN DE BARRAS (LA MEJORA) --- */
         #menu-toggle {
-            background: none; border: none; color: var(--text-bright); font-size: 1.6rem; cursor: pointer;
-            opacity: 0.7; transition: 0.3s; padding: 10px; border-radius: 10px;
-        }
-        #menu-toggle:hover { opacity: 1; background: rgba(255,255,255,0.05); }
-
-        /* MENÚ LATERAL PRO (SIDEBAR) */
-        nav {
-            width: 280px; background: var(--sidebar-mate); display: flex; flex-direction: column;
-            padding: 90px 0 30px 0; /* Espacio para la Top Bar */
-            color: var(--text-bright); flex-shrink: 0; transition: width 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-            overflow: hidden; z-index: 850; position: relative;
+            position: fixed; top: 20px; left: 20px; z-index: 1100;
+            background: var(--sidebar-bg); color: white; border: none;
+            width: 45px; height: 45px; border-radius: 12px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        /* Estado colapsado del menú (PC) */
-        nav.collapsed { width: 80px; }
+        #app-wrapper { display: flex; width: 100vw; height: 100vh; }
 
-        .nav-item {
-            padding: 18px 25px; cursor: pointer; opacity: 0.6; display: flex; align-items: center;
-            gap: 20px; transition: 0.3s; white-space: nowrap; border-left: 4px solid transparent;
+        /* --- NAVEGACIÓN (COLAPSABLE) --- */
+        nav { 
+            width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; 
+            padding: 80px 0 40px; color: white; flex-shrink: 0;
+            transition: all 0.4s ease;
         }
-        .nav-item i { font-size: 1.2rem; width: 25px; text-align: center; }
-        .nav-item span { font-size: 0.95rem; font-weight: 400; letter-spacing: 0.5px; transition: opacity 0.3s; }
+        
+        /* Cuando el menú está cerrado */
+        nav.collapsed { width: 0; overflow: hidden; opacity: 0; pointer-events: none; }
 
-        /* Ocultar texto cuando está colapsado */
-        nav.collapsed .nav-item span, nav.collapsed .sidebar-header, nav.collapsed .admin-trigger span { opacity: 0; pointer-events: none; }
-        nav.collapsed .admin-trigger i { margin: 0; font-size: 1.3rem; }
+        .nav-item { padding: 18px 25px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 15px; transition: 0.3s; white-space: nowrap; }
+        .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 4px solid var(--accent-lavender); }
 
-        .nav-item:hover { opacity: 1; background: rgba(255,255,255,0.03); }
-        .nav-item.active { opacity: 1; background: rgba(255,255,255,0.06); border-left-color: var(--accent-mate); color: var(--text-bright); }
+        /* --- CONTENIDO --- */
+        main { flex-grow: 1; padding: 80px 40px 40px; overflow-y: auto; box-sizing: border-box; }
+        
+        .glass-panel { background: white; border-radius: 30px; padding: 35px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 
-        /* CONTENIDO PRINCIPAL (MAIN) */
-        main {
-            flex-grow: 1; padding: 100px 50px 50px 50px; /* Padding top para la barra */
-            overflow-y: auto; background: transparent; box-sizing: border-box;
-            transition: padding-left 0.4s;
-        }
+        h2 { font-weight: 400; color: #1a3c34; margin-bottom: 20px; }
 
-        .view-section { display: none; width: 100%; max-width: 1100px; margin: 0 auto; }
-        .view-section.active { display: block; animation: fadeIn 0.5s ease; }
+        input, select, textarea { width: 100%; padding: 15px; margin: 10px 0; border-radius: 15px; border: 1px solid #eee; background: #fafafa; font-family: inherit; box-sizing: border-box; }
+        .btn-pro { background: #1a3c34; color: white; border: none; padding: 18px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
 
-        /* Paneles de Datos Transparentosos (Glassmorphism) */
-        .glass-card {
-            background: var(--glass-panel); border-radius: 30px; padding: 40px; margin-bottom: 30px;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        h2 { font-weight: 300; font-size: 1.6rem; color: var(--text-bright); margin-top: 0; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-
-        /* Inputs Mate y Oscuros */
-        input, select, textarea {
-            width: 100%; padding: 18px; margin: 12px 0; border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2);
-            color: var(--text-mate); font-size: 1rem; font-family: inherit; box-sizing: border-box;
-        }
-        input:focus, select:focus, textarea:focus { border-color: var(--accent-mate); outline: none; background: rgba(0,0,0,0.3); }
-
-        .btn-action {
-            background: var(--sidebar-mate); color: var(--text-bright); border: 1px solid rgba(255,255,255,0.1);
-            padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 600; font-size: 1rem;
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-        }
-        .btn-action:hover { background: var(--accent-mate); transform: translateY(-2px); }
-
-        /* Trigger Secreto */
-        .admin-trigger { margin-top: auto; padding: 20px 25px; opacity: 0.02; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 20px; color: var(--text-mate); }
-        .admin-trigger:hover { opacity: 0.5; color: var(--text-bright); }
-
-        /* --- RESPONSIVE PRO (MÓVIL TOTAL) --- */
+        /* MÓVIL */
         @media (max-width: 768px) {
-            #portada .welcome-card { padding: 40px 30px; width: 85%; }
-            #portada .brand-script { font-size: 3.5rem; }
-
-            /* Sidebar se vuelve flotante en móvil */
-            nav {
-                position: fixed; top: 0; left: -280px; height: 100vh; width: 280px;
-                box-shadow: 15px 0 50px rgba(0,0,0,0.5);
-            }
-            nav.open { left: 0; } /* Clase para abrir en móvil */
-            nav.collapsed { width: 280px; left: -280px; } /* Ignorar colapso de PC en móvil */
-            
-            main { padding: 90px 20px 30px 20px; }
-            .glass-card { padding: 25px; border-radius: 20px; }
+            nav { position: fixed; left: -260px; height: 100%; z-index: 1050; }
+            nav.open { left: 0; opacity: 1; }
+            main { padding: 80px 20px 20px; }
         }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="global-bg"></div>
-
     <div id="portada">
-        <div class="welcome-card animate__animated animate__zoomIn">
-            <h1 class="brand-script">Botánica</h1>
-            <p class="sub-brand">Elite Research System</p>
-            <button class="btn-enter" onclick="iniciarApp()">ENTRAR</button>
-        </div>
+        <h1 class="hero-text">BOTÁNICA</h1>
+        <button class="btn-entrar" onclick="iniciarApp()">ENTRAR A BITÁCORA</button>
     </div>
 
-    <div id="top-bar">
-        <button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
-    </div>
+    <button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
 
     <div id="app-wrapper">
         <nav id="sidebar">
-            <div style="padding: 0 25px 30px 25px; font-family: 'Great Vibes'; font-size: 2rem; color: var(--accent-mate);" class="sidebar-header desktop-only">B</div>
-            
-            <div class="nav-item active" onclick="showSection('reg-section', this)"><i class="fas fa-pen-fancy"></i> <span>REGISTROS</span></div>
-            <div class="nav-item" onclick="showSection('obs-section', this)"><i class="fas fa-microscope"></i> <span>OBSERVACIONES</span></div>
-            
-            <div class="admin-trigger" onclick="abrirAdmin()">
-                <i class="fas fa-cog"></i> <span>Config</span>
-            </div>
+            <div class="nav-item active" onclick="showSection('reg-user', this)"><i class="fas fa-user"></i> PERSONA A CARGO</div>
+            <div class="nav-item" onclick="showSection('reg-obs', this)"><i class="fas fa-plus-circle"></i> NUEVO REGISTRO</div>
+            <div class="nav-item" onclick="showSection('view-obs', this)"><i class="fas fa-list"></i> HISTORIAL</div>
         </nav>
 
         <main>
-            <div id="reg-section" class="view-section active">
-                <div class="glass-card">
-                    <h2>Investigador Autorizado</h2>
-                    <input type="text" id="reg_nombre" placeholder="Nombre completo..." onkeydown="handleEnter(event, registrarUser)">
-                    <button class="btn-action" onclick="registrarUser()">DAR DE ALTA</button>
+            <div id="reg-user" class="view-section active">
+                <div class="glass-panel">
+                    <h2>Persona a Cargo</h2>
+                    <input type="text" id="reg_nombre" placeholder="Nombre completo...">
+                    <button class="btn-pro" onclick="registrarUser()">DAR DE ALTA</button>
                 </div>
-                
-                <div class="glass-card">
-                    <h2>Nueva Entrada de Campo</h2>
-                    <select id="sel_usuario"><option>Cargando lista...</option></select>
-                    <div style="display:flex; gap:15px;">
+            </div>
+
+            <div id="reg-obs" class="view-section" style="display:none;">
+                <div class="glass-panel">
+                    <h2>Nuevo Registro de Campo</h2>
+                    <select id="sel_usuario"></select>
+                    <div style="display:flex; gap:10px;">
                         <input type="number" id="obs_altura" placeholder="Altura (cm)">
-                        <select id="obs_estado">
-                            <option>Saludable</option>
-                            <option>En Floración</option>
-                            <option>Estrés Hídrico</option>
-                        </select>
+                        <select id="obs_estado"><option>Saludable</option><option>En Floración</option><option>Estrés</option></select>
                     </div>
-                    <textarea id="obs_notas" rows="3" placeholder="Notas detalladas..." onkeydown="handleEnter(event, guardarObs, true)"></textarea>
-                    <button class="btn-action" style="background: var(--accent-mate);" onclick="guardarObs()">GUARDAR</button>
+                    <textarea id="obs_notas" rows="3" placeholder="Observaciones..."></textarea>
+                    <button class="btn-pro" onclick="guardarObs()">GUARDAR REGISTRO</button>
                 </div>
             </div>
 
-            <div id="obs-section" class="view-section">
-                <h2>Bitácora de Campo</h2>
-                <div style="margin-bottom: 30px;">
-                    <div id="pills-usuarios" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
-                </div>
+            <div id="view-obs" class="view-section" style="display:none;">
+                <h2>Historial de Campo</h2>
                 <div id="grid-dinamico"></div>
-            </div>
-
-            <div id="admin-panel" class="view-section">
-                <h2 style="color:var(--danger-mate)">Mantenimiento de Usuarios</h2>
-                <div id="lista-borrar" class="glass-card"></div>
             </div>
         </main>
     </div>
 
 <script>
     const API = 'https://mi-api-hola.onrender.com';
-    let dataCache = { usuarios: [], observaciones: [] };
 
-    // FUNCIÓN DE PORTADA (SE QUITA AL DAR ENTRAR O ENTER GLOBAL)
     function iniciarApp() {
         document.getElementById('portada').style.transform = 'translateY(-100%)';
         actualizarDatos();
     }
 
-    // ENTER GLOBAL PARA ENTRAR
-    window.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && document.getElementById('portada').style.transform !== 'translateY(-100%)') {
-            iniciarApp();
-        }
-    });
-
-    // --- FUNCIÓN PRO: TOGGLE MENÚ ---
+    // FUNCIÓN PARA EL MENÚ DE BARRAS
     function toggleMenu() {
-        const sidebar = document.getElementById('sidebar');
-        if (window.innerWidth <= 768) {
-            // Comportamiento móvil: Abre/Cierra flotante
-            sidebar.classList.toggle('open');
+        const nav = document.getElementById('sidebar');
+        if(window.innerWidth <= 768) {
+            nav.classList.toggle('open');
         } else {
-            // Comportamiento PC: Colapsa/Expande (Mini)
-            sidebar.classList.toggle('collapsed');
+            nav.classList.toggle('collapsed');
         }
     }
 
-    // Cerrar menú al hacer clic en un ítem en móvil
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('open');
-            }
-        });
-    });
-
     function showSection(id, el) {
-        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+        document.getElementById(id).style.display = 'block';
         if(el) el.classList.add('active');
-        if(id === 'obs-section') renderObservaciones(dataCache.observaciones);
+        if(window.innerWidth <= 768) toggleMenu(); // Cerrar al elegir en móvil
     }
 
     async function actualizarDatos() {
-        try {
-            const [uRes, hRes] = await Promise.all([
-                fetch(`${API}/lista-usuarios`),
-                fetch(`${API}/lavandas_json`)
-            ]);
-            dataCache.usuarios = await uRes.json();
-            dataCache.observaciones = await hRes.json();
-            
-            document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-            document.getElementById('pills-usuarios').innerHTML = `
-                <div class="user-pill active" onclick="renderObservaciones(dataCache.observaciones, this)">TODOS</div>
-            ` + dataCache.usuarios.map(u => `
-                <div class="user-pill" onclick="filtrarPorUser(${u.id}, this)">${u.nombre}</div>
-            `).join('');
-        } catch (e) { console.error("Error cargando datos"); }
-    }
-
-    function renderObservaciones(lista, el) {
-        if(el) {
-            document.querySelectorAll('.user-pill').forEach(p => p.classList.remove('active'));
-            el.classList.add('active');
-        }
-        document.getElementById('grid-dinamico').innerHTML = lista.map(o => `
-            <div class="card-obs animate__animated animate__fadeIn">
-                <div style="color:var(--accent-mate); font-weight:600; font-size:0.8rem; text-transform:uppercase;">${o.nombre}</div>
-                <div style="margin:8px 0; font-weight:500; color:var(--text-bright);">📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
-                <p style="opacity:0.8; font-size:0.9rem; margin:0;">"${o.observaciones}"</p>
-                <small style="opacity:0.3; font-size:0.7rem;">${new Date(o.fecha).toLocaleDateString()}</small>
+        const [uRes, hRes] = await Promise.all([
+            fetch(`${API}/lista-usuarios`),
+            fetch(`${API}/lavandas_json`)
+        ]);
+        const usuarios = await uRes.json();
+        const obs = await hRes.json();
+        
+        document.getElementById('sel_usuario').innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+        document.getElementById('grid-dinamico').innerHTML = obs.map(o => `
+            <div class="glass-panel" style="padding:20px; margin-bottom:15px;">
+                <strong style="color:var(--accent-lavender)">${o.nombre}</strong><br>
+                <span>${o.altura_cm}cm - ${o.estado_salud}</span>
+                <p style="margin:5px 0; font-style:italic;">"${o.observaciones}"</p>
             </div>
         `).join('');
-    }
-
-    function filtrarPorUser(id, el) {
-        const filtrados = dataCache.observaciones.filter(o => o.usuario_id == id);
-        renderObservaciones(filtrados, el);
-    }
-
-    // HELPERS
-    function handleEnter(event, func, isTextArea = false) {
-        if (event.key === 'Enter') {
-            if (isTextArea && event.shiftKey) return; // Permitir salto de línea con Shift+Enter
-            event.preventDefault();
-            func();
-        }
-    }
-
-    async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({ 
-            title: 'Acceso Restringido', input: 'password', confirmButtonColor: '#0d1a16', background: '#14231e', color: '#c0c0b5'
-        });
-        if (pass === 'osio2023') {
-            showSection('admin-panel');
-            document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `
-                <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <span>${u.nombre}</span>
-                    <button onclick="borrarU(${u.id})" style="color:var(--danger-mate); background:none; border:none; cursor:pointer;">[BORRAR]</button>
-                </div>
-            `).join('');
-        }
-    }
-
-    async function borrarU(id) {
-        if(confirm("¿Eliminar usuario y registros?")) {
-            await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
-            actualizarDatos();
-            showSection('reg-section');
-        }
     }
 
     async function registrarUser() {
@@ -357,7 +168,7 @@
         await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
         document.getElementById('reg_nombre').value = "";
         actualizarDatos();
-        Toast.fire({ icon: 'success', title: 'Registrado' });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Registrado', showConfirmButton: false, timer: 1500 });
     }
 
     async function guardarObs() {
@@ -367,15 +178,12 @@
             estado: document.getElementById('obs_estado').value,
             notas: document.getElementById('obs_notas').value
         };
-        if(!payload.notas) return;
         await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         document.getElementById('obs_altura').value = "";
         document.getElementById('obs_notas').value = "";
         actualizarDatos();
-        Toast.fire({ icon: 'success', title: 'Guardado' });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Guardado', showConfirmButton: false, timer: 1500 });
     }
-
-    const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2000, background: '#0d1a16', color: '#c0c0b5' });
 </script>
 </body>
 </html>
