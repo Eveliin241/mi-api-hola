@@ -3,153 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huerto de Lavanda</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    <title>Huerto Polinizador | Lavanda</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🌿</text></svg>">
     
     <style>
         :root {
-            --soft-green: #e8f5e9;
-            --deep-green: #2e7d32;
-            --soft-purple: #f3e5f5;
-            --lavender: #9575cd;
-            --text: #2c3e50;
-        }
-        
-        body { 
-            margin: 0; 
-            font-family: 'Segoe UI', sans-serif; 
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            color: var(--text);
-            min-height: 100vh;
+            --sage: #8da399; /* Verde olivo suave */
+            --dusty-purple: #9a8c98; /* Morado cenizo */
+            --bg: #f4f4f2; /* Fondo hueso */
+            --text: #4a4a4a;
         }
 
-        /* Pantalla de Inicio */
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif; /* Un toque más elegante/clásico */
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Portada con transición suave */
         #portada {
             height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
-            text-align: center;
+            background: linear-gradient(to bottom, #dce2df, #f4f4f2);
+            transition: opacity 0.8s ease-out;
         }
 
-        .btn-principal {
-            padding: 15px 35px;
-            background: var(--deep-green);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
+        .btn-entry {
+            margin-top: 20px;
+            padding: 12px 40px;
+            background-color: transparent;
+            border: 1px solid var(--sage);
+            color: var(--sage);
+            border-radius: 2px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            letter-spacing: 2px;
+            transition: all 0.4s;
         }
 
-        /* Contenedor principal */
-        #app { display: none; padding: 20px; max-width: 800px; margin: auto; }
+        .btn-entry:hover {
+            background-color: var(--sage);
+            color: white;
+        }
+
+        /* App Principal Animada */
+        #app {
+            display: none;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
 
         .card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            border-top: 5px solid var(--lavender);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-left: 3px solid var(--sage);
         }
 
-        h2 { color: var(--lavender); margin-top: 0; display: flex; align-items: center; gap: 10px; }
-        
+        h2 {
+            font-weight: normal;
+            letter-spacing: 1px;
+            color: var(--dusty-purple);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            outline: none;
+            margin: 15px 0;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            color: var(--text);
+            border-radius: 0; /* Estilo más arquitectónico */
         }
 
-        input:focus { border-color: var(--lavender); }
-
-        .btn-accion {
-            background: var(--lavender);
+        .btn-action {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--dusty-purple);
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 8px;
-            width: 100%;
-            font-weight: bold;
             cursor: pointer;
+            font-weight: bold;
             transition: 0.3s;
         }
 
-        .btn-accion:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-action:hover { opacity: 0.8; }
 
-        /* Historial */
-        .registro-item {
-            background: var(--soft-green);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border-left: 5px solid var(--deep-green);
+        /* Historial Estilo Diario Viejo */
+        .log-entry {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+            animation: slideIn 0.5s ease-out;
         }
 
-        .admin-trigger { 
-            text-align: center; 
-            margin-top: 40px; 
-            font-size: 0.7rem; 
-            color: #ccc; 
-            cursor: pointer; 
-        }
+        .log-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--sage); }
 
-        #admin-panel { display: none; background: #fff1f1; padding: 20px; border-radius: 15px; border: 1px solid #ffcdd2; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Admin Oculto */
+        .admin-secret { text-align: center; margin-top: 100px; opacity: 0.2; cursor: help; font-size: 0.7rem; }
+        #admin-panel { display: none; background: #fff; border: 1px dashed var(--dusty-purple); padding: 20px; margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <div id="portada">
-        <div style="font-size: 80px;">🌿</div>
-        <h1 style="color: var(--deep-green); margin: 0;">Salud & Lavanda</h1>
-        <p style="color: #666; margin-bottom: 30px;">Sistema de Seguimiento de Cultivo</p>
-        <button class="btn-principal" onclick="activarApp()">INGRESAR AL DIARIO</button>
+        <h1 style="font-weight: 100; font-size: 2.5rem;">Bitácora de Lavanda</h1>
+        <p style="font-style: italic; opacity: 0.6;">Investigación Polinizadora 2026</p>
+        <button class="btn-entry" onclick="entrar()">ENTRAR</button>
     </div>
 
     <div id="app">
-        <div class="card" style="border-top-color: var(--deep-green);">
-            <h2>👤 Registro de Investigador</h2>
-            <input type="text" id="reg_nombre" placeholder="Escribe tu nombre aquí...">
-            <button class="btn-accion" style="background: var(--deep-green);" onclick="registrarUsuario()">REGISTRAR NOMBRE</button>
+        <div class="card">
+            <h2>NUEVO INVESTIGADOR</h2>
+            <input type="text" id="reg_nombre" placeholder="Nombre y Apellido">
+            <button class="btn-action" style="background-color: var(--sage);" onclick="registrar()">DAR DE ALTA</button>
         </div>
 
         <div class="card">
-            <h2>📝 Diario de Campo</h2>
-            <label>Selecciona tu nombre:</label>
-            <select id="sel_usuario">
-                <option value="">Cargando lista...</option>
-            </select>
-            
-            <input type="number" id="obs_altura" placeholder="Altura de la planta (cm)">
-            
-            <label>Estado de salud:</label>
+            <h2>DIARIO DE CAMPO</h2>
+            <select id="sel_usuario"><option value="">Cargando lista de investigadores...</option></select>
+            <input type="number" id="obs_altura" placeholder="Altura medida (cm)">
             <select id="obs_estado">
-                <option>Saludable</option>
-                <option>Crecimiento Rápido</option>
-                <option>Necesita Riego</option>
-                <option>En Observación</option>
+                <option>Estado: Saludable</option>
+                <option>Estado: Estrés Hídrico</option>
+                <option>Estado: Floración</option>
+                <option>Estado: Enfermedad</option>
             </select>
-            
-            <textarea id="obs_notas" rows="3" placeholder="Escribe tus observaciones del día..."></textarea>
-            <button class="btn-accion" onclick="guardarNota()">GUARDAR EN EL HISTORIAL</button>
+            <textarea id="obs_notas" rows="4" placeholder="Observaciones cualitativas de la lavanda..."></textarea>
+            <button class="btn-action" onclick="guardar()">SUBIR A BITÁCORA</button>
         </div>
 
-        <h2 style="color: var(--deep-green);">📅 Notas Recientes</h2>
+        <h2 style="text-align: center; margin-top: 50px;">HISTORIAL RECIENTE</h2>
         <div id="historial"></div>
 
-        <div class="admin-trigger" onclick="checkAdmin()">Panel de Control Externo</div>
-        
+        <div class="admin-secret" onclick="abrirAdmin()">Mantenimiento de Sistema</div>
         <div id="admin-panel">
-            <h3 style="color: #d32f2f;">Eliminar Usuarios</h3>
+            <h4 style="color: #c62828;">Borrar Investigadores</h4>
             <div id="lista_admin"></div>
         </div>
     </div>
@@ -157,105 +158,99 @@
 <script>
     const API = 'https://mi-api-hola.onrender.com';
 
-    async function activarApp() {
-        document.getElementById('portada').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        await actualizarTodo();
+    function entrar() {
+        document.getElementById('portada').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('portada').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            cargarDatos();
+        }, 800);
     }
 
-    async function actualizarTodo() {
-        try {
-            // 1. Cargar Usuarios
-            const resU = await fetch(`${API}/lista-usuarios`);
-            const usuarios = await resU.json();
-            const select = document.getElementById('sel_usuario');
-            const adminList = document.getElementById('lista_admin');
-
-            if (usuarios.length > 0) {
-                select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-                adminList.innerHTML = usuarios.map(u => `
-                    <div style="display:flex; justify-content:space-between; margin:5px 0; border-bottom:1px solid #eee; padding:5px;">
-                        <span>${u.nombre}</span>
-                        <button onclick="eliminarU(${u.id})" style="color:red; border:none; background:none; cursor:pointer;">Borrar</button>
-                    </div>
-                `).join('');
-            } else {
-                select.innerHTML = '<option value="">Primero registra un nombre</option>';
-            }
-
-            // 2. Cargar Historial
-            const resH = await fetch(`${API}/lavandas_json`);
-            const notas = await resH.json();
-            const histDiv = document.getElementById('historial');
-            
-            histDiv.innerHTML = notas.map(n => `
-                <div class="registro-item">
-                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:bold;">
-                        <span>👤 ${n.nombre}</span>
-                        <span style="color:#888;">📅 ${new Date(n.fecha).toLocaleDateString()}</span>
-                    </div>
-                    <div style="margin:8px 0;">📏 ${n.altura_cm} cm | ✨ ${n.estado_salud}</div>
-                    <div style="font-style:italic; font-size:0.95rem; color:#444;">"${n.observaciones}"</div>
+    async function cargarDatos() {
+        const uRes = await fetch(`${API}/lista-usuarios`);
+        const usuarios = await uRes.json();
+        
+        const select = document.getElementById('sel_usuario');
+        const adminDiv = document.getElementById('lista_admin');
+        
+        if(usuarios.length > 0) {
+            select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+            adminDiv.innerHTML = usuarios.map(u => `
+                <div style="display:flex; justify-content:space-between; padding:5px;">
+                    <span>${u.nombre}</span>
+                    <button onclick="eliminarU(${u.id})" style="color:red; border:none; background:none; cursor:pointer;">[Eliminar]</button>
                 </div>
             `).join('');
-
-        } catch (e) {
-            console.error("Error cargando datos");
         }
+
+        const hRes = await fetch(`${API}/lavandas_json`);
+        const historial = await hRes.json();
+        document.getElementById('historial').innerHTML = historial.map(h => `
+            <div class="log-entry">
+                <div class="log-header">
+                    <span>${h.nombre.toUpperCase()}</span>
+                    <span>${new Date(h.fecha).toLocaleDateString()}</span>
+                </div>
+                <div style="margin: 10px 0; font-size: 1.1rem;">${h.altura_cm}cm — ${h.estado_salud}</div>
+                <div style="font-style: italic; opacity: 0.7;">"${h.observaciones}"</div>
+            </div>
+        `).join('');
     }
 
-    async function registrarUsuario() {
+    async function registrar() {
         const nombre = document.getElementById('reg_nombre').value;
-        if(!nombre) return alert("Escribe un nombre");
-        
+        if(!nombre) return alert("Ingrese un nombre");
+
         await fetch(`${API}/registrar`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ nombre })
+            body: JSON.stringify({nombre})
         });
-        
+
         document.getElementById('reg_nombre').value = "";
-        alert("¡Nombre registrado correctamente!");
-        await actualizarTodo(); // Actualiza el selector inmediatamente
+        
+        // El truco para que aparezca: esperar 500ms antes de recargar
+        setTimeout(() => {
+            cargarDatos();
+            alert("Investigador registrado y listo en el Diario.");
+        }, 500);
     }
 
-    async function guardarNota() {
-        const user_id = document.getElementById('sel_usuario').value;
-        if(!user_id) return alert("Selecciona un investigador");
-
-        const data = {
-            usuario_id: user_id,
+    async function guardar() {
+        const payload = {
+            usuario_id: document.getElementById('sel_usuario').value,
             altura: document.getElementById('obs_altura').value,
             estado: document.getElementById('obs_estado').value,
             notas: document.getElementById('obs_notas').value
         };
 
+        if(!payload.usuario_id || !payload.notas) return alert("Faltan datos");
+
         await fetch(`${API}/nueva-observacion`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
+            body: JSON.stringify(payload)
         });
 
         document.getElementById('obs_altura').value = "";
         document.getElementById('obs_notas').value = "";
-        alert("Nota guardada en el historial");
-        await actualizarTodo();
+        cargarDatos();
+        alert("Observación añadida.");
     }
 
-    function checkAdmin() {
-        const p = prompt("Clave de seguridad:");
-        if(p === "osio2023") {
+    function abrirAdmin() {
+        if(prompt("Clave de Acceso:") === "osio2023") {
             document.getElementById('admin-panel').style.display = 'block';
         }
     }
 
     async function eliminarU(id) {
-        if(confirm("¿Eliminar investigador?")) {
+        if(confirm("¿Borrar investigador?")) {
             await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
-            await actualizarTodo();
+            cargarDatos();
         }
     }
-
 </script>
 </body>
 </html>
