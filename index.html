@@ -41,14 +41,10 @@
         h2 { font-weight: 300; letter-spacing: 2px; color: var(--text-bright); margin-bottom: 20px; }
         
         input, select, textarea { width: 100%; padding: 16px; margin: 8px 0; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); color: #fff; font-family: inherit; box-sizing: border-box; }
-        select option { background: #0d1a16; color: #fff; }
-
         .btn-action { background: var(--accent-mate); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 600; margin-top: 10px; }
-        .admin-trigger { margin-top: auto; padding: 20px; opacity: 0.2; cursor: pointer; font-size: 0.8rem; text-align: center; }
         
         .history-card { border-left: 3px solid var(--accent-mate); padding-left: 20px; margin-bottom: 30px; }
         .history-user { color: var(--accent-mate); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
-        .history-date { font-size: 0.7rem; opacity: 0.4; }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -74,14 +70,14 @@
             <div class="nav-item active" onclick="showSection('user-section', this)"><i class="fas fa-user-plus"></i> <span>REGISTRO</span></div>
             <div class="nav-item" onclick="showSection('reg-section', this)"><i class="fas fa-seedling"></i> <span>OBSERVACIÓN</span></div>
             <div class="nav-item" onclick="showSection('obs-section', this)"><i class="fas fa-history"></i> <span>HISTORIAL</span></div>
-            <div class="admin-trigger" onclick="abrirAdmin()"><i class="fas fa-lock"></i> CONFIG</div>
+            <div class="admin-trigger" style="margin-top:auto; padding:20px; opacity:0.2; cursor:pointer; text-align:center;" onclick="abrirAdmin()"><i class="fas fa-lock"></i> CONFIG</div>
         </nav>
 
         <main>
             <div id="user-section" class="view-section active">
                 <div class="glass-card">
                     <h2>Nuevo Investigador 🌿</h2>
-                    <input type="text" id="reg_nombre" placeholder="Nombre completo..." autocomplete="off">
+                    <input type="text" id="reg_nombre" placeholder="Nombre completo...">
                     <button class="btn-action" onclick="registrarUser()">DAR DE ALTA</button>
                 </div>
             </div>
@@ -89,46 +85,31 @@
             <div id="reg-section" class="view-section">
                 <div class="glass-card">
                     <h2>Datos de la Lavanda 🌿</h2>
-                    <label style="font-size: 0.7rem; opacity: 0.6;">INVESTIGADOR:</label>
                     <select id="sel_usuario"></select>
-                    
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <div style="flex:1;">
-                            <label style="font-size: 0.7rem; opacity: 0.6;">ALTURA (CM):</label>
-                            <input type="number" id="obs_altura" placeholder="Ej: 25">
-                        </div>
-                        <div style="flex:1;">
-                            <label style="font-size: 0.7rem; opacity: 0.6;">ANCHO (CM):</label>
-                            <input type="number" id="obs_ancho" placeholder="Ej: 15">
-                        </div>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="obs_altura" placeholder="Altura (cm)">
+                        <input type="number" id="obs_ancho" placeholder="Ancho (cm)">
                     </div>
-
-                    <label style="font-size: 0.7rem; opacity: 0.6;">ESTADO FISIOLÓGICO:</label>
                     <select id="obs_estado">
                         <option>Saludable</option>
                         <option>Floración</option>
                         <option>Estrés</option>
-                        <option>Cosecha</option>
                     </select>
-
-                    <label style="font-size: 0.7rem; opacity: 0.6;">NOTAS TÉCNICAS:</label>
-                    <textarea id="obs_notas" rows="3" placeholder="Describe hallazgos específicos..."></textarea>
-                    <button class="btn-action" onclick="guardarObs()">GUARDAR BITÁCORA</button>
+                    <textarea id="obs_notas" rows="3" placeholder="Notas..."></textarea>
+                    <button class="btn-action" onclick="guardarObs()">GUARDAR</button>
                 </div>
             </div>
 
             <div id="obs-section" class="view-section">
                 <h2>Historial de Campo 🌿</h2>
-                <div id="pills-usuarios" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 25px;"></div>
+                <div id="pills-usuarios" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 20px;"></div>
                 <div id="grid-dinamico"></div>
             </div>
-
+            
             <div id="admin-panel" class="view-section">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-                    <h2 style="color:var(--danger-mate); margin:0;">Mantenimiento</h2>
-                    <button onclick="cerrarAdmin()" style="background:none; border:1px solid rgba(255,255,255,0.2); color:white; padding:8px 15px; border-radius:8px; cursor:pointer;">CERRAR</button>
-                </div>
+                <h2 style="color:var(--danger-mate);">Mantenimiento</h2>
                 <div id="lista-borrar" class="glass-card"></div>
+                <button class="btn-action" onclick="showSection('user-section')">VOLVER</button>
             </div>
         </main>
     </div>
@@ -138,7 +119,7 @@
     let dataCache = { usuarios: [], observaciones: [] };
 
     function iniciarApp() { document.getElementById('portada').style.transform = 'translateY(-100%)'; actualizarDatos(); }
-    function toggleMenu() { const s = document.getElementById('sidebar'); s.classList.toggle('collapsed'); }
+    function toggleMenu() { document.getElementById('sidebar').classList.toggle('collapsed'); }
 
     function showSection(id, el) {
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
@@ -149,83 +130,54 @@
     }
 
     async function actualizarDatos() {
-        try {
-            const [uRes, hRes] = await Promise.all([fetch(`${API}/lista-usuarios`), fetch(`${API}/lavandas_json`)]);
-            dataCache.usuarios = await uRes.json();
-            dataCache.observaciones = await hRes.json();
-            
-            document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-            document.getElementById('pills-usuarios').innerHTML = `<div onclick="renderObservaciones(dataCache.observaciones)" style="padding:6px 12px; background:rgba(255,255,255,0.05); border-radius:8px; cursor:pointer; font-size:0.8rem;">TODOS</div>` + 
-                dataCache.usuarios.map(u => `<div onclick="filtrarPorUser(${u.id})" style="padding:6px 12px; background:rgba(255,255,255,0.05); border-radius:8px; cursor:pointer; font-size:0.8rem;">${u.nombre}</div>`).join('');
-            
-            if (document.getElementById('admin-panel').classList.contains('active')) renderListaBorrar();
-        } catch (e) { console.error(e); }
+        const [uRes, hRes] = await Promise.all([fetch(`${API}/lista-usuarios`), fetch(`${API}/lavandas_json`)]);
+        dataCache.usuarios = await uRes.json();
+        dataCache.observaciones = await hRes.json();
+        
+        document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+        document.getElementById('pills-usuarios').innerHTML = `<div onclick="renderObservaciones(dataCache.observaciones)" style="padding:5px 10px; background:rgba(255,255,255,0.1); border-radius:5px; cursor:pointer;">TODOS</div>` + 
+            dataCache.usuarios.map(u => `<div onclick="filtrarPorUser(${u.id})" style="padding:5px 10px; background:rgba(255,255,255,0.1); border-radius:5px; cursor:pointer;">${u.nombre}</div>`).join('');
     }
 
     function renderObservaciones(lista) {
         document.getElementById('grid-dinamico').innerHTML = lista.map(o => `
             <div class="history-card">
-                <div class="history-user">${o.nombre} <span class="history-date">${o.fecha || ''}</span></div>
-                <div style="color:#fff; margin:5px 0;">📏 H: ${o.altura_cm}cm | W: ${o.ancho_cm || o.ancho || 0}cm — <b>${o.estado_salud}</b></div>
-                <div style="font-size:0.9rem; opacity:0.7;">"${o.observaciones}"</div>
+                <div class="history-user">${o.nombre}</div>
+                <div style="color:#fff;">📏 H: ${o.altura_cm}cm | W: ${o.ancho_cm || o.ancho || 0}cm — <b>${o.estado_salud}</b></div>
+                <div style="opacity:0.7;">"${o.observaciones}"</div>
             </div>
         `).join('');
     }
 
     function filtrarPorUser(id) { renderObservaciones(dataCache.observaciones.filter(o => o.usuario_id == id)); }
 
-    async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({ 
-            title: 'Acceso Restringido', 
-            input: 'password', 
-            confirmButtonColor: '#7a6a75', 
-            background: '#0d1a16', 
-            color: '#fff',
-            inputAttributes: { autocomplete: 'new-password' } 
-        });
-        if (pass === 'osio2023') { renderListaBorrar(); showSection('admin-panel'); } 
-        else if (pass) { Swal.fire({ icon: 'error', title: 'Incorrecto', background: '#0d1a16', color: '#fff' }); }
-    }
-
-    function cerrarAdmin() { showSection('user-section', document.querySelector('.nav-item')); }
-
-    function renderListaBorrar() {
-        document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `
-            <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-                <span>${u.nombre}</span>
-                <button onclick="borrarU(${u.id})" style="color:var(--danger-mate); background:none; border:none; cursor:pointer;">ELIMINAR</button>
-            </div>
-        `).join('');
-    }
-
-    async function borrarU(id) {
-        const result = await Swal.fire({ title: '¿Eliminar usuario y registros?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#a63a50', background: '#0d1a16', color: '#fff' });
-        if (result.isConfirmed) { await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' }); await actualizarDatos(); }
-    }
-
     async function registrarUser() {
         const nombre = document.getElementById('reg_nombre').value;
-        if(!nombre) return;
         await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
         document.getElementById('reg_nombre').value = "";
         actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Registrado', showConfirmButton: false, timer: 2000 });
     }
 
     async function guardarObs() {
         const payload = { 
             usuario_id: document.getElementById('sel_usuario').value, 
             altura: document.getElementById('obs_altura').value, 
-            ancho_cm: document.getElementById('obs_ancho').value, // Arreglado para tu base de datos
+            ancho_cm: document.getElementById('obs_ancho').value, // <-- Aquí estaba el problema
             estado: document.getElementById('obs_estado').value, 
             notas: document.getElementById('obs_notas').value 
         };
         await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        document.getElementById('obs_altura').value = ""; 
-        document.getElementById('obs_ancho').value = "";
-        document.getElementById('obs_notas').value = "";
-        await actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Bitácora Guardada', showConfirmButton: false, timer: 2000 });
+        document.getElementById('obs_altura').value = ""; document.getElementById('obs_ancho').value = "";
+        actualizarDatos();
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Guardado', showConfirmButton: false, timer: 1500 });
+    }
+
+    async function abrirAdmin() {
+        const { value: pass } = await Swal.fire({ title: 'Clave de Acceso', input: 'password' });
+        if (pass === 'osio2023') {
+            document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `<div>${u.nombre} <button onclick="borrarU(${u.id})">X</button></div>`).join('');
+            showSection('admin-panel');
+        }
     }
 </script>
 </body>
