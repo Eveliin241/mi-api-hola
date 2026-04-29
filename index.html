@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitácora | Salud & Lavanda</title>
+    <title>Bitácora | Botánica Elite</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🌿</text></svg>">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -11,164 +11,142 @@
     
     <style>
         :root {
-            --deep-green: #1a3c34;
-            --muted-lavender: #6d597a;
-            --cream: #f4f1de;
+            --deep-field: #132e27; /* Verde mate muy oscuro */
+            --dusty-lavender: #83677b;
+            --field-cream: #e0e0d5; /* Un crema más apagado/texturizado */
             --white: #ffffff;
         }
 
         body {
             margin: 0;
-            background: var(--cream);
-            color: #333;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: var(--field-cream);
+            color: #2c3e50;
+            font-family: 'Poppins', sans-serif; /* Cambié la fuente a una más moderna y legible */
             overflow-x: hidden;
         }
 
-        /* Portada con Profundidad */
+        /* PORTADA REDISEÑADA: Más Peso y Legibilidad */
         #portada {
             height: 100vh;
-            background: linear-gradient(rgba(26,60,52,0.7), rgba(26,60,52,0.85)), 
-                        url('https://images.unsplash.com/photo-1596003906949-67221c37965c?auto=format&fit=crop&w=1200&q=80');
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(19,46,39,0.9)), 
+                        url('https://images.unsplash.com/photo-1591811804257-2e1d09e74bb7?auto=format&fit=crop&w=1500&q=80');
             background-size: cover;
             background-position: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            color: white;
+            transition: all 0.7s ease-out;
         }
 
-        .title-container { animation: fadeInUp 1.5s; }
+        .title-block { 
+            animation: fadeInDown 1.2s; 
+            background: rgba(0,0,0,0.3); /* Contraste extra para el texto */
+            padding: 40px; 
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-        .btn-lujo {
-            padding: 20px 60px;
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.5);
+        .btn-impact {
+            padding: 18px 55px;
+            background: var(--deep-field);
             color: white;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
             margin-top: 40px;
-            border-radius: 100px; /* Súper redondeado */
+            border-radius: 50px;
+            border: none;
             transition: 0.4s;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            backdrop-filter: blur(5px);
+            letter-spacing: 3px;
+            box-shadow: 0 10px 30px rgba(19,46,39,0.5);
         }
 
-        .btn-lujo:hover { 
+        .btn-impact:hover { 
             background: white; 
-            color: var(--deep-green); 
+            color: var(--deep-field); 
             transform: scale(1.05);
-            border-color: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
         /* Contenedor Flotante Orgánico */
-        #app { 
-            display: none; 
-            padding: 60px 20px; 
-            max-width: 900px; 
-            margin: auto; 
-        }
+        #app { display: none; padding: 60px 20px; max-width: 850px; margin: auto; }
 
         .card {
             background: var(--white);
             padding: 45px;
-            border-radius: 40px; /* Esquinas muy suaves */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-radius: 35px; /* Esquinas suaves */
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08);
             margin-bottom: 40px;
             border: none;
-            position: relative;
-            overflow: hidden;
         }
 
-        /* Decoración interna de las cards */
-        .card::before {
-            content: "🌿";
-            position: absolute;
-            top: -20px;
-            right: -10px;
-            font-size: 80px;
-            opacity: 0.05;
-            transform: rotate(20deg);
-        }
-
-        h2 { 
-            color: var(--deep-green); 
-            font-weight: 300;
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-        }
+        h2 { color: var(--deep-field); font-weight: 300; font-size: 1.6rem; border-bottom: 1px solid #eee; padding-bottom: 15px; }
 
         input, select, textarea {
             width: 100%;
-            padding: 18px;
-            margin: 10px 0 25px 0;
-            background: #fdfdfd;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px; /* Inputs suaves */
+            padding: 16px;
+            margin: 10px 0 20px 0;
+            background: #fcfcfc;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px; /* Inputs suaves */
             font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            color: #4a4a4a;
         }
 
-        input:focus { border-color: var(--muted-lavender); box-shadow: 0 0 0 4px rgba(109, 89, 122, 0.1); }
+        input:focus { border-color: var(--dusty-lavender); background: white; }
 
         .btn-save {
-            background: var(--deep-green);
+            background: var(--deep-field);
             color: white;
-            padding: 20px;
+            padding: 18px;
             width: 100%;
             border: none;
-            border-radius: 20px;
+            border-radius: 15px;
             cursor: pointer;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-weight: bold;
+            font-size: 1rem;
             transition: 0.3s;
         }
 
-        .btn-save:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .btn-save:hover { filter: brightness(1.15); transform: translateY(-2px); }
 
         /* Lista de registros estilo "Burbuja" */
         .registro-card {
             background: white;
             padding: 25px;
-            border-radius: 30px;
+            border-radius: 25px;
             margin-bottom: 20px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.02);
-            transition: 0.3s;
+            border-left: 5px solid var(--deep-field);
         }
 
-        .registro-card:hover { transform: scale(1.02); }
+        /* Admin discreto */
+        .admin-secret { text-align: center; margin: 100px 0 30px; opacity: 0.15; cursor: default; }
 
-        /* Animaciones Personalizadas */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div id="portada">
-        <div class="title-container">
-            <h1 style="font-size: 4rem; font-weight: 100; letter-spacing: 10px; margin: 0;">BOTÁNICA</h1>
-            <p style="font-size: 1.2rem; letter-spacing: 5px; opacity: 0.8;">INVESTIGACIÓN DE CAMPO</p>
+        <div class="title-block animate__animated animate__fadeInDown">
+            <h1 style="font-size: 4rem; font-weight: 100; letter-spacing: 12px; margin: 0; text-transform: uppercase;">Botánica</h1>
+            <p style="font-size: 1.3rem; letter-spacing: 4px; color: #a8e6cf; margin: 5px 0 0;">INVESTIGACIÓN DE CAMPO // ELITE SYSTEM</p>
         </div>
-        <button class="btn-lujo" onclick="iniciar()">Explorar Bitácora</button>
+        <button class="btn-impact" onclick="iniciar()">EXPLORAR BITÁCORA</button>
     </div>
 
-    <div id="app" class="animate__animated animate__fadeInUp">
+    <div id="app" class="animate__animated animate__fadeIn">
         <div class="card">
             <h2>Persona a Cargo</h2>
-            <input type="text" id="reg_nombre" placeholder="Nombre completo del investigador">
+            <input type="text" id="reg_nombre" placeholder="Nombre completo del investigador autorizado">
             <button class="btn-save" onclick="registrar()">DAR DE ALTA</button>
         </div>
 
         <div class="card">
-            <h2>Nuevo Registro</h2>
-            <label style="font-size: 0.8rem; margin-left: 10px; opacity: 0.6;">Seleccionar Investigador:</label>
+            <h2>Nuevo Registro de Campo</h2>
             <select id="sel_usuario"><option>Cargando lista...</option></select>
             
             <div style="display: flex; gap: 20px;">
@@ -180,18 +158,15 @@
                 </select>
             </div>
             
-            <textarea id="obs_notas" rows="4" placeholder="Observaciones detalladas sobre el follaje o entorno..."></textarea>
-            <button class="btn-save" style="background: var(--muted-lavender);" onclick="guardar()">SUBIR A NUBE</button>
+            <textarea id="obs_notas" rows="4" placeholder="Observaciones detalladas cualitativas..."></textarea>
+            <button class="btn-save" style="background: var(--dusty-lavender);" onclick="guardar()">SUBIR A NUBE</button>
         </div>
 
         <div id="historial"></div>
 
-        <div style="text-align: center; margin-top: 80px; padding-bottom: 40px;">
-            <span style="opacity: 0.3; cursor: pointer; font-size: 0.8rem;" onclick="abrirAdmin()">Sistema v3.0</span>
-        </div>
-
+        <div class="admin-secret" onclick="abrirAdmin()">Sistema v4.0 (Osio)</div>
         <div id="admin-panel" style="display:none;" class="card">
-            <h3 style="color: #e63946;">Mantenimiento</h3>
+            <h3 style="color:#e63946">Mantenimiento de Datos</h3>
             <div id="lista_admin"></div>
         </div>
     </div>
@@ -199,27 +174,25 @@
 <script>
     const API = 'https://mi-api-hola.onrender.com';
 
-    // Función de inicio con suavidad
     function iniciar() {
-        const portada = document.getElementById('portada');
-        portada.style.opacity = '0';
-        portada.style.transform = 'scale(1.1)';
+        document.getElementById('portada').style.opacity = '0';
+        document.getElementById('portada').style.transform = 'translateY(-100vh)';
         
         setTimeout(() => {
-            portada.style.display = 'none';
+            document.getElementById('portada').style.display = 'none';
             document.getElementById('app').style.display = 'block';
             actualizarTodo();
-        }, 800);
+        }, 700);
     }
 
-    // Alertas Profesionales con SweetAlert2
+    // Alertas Profesionales (SweetAlert2)
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
-        background: '#1a3c34',
+        background: '#132e27',
         color: '#fff'
     });
 
@@ -237,23 +210,21 @@
             if(usuarios.length > 0) {
                 select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
                 document.getElementById('lista_admin').innerHTML = usuarios.map(u => `
-                    <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #eee;">
+                    <div style="display:flex; justify-content:space-between; padding:10px 0;">
                         <span>${u.nombre}</span>
-                        <button onclick="borrarU(${u.id})" style="color:#e63946; background:none; border:none; cursor:pointer;">Eliminar</button>
+                        <button onclick="borrarU(${u.id})" style="color:#e63946; background:none; border:none; cursor:pointer;">[Eliminar]</button>
                     </div>
                 `).join('');
             }
 
             document.getElementById('historial').innerHTML = historial.map(l => `
-                <div class="registro-card animate__animated animate__fadeIn">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-weight:bold; color:var(--deep-green);">${l.nombre}</span>
-                        <span style="font-size:0.8rem; opacity:0.5;">${new Date(l.fecha).toLocaleDateString()}</span>
+                <div class="registro-card">
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--deep-field);">
+                        <span>👤 ${l.nombre}</span>
+                        <span style="opacity:0.4; font-weight:normal;">📅 ${new Date(l.fecha).toLocaleDateString()}</span>
                     </div>
-                    <div style="margin: 15px 0; font-size: 1.1rem;">
-                        📏 ${l.altura_cm}cm — <span style="color:var(--muted-lavender)">${l.estado_salud}</span>
-                    </div>
-                    <div style="font-style:italic; opacity:0.8; font-size:0.9rem; line-height:1.5;">"${l.observaciones}"</div>
+                    <div style="margin: 12px 0;">📏 ${l.altura_cm}cm — ${l.estado_salud}</div>
+                    <div style="font-style:italic; opacity:0.8; font-size:0.95rem;">"${l.observaciones}"</div>
                 </div>
             `).join('');
         } catch (e) { console.error(e); }
@@ -261,7 +232,7 @@
 
     async function registrar() {
         const nombre = document.getElementById('reg_nombre').value;
-        if(!nombre) return Swal.fire('Error', 'El nombre es necesario', 'warning');
+        if(!nombre) return Swal.fire('Error', 'Escriba un nombre válido', 'warning');
 
         await fetch(`${API}/registrar`, {
             method: 'POST',
@@ -270,7 +241,7 @@
         });
 
         document.getElementById('reg_nombre').value = "";
-        Toast.fire({ icon: 'success', title: 'Investigador Registrado' });
+        Toast.fire({ icon: 'success', title: 'Investigador Autorizado' });
         actualizarTodo();
     }
 
@@ -282,7 +253,7 @@
             notas: document.getElementById('obs_notas').value
         };
 
-        if(!payload.notas) return Swal.fire('Atención', 'Describe tus observaciones', 'info');
+        if(!payload.notas) return Swal.fire('Error', 'Describe tus observaciones', 'error');
 
         await fetch(`${API}/nueva-observacion`, {
             method: 'POST',
@@ -292,7 +263,7 @@
 
         document.getElementById('obs_altura').value = "";
         document.getElementById('obs_notas').value = "";
-        Toast.fire({ icon: 'success', title: 'Registro Guardado' });
+        Toast.fire({ icon: 'success', title: 'Registro Sincronizado' });
         actualizarTodo();
     }
 
@@ -300,10 +271,8 @@
         Swal.fire({
             title: 'Acceso Restringido',
             input: 'password',
-            inputAttributes: { autocapitalize: 'off' },
-            showCancelButton: true,
             confirmButtonText: 'Entrar',
-            confirmButtonColor: '#1a3c34'
+            confirmButtonColor: '#132e27'
         }).then((result) => {
             if (result.value === "osio2023") {
                 document.getElementById('admin-panel').style.display = 'block';
@@ -313,19 +282,10 @@
     }
 
     async function borrarU(id) {
-        const result = await Swal.fire({
-            title: '¿Estás seguro?',
-            text: "Se borrará todo el historial de este investigador",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#e63946',
-            confirmButtonText: 'Sí, borrar'
-        });
-
-        if (result.isConfirmed) {
+        if((await Swal.fire({ title: '¿Borrar?', icon: 'warning', showCancelButton: true })).isConfirmed) {
             await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
             actualizarTodo();
-            Toast.fire({ icon: 'success', title: 'Eliminado correctamente' });
+            Toast.fire({ icon: 'success', title: 'Eliminado' });
         }
     }
 </script>
