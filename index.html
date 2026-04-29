@@ -3,182 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huerto Polinizador</title>
+    <title>Bitácora de Lavanda</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🌿</text></svg>">
     
     <style>
         :root {
-            --sage: #8da399;
-            --dusty-purple: #9a8c98;
-            --bg: #f8f9f8;
-            --text: #4a4a4a;
+            --deep-green: #1a3c34;
+            --muted-lavender: #6d597a;
+            --cream: #f4f1de;
+            --text: #333;
         }
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
+            background: var(--cream);
             color: var(--text);
+            font-family: 'Georgia', serif;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Hojas decorativas flotantes */
-        .leaf-decor {
-            position: fixed;
-            z-index: -1;
-            opacity: 0.15;
-            filter: grayscale(30%);
-            pointer-events: none;
-            animation: float 10s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        /* Portada */
+        /* Portada Elegante */
         #portada {
             height: 100vh;
+            background: linear-gradient(rgba(26,60,52,0.8), rgba(26,60,52,0.9)), 
+                        url('https://images.unsplash.com/photo-1596003906949-67221c37965c?auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at center, #e0e7e4 0%, #f8f9f8 100%);
-            transition: opacity 0.6s ease-in-out;
-        }
-
-        .btn-entry {
-            padding: 16px 45px;
-            background: white;
-            border: 1.5px solid var(--sage);
-            color: var(--sage);
-            border-radius: 50px; /* Bordes redondeados */
-            cursor: pointer;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .btn-entry:hover {
-            background-color: var(--sage);
+            align-items: center;
+            text-align: center;
             color: white;
-            box-shadow: 0 8px 25px rgba(141, 163, 153, 0.3);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* App Principal */
-        #app {
-            display: none;
-            max-width: 750px;
-            margin: 40px auto;
-            padding: 20px;
-            animation: slideUp 0.8s ease-out;
+        .btn-lujo {
+            padding: 18px 50px;
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
+
+        .btn-lujo:hover { background: white; color: var(--deep-green); }
+
+        /* Contenedor Principal */
+        #app { display: none; padding: 40px 20px; max-width: 800px; margin: auto; animation: fadeUp 1s; }
 
         .card {
             background: white;
-            padding: 35px;
-            margin-bottom: 30px;
-            border-radius: 25px; /* Esquinas suavizadas */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            border: 1px solid rgba(0,0,0,0.02);
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 20px 20px 60px #d9d6c3, -20px -20px 60px #ffffff;
+            margin-bottom: 40px;
+            border-top: 8px solid var(--deep-green);
         }
 
-        h2 {
-            font-weight: 500;
-            color: var(--dusty-purple);
-            margin-bottom: 25px;
-            font-size: 1.4rem;
-        }
+        h2 { color: var(--deep-green); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
 
         input, select, textarea {
             width: 100%;
-            padding: 14px;
-            margin: 12px 0;
-            border: 1.5px solid #f0f0f0;
-            background: #fafafa;
-            color: var(--text);
-            border-radius: 12px; /* Inputs redondeados */
+            padding: 15px;
+            margin: 15px 0;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
             font-size: 1rem;
-            transition: 0.3s;
         }
 
-        input:focus, select:focus {
-            border-color: var(--sage);
-            background: white;
-        }
-
-        .btn-action {
-            width: 100%;
-            padding: 16px;
-            background: var(--dusty-purple);
+        .btn-save {
+            background: var(--deep-green);
             color: white;
+            padding: 15px;
+            width: 100%;
             border: none;
-            border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1rem;
-            transition: 0.3s;
+            letter-spacing: 2px;
         }
 
-        /* Historial Suave */
-        .log-entry {
+        .registro-card {
             background: white;
+            border-left: 5px solid var(--muted-lavender);
             padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            border-left: 4px solid var(--sage);
+            margin: 15px 0;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        #lista_admin span { font-family: sans-serif; font-size: 0.9rem; }
+        /* Animación */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .hoja-decor { position: absolute; font-size: 100px; opacity: 0.1; z-index: -1; }
     </style>
 </head>
 <body>
 
-    <div class="leaf-decor" style="top: 10%; left: 5%; font-size: 40px;">🌿</div>
-    <div class="leaf-decor" style="bottom: 15%; right: 8%; font-size: 50px; animation-delay: 2s;">🍃</div>
-    <div class="leaf-decor" style="top: 40%; right: 4%; font-size: 35px; animation-delay: 4s;">🌱</div>
-
     <div id="portada">
-        <div style="font-size: 70px; margin-bottom: 10px;">🌿</div>
-        <h1 style="font-weight: 400; margin: 0; color: var(--sage);">Huerto Polinizador</h1>
-        <p style="opacity: 0.5; margin-bottom: 40px;">Bitácora Digital de Lavanda</p>
-        <button class="btn-entry" onclick="entrar()">COMENZAR REGISTRO</button>
+        <h1 style="font-size: 3.5rem; margin: 0;">SISTEMA SALUD</h1>
+        <h2 style="color: white; border: none;">& LAVANDA</h2>
+        <button class="btn-lujo" onclick="iniciar()">Entrar a Bitácora</button>
     </div>
 
     <div id="app">
         <div class="card">
-            <h2>👤 Nuevo Investigador</h2>
-            <input type="text" id="reg_nombre" placeholder="Nombre completo">
-            <button class="btn-action" style="background-color: var(--sage);" onclick="registrar()">REGISTRAR</button>
+            <h2>Investigador</h2>
+            <input type="text" id="reg_nombre" placeholder="Nombre del nuevo investigador">
+            <button class="btn-save" onclick="registrar()">ALTA DE USUARIO</button>
         </div>
 
-        <div class="card">
-            <h2>📝 Diario de Campo</h2>
-            <select id="sel_usuario">
-                <option value="">Cargando investigadores...</option>
-            </select>
-            <input type="number" id="obs_altura" placeholder="Altura medida (cm)">
+        <div class="card" style="border-top-color: var(--muted-lavender);">
+            <h2>Diario de Campo</h2>
+            <select id="sel_usuario"><option>Cargando lista...</option></select>
+            <input type="number" id="obs_altura" placeholder="Altura Planta (cm)">
             <select id="obs_estado">
                 <option>Saludable</option>
-                <option>Estrés Hídrico</option>
-                <option>En Floración</option>
-                <option>Plaga/Hongo</option>
+                <option>Necesita Riego</option>
+                <option>Floración</option>
             </select>
-            <textarea id="obs_notas" rows="3" placeholder="Observaciones generales..."></textarea>
-            <button class="btn-action" onclick="guardar()">GUARDAR EN BITÁCORA</button>
+            <textarea id="obs_notas" placeholder="Escribe aquí tus observaciones..."></textarea>
+            <button class="btn-save" style="background: var(--muted-lavender);" onclick="guardar()">SUBIR DATOS</button>
         </div>
 
         <div id="historial"></div>
 
-        <div style="text-align: center; margin: 60px 0; opacity: 0.2; cursor: pointer;" onclick="abrirAdmin()">⚙️</div>
+        <div style="text-align: center; margin-top: 100px; opacity: 0.1; cursor: pointer;" onclick="abrirAdmin()">Admin</div>
         <div id="admin-panel" style="display:none;" class="card">
-            <h3 style="color: #c62828;">Gestión de Datos</h3>
+            <h3 style="color:red">Borrar Investigadores</h3>
             <div id="lista_admin"></div>
         </div>
     </div>
@@ -186,83 +140,60 @@
 <script>
     const API = 'https://mi-api-hola.onrender.com';
 
-    // Función para entrar con carga previa de datos
-    async function entrar() {
-        // Empezamos a cargar los datos ANTES de que termine la animación
-        const cargaPromesa = cargarDatos(); 
-        
-        document.getElementById('portada').style.opacity = '0';
-        setTimeout(async () => {
+    function iniciar() {
+        document.getElementById('portada').style.transform = 'translateY(-100vh)';
+        setTimeout(() => {
             document.getElementById('portada').style.display = 'none';
             document.getElementById('app').style.display = 'block';
-            await cargaPromesa; // Aseguramos que los datos ya estén listos
+            actualizarTodo();
         }, 600);
     }
 
-    async function cargarDatos() {
-        try {
-            const [uRes, hRes] = await Promise.all([
-                fetch(`${API}/lista-usuarios`),
-                fetch(`${API}/lavandas_json`)
-            ]);
+    async function actualizarTodo() {
+        // Carga investigadores
+        const uRes = await fetch(`${API}/lista-usuarios`);
+        const usuarios = await uRes.json();
+        const select = document.getElementById('sel_usuario');
+        const adminDiv = document.getElementById('lista_admin');
 
-            const usuarios = await uRes.json();
-            const historial = await hRes.json();
-
-            // Llenar selector
-            const select = document.getElementById('sel_usuario');
-            if (usuarios.length > 0) {
-                select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-                document.getElementById('lista_admin').innerHTML = usuarios.map(u => `
-                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee;">
-                        <span>${u.nombre}</span>
-                        <button onclick="eliminarU(${u.id})" style="color:red; background:none; border:none; cursor:pointer;">[Eliminar]</button>
-                    </div>
-                `).join('');
-            } else {
-                select.innerHTML = '<option value="">Sin investigadores registrados</option>';
-            }
-
-            // Llenar historial
-            document.getElementById('historial').innerHTML = historial.map(h => `
-                <div class="log-entry">
-                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--sage); font-weight:bold;">
-                        <span>${h.nombre.toUpperCase()}</span>
-                        <span>${new Date(h.fecha).toLocaleDateString()}</span>
-                    </div>
-                    <div style="margin:12px 0; font-size:1.1rem; color:#333;">
-                        ${h.altura_cm}cm — <span style="color:var(--dusty-purple)">${h.estado_salud}</span>
-                    </div>
-                    <div style="font-style:italic; font-size:0.9rem; opacity:0.8;">"${h.observaciones}"</div>
+        if(usuarios.length > 0) {
+            select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+            adminDiv.innerHTML = usuarios.map(u => `
+                <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                    <span>${u.nombre}</span>
+                    <button onclick="borrarU(${u.id})" style="color:red; background:none; border:none; cursor:pointer;">Eliminar</button>
                 </div>
             `).join('');
-
-        } catch (e) {
-            console.error("Error de conexión");
         }
+
+        // Carga historial
+        const hRes = await fetch(`${API}/lavandas_json`);
+        const data = await hRes.json();
+        document.getElementById('historial').innerHTML = data.map(l => `
+            <div class="registro-card">
+                <div style="display:flex; justify-content:space-between; color:var(--deep-green); font-weight:bold;">
+                    <span>👤 ${l.nombre}</span>
+                    <span>📅 ${new Date(l.fecha).toLocaleDateString()}</span>
+                </div>
+                <p>📏 ${l.altura_cm}cm — ${l.estado_salud}</p>
+                <p style="font-style:italic;">"${l.observaciones}"</p>
+            </div>
+        `).join('');
     }
 
     async function registrar() {
         const nombre = document.getElementById('reg_nombre').value;
-        if(!nombre) return;
-
-        // Botón en estado de carga
-        const btn = document.querySelector('button[onclick="registrar()"]');
-        btn.innerText = "REGISTRANDO...";
-
+        if(!nombre) return alert("Nombre vacío");
+        
         await fetch(`${API}/registrar`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({nombre})
+            body: JSON.stringify({ nombre })
         });
-
-        document.getElementById('reg_nombre').value = "";
-        btn.innerText = "REGISTRADO";
         
-        setTimeout(async () => {
-            await cargarDatos();
-            btn.innerText = "REGISTRAR";
-        }, 1000);
+        document.getElementById('reg_nombre').value = "";
+        alert("Investigador Autorizado");
+        await actualizarTodo(); // Forzado de actualización
     }
 
     async function guardar() {
@@ -272,31 +203,23 @@
             estado: document.getElementById('obs_estado').value,
             notas: document.getElementById('obs_notas').value
         };
-
-        if(!payload.usuario_id || !payload.notas) return alert("Completa la información");
-
         await fetch(`${API}/nueva-observacion`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(payload)
         });
-
-        document.getElementById('obs_altura').value = "";
-        document.getElementById('obs_notas').value = "";
-        cargarDatos();
-        alert("Nota guardada");
+        alert("Bitácora actualizada");
+        actualizarTodo();
     }
 
     function abrirAdmin() {
-        if(prompt("Clave:") === "osio2023") {
-            document.getElementById('admin-panel').style.display = 'block';
-        }
+        if(prompt("Clave:") === "osio2023") document.getElementById('admin-panel').style.display = 'block';
     }
 
-    async function eliminarU(id) {
-        if(confirm("¿Eliminar investigador?")) {
+    async function borrarU(id) {
+        if(confirm("¿Eliminar?")) {
             await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
-            cargarDatos();
+            actualizarTodo();
         }
     }
 </script>
