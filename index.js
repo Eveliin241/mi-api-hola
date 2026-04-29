@@ -12,12 +12,10 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
-// Cargar la página principal (tu HTML)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Listar usuarios
 app.get('/lista-usuarios', async (req, res) => {
     try {
         const result = await pool.query('SELECT id, nombre FROM usuarios ORDER BY nombre ASC');
@@ -25,7 +23,16 @@ app.get('/lista-usuarios', async (req, res) => {
     } catch (err) { res.status(500).json([]); }
 });
 
-// Guardar nota del diario
+// NUEVA RUTA PARA BORRAR USUARIOS
+app.delete('/borrar-usuario/:id', async (req, res) => {
+    try {
+        // Primero borramos sus notas para que no haya error de llave foránea
+        await pool.query('DELETE FROM seguimiento_lavanda WHERE usuario_id = $1', [req.params.id]);
+        await pool.query('DELETE FROM usuarios WHERE id = $1', [req.params.id]);
+        res.json({ status: "success" });
+    } catch (err) { res.status(500).json({ status: "error", message: err.message }); }
+});
+
 app.post('/nueva-observacion', async (req, res) => {
     const { usuario_id, altura, estado, notas } = req.body;
     try {
@@ -37,7 +44,6 @@ app.post('/nueva-observacion', async (req, res) => {
     } catch (err) { res.status(500).json({ status: "error" }); }
 });
 
-// Borrar nota del diario (NUEVO)
 app.delete('/borrar-observacion/:id', async (req, res) => {
     try {
         await pool.query('DELETE FROM seguimiento_lavanda WHERE id = $1', [req.params.id]);
@@ -45,7 +51,6 @@ app.delete('/borrar-observacion/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ status: "error" }); }
 });
 
-// Historial completo
 app.get('/lavandas_json', async (req, res) => {
     try {
         const query = await pool.query(`
@@ -58,7 +63,6 @@ app.get('/lavandas_json', async (req, res) => {
     } catch (err) { res.status(500).json([]); }
 });
 
-// Registro de usuario
 app.post('/registrar', async (req, res) => {
     const { nombre, email, password } = req.body;
     try {
@@ -71,4 +75,4 @@ app.post('/registrar', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('🚀 Sistema Profesional Online'));
+app.listen(PORT, () => console.log('🚀 Servidor Profesional Listo'));

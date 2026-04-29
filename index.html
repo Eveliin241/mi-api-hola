@@ -2,19 +2,20 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Salud & Lavanda | Diario</title>
+    <title>Salud & Lavanda | Gestión Profesional</title>
     <link rel="icon" href="https://fonts.gstatic.com/s/i/short-term/release/googlestylesheet/leaf/default/24px.svg">
     <style>
-        :root { --verde: #4CAF50; --lavanda: #9575cd; --fondo: #f0f4f8; }
+        :root { --verde: #4CAF50; --lavanda: #9575cd; --fondo: #f0f4f8; --rojo: #ff5252; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); padding: 20px; }
         .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2 { color: var(--lavanda); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: var(--lavanda); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; color: white; margin-top: 10px; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; color: white; margin-top: 10px; transition: 0.3s; }
         .btn-verde { background: var(--verde); }
         .btn-lavanda { background: var(--lavanda); }
         .item-card { background: #fff; border-left: 5px solid var(--lavanda); padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; }
         .btn-borrar { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+        .admin-section { margin-top: 50px; padding: 20px; border: 1px solid #ffcdd2; border-radius: 15px; background: #fff9f9; }
     </style>
 </head>
 <body>
@@ -23,42 +24,62 @@
     <h1 style="text-align:center; color: var(--verde);">🌿 Huerto de Lavandas</h1>
     
     <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
-        <strong>📢 Estado General:</strong> Sistema de monitoreo escolar activo.
+        <strong>📢 Estado del Proyecto:</strong> Monitoreo de Lavandas Escolar.
     </div>
 
-    <h2>👤 Registro</h2>
-    <input type="text" id="reg_nombre" placeholder="Nombre completo">
-    <button class="btn-verde" onclick="registrar()">REGISTRAR PARTICIPANTE</button>
+    <h2>👤 Registro de Nuevo Participante</h2>
+    <input type="text" id="reg_nombre" placeholder="Escribe tu nombre completo">
+    <button class="btn-verde" onclick="registrar()">✨ DAR DE ALTA</button>
 
     <h2>📝 Diario de Campo</h2>
-    <select id="sel_usuario"><option>Cargando usuarios...</option></select>
-    <input type="number" id="obs_altura" placeholder="Altura (cm)">
+    <label>¿Quién registra hoy?</label>
+    <select id="sel_usuario"><option>Cargando lista...</option></select>
+    
+    <input type="number" id="obs_altura" placeholder="Altura de la planta (cm)">
     <select id="obs_estado">
         <option>Saludable</option>
         <option>Excelente</option>
         <option>Necesita Riego</option>
         <option>Enferma</option>
     </select>
-    <textarea id="obs_notas" placeholder="Observaciones de hoy..."></textarea>
-    <button class="btn-lavanda" onclick="subirNota()">GUARDAR EN BITÁCORA</button>
+    <textarea id="obs_notas" placeholder="Escribe tus observaciones aquí..."></textarea>
+    <button class="btn-lavanda" onclick="subirNota()">💾 GUARDAR EN BITÁCORA</button>
 
-    <h2>📅 Observaciones de la Lavanda</h2>
+    <h2>📅 Historial de Observaciones</h2>
     <div id="historial"></div>
+
+    <div class="admin-section">
+        <h3 style="color: var(--rojo); margin-top: 0;">🛠️ Zona de Limpieza (Borrar Usuarios)</h3>
+        <p style="font-size: 0.8rem; color: #666;">Usa esto para borrar los nombres de prueba. Se borrarán también todas sus notas.</p>
+        <div id="lista_usuarios_borrar"></div>
+    </div>
 </div>
 
 <script>
-    const API = 'https://mi-api-hola.onrender.com'; // <--- ASEGÚRATE QUE SEA TU LINK
+    const API = 'https://mi-api-hola.onrender.com';
 
     async function cargarTodo() {
+        // Cargar usuarios en el selector del diario
         const uRes = await fetch(`${API}/lista-usuarios`);
         const usuarios = await uRes.json();
-        document.getElementById('sel_usuario').innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+        const select = document.getElementById('sel_usuario');
+        select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
 
+        // Cargar usuarios en la zona de limpieza
+        const adminDiv = document.getElementById('lista_usuarios_borrar');
+        adminDiv.innerHTML = usuarios.map(u => `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:8px; margin:5px 0; border-radius:8px; border:1px solid #eee;">
+                <span>${u.nombre}</span>
+                <button onclick="borrarUsuario(${u.id})" style="width:auto; padding:5px 10px; background:var(--rojo); margin:0;">Eliminar</button>
+            </div>
+        `).join('');
+
+        // Cargar historial de notas
         const hRes = await fetch(`${API}/lavandas_json`);
         const historial = await hRes.json();
         document.getElementById('historial').innerHTML = historial.map(h => `
             <div class="item-card">
-                <button class="btn-borrar" onclick="borrar(${h.id})">🗑️</button>
+                <button class="btn-borrar" onclick="borrarNota(${h.id})">🗑️</button>
                 <strong>👤 ${h.nombre}</strong> <small>📅 ${new Date(h.fecha).toLocaleDateString()}</small><br>
                 <span>📏 ${h.altura_cm}cm | 🌿 ${h.estado_salud}</span><br>
                 <p style="margin:5px 0; font-style:italic;">"${h.observaciones}"</p>
@@ -68,14 +89,23 @@
 
     async function registrar() {
         const nombre = document.getElementById('reg_nombre').value;
+        if(!nombre) return alert("Escribe un nombre");
+        
         await fetch(`${API}/registrar`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({nombre, email: nombre+'@huerto.com', password: '123'})
         });
-        document.getElementById('reg_nombre').value = ""; // LIMPIAR
-        alert("¡Usuario registrado!");
-        cargarTodo();
+        document.getElementById('reg_nombre').value = "";
+        alert("¡Participante añadido!");
+        await cargarTodo(); // Esto refresca el selector abajo
+    }
+
+    async function borrarUsuario(id) {
+        if(confirm("¿Seguro que quieres borrar este usuario y todas sus notas?")) {
+            await fetch(`${API}/borrar-usuario/${id}`, { method: 'DELETE' });
+            await cargarTodo();
+        }
     }
 
     async function subirNota() {
@@ -85,21 +115,23 @@
             estado: document.getElementById('obs_estado').value,
             notas: document.getElementById('obs_notas').value
         };
+        if(!data.usuario_id || !data.notas) return alert("Completa los datos");
+
         await fetch(`${API}/nueva-observacion`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
-        document.getElementById('obs_altura').value = ""; // LIMPIAR
-        document.getElementById('obs_notas').value = ""; // LIMPIAR
+        document.getElementById('obs_altura').value = "";
+        document.getElementById('obs_notas').value = "";
         alert("¡Nota guardada!");
-        cargarTodo();
+        await cargarTodo();
     }
 
-    async function borrar(id) {
-        if(confirm("¿Borrar este registro?")) {
+    async function borrarNota(id) {
+        if(confirm("¿Borrar esta nota del historial?")) {
             await fetch(`${API}/borrar-observacion/${id}`, { method: 'DELETE' });
-            cargarTodo();
+            await cargarTodo();
         }
     }
 
