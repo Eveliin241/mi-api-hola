@@ -1,95 +1,199 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <head>
     <meta charset="UTF-8">
-    <title>Salud & Lavanda</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salud & Lavanda | Diario del Huerto</title>
     <link rel="icon" href="https://fonts.gstatic.com/s/i/short-term/release/googlestylesheet/leaf/default/24px.svg">
     <style>
         :root { --verde: #4CAF50; --lavanda: #9575cd; --fondo: #f0f4f8; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--fondo); margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        h1, h2 { text-align: center; color: var(--verde); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--fondo); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        
+        h1, h2 { text-align: center; color: var(--verde); font-weight: 800; }
+        h1 { font-size: 2.8em; margin-bottom: 5px; }
         h2 { color: var(--lavanda); margin-top: 40px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        input, select, textarea { padding: 12px; border-radius: 10px; border: 1px solid #ddd; width: 100%; box-sizing: border-box; }
-        button { grid-column: span 2; padding: 15px; background: var(--verde); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { background: #388E3C; transform: scale(1.02); }
-        .status-box { background: #e8f5e9; padding: 15px; border-radius: 10px; border-left: 5px solid var(--verde); margin-bottom: 20px; }
-        .registro-card { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 10px; border-left: 4px solid var(--lavanda); }
+        
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        input, select, textarea { padding: 12px; border-radius: 10px; border: 1px solid #ddd; width: 100%; box-sizing: border-box; font-size: 14px; outline: none; transition: 0.3s; }
+        input:focus, select:focus, textarea:focus { border-color: var(--verde); box-shadow: 0 0 5px rgba(76, 175, 80, 0.2); }
+        
+        button { grid-column: span 2; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; color: white; }
+        .btn-verde { background: var(--verde); }
+        .btn-verde:hover { background: #388E3C; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3); }
+        .btn-lavanda { background: var(--lavanda); }
+        .btn-lavanda:hover { background: #7e57c2; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(149, 117, 205, 0.3); }
+        
+        /* Caja de mensaje general */
+        .general-box { background: linear-gradient(to right, #e8f5e9, #ffffff); padding: 20px; border-radius: 12px; margin-bottom: 30px; border-left: 6px solid var(--verde); text-align: center; }
+        .general-box p { font-size: 1.1em; color: #444; margin: 5px 0; font-weight: 500; }
+
+        /* Estilos del Diario de Campo */
+        .diario-box { background: #f9f9f9; padding: 20px; border-radius: 15px; border: 1px dashed #ccc; }
+        .observacion-item { background: white; padding: 18px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-left: 4px solid var(--lavanda); position: relative; }
+        .observacion-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .user-tag { background: var(--lavanda); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; }
+        .date-tag { color: #888; font-size: 0.85em; }
+        .data-tag { display: inline-block; background: #f0f0f0; padding: 3px 8px; border-radius: 5px; font-size: 0.85em; margin-right: 5px; color: #555; }
+        .observaciones-text { font-style: italic; color: #444; margin-top: 10px; font-size: 0.95em; line-height: 1.5; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🌿 Proyecto Salud & Lavanda</h1>
+    <h1>🌿 Salud & Lavanda</h1>
     
-    <div class="status-box">
-        <strong>📢 Estado del Huerto:</strong>
-        <p id="msg-huerto">Cargando...</p>
+    <div class="general-box">
+        <strong>📢 Mensaje General del Proyecto:</strong>
+        <p>Bienvenido al Sistema de Monitoreo del Huerto Escolar Polinizador. Registra tus observaciones para el seguimiento del crecimiento de las lavandas.</p>
     </div>
 
-    <h2>🥗 Perfil de Salud Personal</h2>
-    <form id="regForm" class="grid">
-        <input type="text" id="n" placeholder="Nombre completo">
-        <input type="email" id="e" placeholder="Correo">
-        <input type="password" id="p" placeholder="Contraseña">
-        <input type="number" id="ed" placeholder="Edad">
-        <input type="number" step="0.1" id="pe" placeholder="Peso (kg)">
-        <input type="number" step="0.01" id="al" placeholder="Altura (m)">
-        <select id="af"><option value="baja">Actividad Baja</option><option value="media">Media</option><option value="alta">Alta</option></select>
-        <select id="ob"><option value="mantener">Mantener Salud</option><option value="bajar">Bajar Peso</option><option value="subir">Subir Masa</option></select>
-        <button type="button" onclick="registrar()">✨ GUARDAR PERFIL</button>
+    <h2>👤 Registro de Participantes</h2>
+    <p style="text-align:center; color:#666;">Crea tu perfil para empezar a subir registros al diario.</p>
+    <form id="registroForm" class="grid-form">
+        <input type="text" id="nombre" placeholder="Nombre completo" required style="grid-column: span 2;">
+        <input type="email" id="email" placeholder="Correo electrónico (Opcional)">
+        <input type="password" id="password" placeholder="Contraseña segura (Opcional)">
+        <button type="button" class="btn-verde" onclick="registrarUsuario()">✨ CREAR MI PERFIL</button>
     </form>
 
-    <h2>📝 Diario de Campo</h2>
-    <div class="grid">
-        <div style="grid-column: span 2">
-            <label>👤 ¿Quién registra hoy?</label>
-            <select id="sel_u"><option>Cargando...</option></select>
+    <h2>📝 Nuevo Registro en el Diario</h2>
+    <div class="diario-box">
+        <div class="grid-form">
+            <div style="grid-column: span 2;">
+                <label style="font-weight:bold; color:var(--lavanda); margin-bottom:5px; display:block;">👤 Selecciona tu usuario:</label>
+                <select id="select_usuario" required>
+                    <option value="">Cargando usuarios...</option>
+                </select>
+            </div>
+            <input type="number" step="0.1" id="obs_altura" placeholder="Altura de la planta (cm)" required>
+            <select id="obs_estado" required>
+                <option value="Saludable">Estado: Saludable</option>
+                <option value="Excelente">Estado: Excelente</option>
+                <option value="Necesita Riego">Estado: Necesita Riego</option>
+                <option value="Enferma">Estado: Enferma</option>
+                <option value="Seca">Estado: Seca</option>
+            </select>
+            <textarea id="obs_notas" style="grid-column: span 2;" rows="3" placeholder="Escribe aquí las observaciones detalladas del día sobre la lavanda..." required></textarea>
+            <button type="button" class="btn-lavanda" onclick="guardarObservacion()">💾 SUBIR AL DIARIO DE CAMPO</button>
         </div>
-        <input type="number" id="obs_a" placeholder="Altura Planta (cm)">
-        <select id="obs_e"><option>Saludable</option><option>Excelente</option><option>Seca</option></select>
-        <textarea id="obs_n" style="grid-column: span 2" placeholder="Observaciones del día..."></textarea>
-        <button type="button" style="background: var(--lavanda)" onclick="subirNota()">💾 GUARDAR EN EL DIARIO</button>
     </div>
 
-    <h2>📅 Historial Reciente</h2>
-    <div id="historial"></div>
+    <h2>📅 Observaciones de la Lavanda</h2>
+    <div id="lista-observaciones">Cargando bitácora de campo...</div>
 </div>
 
 <script>
-    const API = 'https://mi-api-hola.onrender.com';
+    const URL_API = 'https://mi-api-hola.onrender.com';
 
-    window.onload = () => { cargarUsuarios(); cargarHistorial(); fetch(`${API}/datos`).then(r=>r.json()).then(d=>document.getElementById('msg-huerto').innerText=d.data.observaciones); };
+    // Al cargar la página, traer usuarios e historial
+    window.onload = () => {
+        cargarUsuarios();
+        cargarHistorial();
+    };
 
+    // Función para cargar los usuarios registrados en el selector
     async function cargarUsuarios() {
-        const r = await fetch(`${API}/lista-usuarios`);
-        const u = await r.json();
-        document.getElementById('sel_u').innerHTML = u.map(i => `<option value="${i.id}">${i.nombre}</option>`).join('');
+        try {
+            const res = await fetch(`${URL_API}/lista-usuarios`);
+            const usuarios = await res.json();
+            const select = document.getElementById('select_usuario');
+            if(usuarios.length > 0) {
+                select.innerHTML = usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+            } else {
+                select.innerHTML = `<option value="">Registra un usuario primero</option>`;
+            }
+        } catch (e) { 
+            console.error("Error cargando usuarios"); 
+            document.getElementById('select_usuario').innerHTML = `<option value="">Error al conectar</option>`;
+        }
     }
 
-    function registrar() {
-        const d = { nombre: document.getElementById('n').value, email: document.getElementById('e').value, password: document.getElementById('p').value, edad: document.getElementById('ed').value, peso: document.getElementById('pe').value, altura: document.getElementById('al').value, actividad_fisica: document.getElementById('af').value, objetivo: document.getElementById('ob').value };
-        fetch(`${API}/registrar`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d) }).then(() => { alert("¡Perfil Creado!"); cargarUsuarios(); });
-    }
+    // Función para registrar un nuevo usuario (Simplificada, solo nombre obligatorio)
+    function registrarUsuario() {
+        const d = {
+            nombre: document.getElementById('nombre').value,
+            email: document.getElementById('email').value || `user_${Date.now()}@huerto.com`, // Email dummy si está vacío
+            password: document.getElementById('password').value || '123456', // Password dummy si está vacío
+            edad: 0, peso: 0, altura: 0, actividad_fisica: 'baja', objetivo: 'mantener' // Campos dummy innecesarios para el backend
+        };
 
-    async function subirNota() {
-        const d = { usuario_id: document.getElementById('sel_u').value, altura: document.getElementById('obs_a').value, estado: document.getElementById('obs_e').value, notas: document.getElementById('obs_n').value };
-        await fetch(`${API}/nueva-observacion`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d) });
-        alert("¡Nota guardada!"); cargarHistorial();
-    }
+        if(!d.nombre) return alert("Por favor, ingresa tu nombre.");
 
-    function cargarHistorial() {
-        fetch(`${API}/lavandas_json`).then(r=>r.json()).then(data => {
-            document.getElementById('historial').innerHTML = data.map(l => `
-                <div class="registro-card">
-                    <b>👤 ${l.nombre}</b> | <small>${new Date(l.fecha).toLocaleDateString()}</small><br>
-                    📏 ${l.altura_cm}cm - ${l.estado_salud}<br>
-                    <i>"${l.observaciones}"</i>
-                </div>
-            `).join('');
+        fetch(`${URL_API}/registrar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(d)
+        })
+        .then(res => res.json())
+        .then(result => {
+            if(result.status === "success") {
+                alert(`✅ ¡Bienvenido(a), ${result.usuario.nombre}! Ya puedes registrar datos.`);
+                document.getElementById('registroForm').reset(); // BORRAR DATOS DEL FORMULARIO
+                cargarUsuarios(); // Recargar la lista para que aparezca en el diario
+            } else {
+                alert(`❌ Error al registrar: ${result.message}`);
+            }
         });
+    }
+
+    // Función para guardar una nueva observación del diario y limpiarlos al terminar
+    async function guardarObservacion() {
+        const d = {
+            usuario_id: document.getElementById('select_usuario').value,
+            altura: document.getElementById('obs_altura').value,
+            estado: document.getElementById('obs_estado').value,
+            notas: document.getElementById('obs_notas').value
+        };
+
+        if(!d.usuario_id || !d.notas) return alert("Selecciona tu nombre y escribe una nota detallada.");
+
+        const res = await fetch(`${URL_API}/nueva-observacion`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(d)
+        });
+        
+        if(res.ok) {
+            alert("¡Nota guardada en el Diario de Campo!");
+            
+            // --- BORRAR DATOS DEL FORMULARIO DEL DIARIO ---
+            document.getElementById('obs_altura').value = "";
+            document.getElementById('obs_notas').value = "";
+            // ---------------------------------------------
+
+            cargarHistorial(); // Recargar el historial para que aparezca la nueva nota
+        } else {
+            alert("❌ Hubo un error al guardar la nota.");
+        }
+    }
+
+    // Función para cargar el historial de observaciones y darles formato bonito
+    function cargarHistorial() {
+        fetch(`${URL_API}/lavandas_json`)
+            .then(res => res.json())
+            .then(lavandas => {
+                const div = document.getElementById('lista-observaciones');
+                if(lavandas.length > 0) {
+                    div.innerHTML = lavandas.map(l => `
+                        <div class="observacion-item">
+                            <div class="observacion-header">
+                                <span class="user-tag">👤 ${l.nombre}</span>
+                                <span class="date-tag">📅 ${new Date(l.fecha).toLocaleDateString()} - ${new Date(l.fecha).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                            </div>
+                            <div>
+                                <span class="data-tag">📏 ${l.altura_cm ? l.altura_cm + ' cm' : 'S/D'}</span>
+                                <span class="data-tag">🌿 ${l.estado_salud || 'S/D'}</span>
+                            </div>
+                            <div class="observaciones-text">
+                                "${l.observaciones || 'Sin detalles.'}"
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    div.innerHTML = `<p style="text-align:center; color:#888;">Aún no hay registros en la bitácora de campo.</p>`;
+                }
+            });
     }
 </script>
 </body>
