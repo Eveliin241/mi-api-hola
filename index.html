@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Botánica OS | Elite System</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -12,103 +11,61 @@
     
     <style>
         :root {
-            --bg-deep: #050a09;
-            --sidebar-mate: #0d1a16;
-            --glass-panel: rgba(20, 35, 30, 0.6);
-            --accent-mate: #7a6a75;
-            --text-mate: #c0c0b5;
-            --text-bright: #ffffff;
-            --danger-mate: #a63a50;
+            --bg-deep: #050a09; --sidebar-mate: #0d1a16; --glass-panel: rgba(20, 35, 30, 0.6);
+            --accent-mate: #7a6a75; --text-mate: #c0c0b5; --text-bright: #ffffff; --danger-mate: #a63a50;
         }
-
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text-mate); overflow: hidden; }
-
-        #global-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1501004318641-729e8e398642?auto=format&fit=crop&w=1600&q=80');
-            background-size: cover; background-position: center; z-index: -1;
-        }
-
-        #portada {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center; z-index: 1000;
-            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-
-        .welcome-card {
-            background: rgba(255, 255, 255, 0.03); border-radius: 40px; padding: 60px 80px; text-align: center;
-            backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 25px 50px rgba(0,0,0,0.4); position: relative;
-        }
+        #global-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1501004318641-729e8e398642?auto=format&fit=crop&w=1600&q=80'); background-size: cover; z-index: -1; }
+        #portada { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 1000; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
+        .welcome-card { background: rgba(255, 255, 255, 0.03); border-radius: 40px; padding: 60px 80px; text-align: center; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
         .brand-script { font-family: 'Great Vibes', cursive; font-size: 5.5rem; color: var(--text-bright); margin: 0; }
-        .btn-enter { margin-top: 50px; padding: 20px 60px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; background: var(--accent-mate); color: var(--text-bright); }
-
+        .btn-enter { margin-top: 50px; padding: 20px 60px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; text-transform: uppercase; background: var(--accent-mate); color: var(--text-bright); }
         #app-wrapper { display: flex; width: 100vw; height: 100vh; position: relative; }
         #top-bar { position: fixed; top: 0; left: 0; width: 100%; height: 70px; display: flex; align-items: center; padding: 0 25px; z-index: 900; }
         #menu-toggle { background: none; border: none; color: var(--text-bright); font-size: 1.6rem; cursor: pointer; opacity: 0.7; }
-
-        nav {
-            width: 280px; background: var(--sidebar-mate); display: flex; flex-direction: column;
-            padding: 90px 0 30px 0; color: var(--text-bright); flex-shrink: 0; transition: all 0.4s ease;
-            overflow: hidden; z-index: 850;
-        }
+        nav { width: 280px; background: var(--sidebar-mate); display: flex; flex-direction: column; padding: 90px 0 30px 0; color: var(--text-bright); transition: all 0.4s ease; overflow: hidden; z-index: 850; }
         nav.collapsed { width: 0; opacity: 0; pointer-events: none; }
-
         .nav-item { padding: 18px 25px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 20px; transition: 0.3s; white-space: nowrap; border-left: 4px solid transparent; }
         .nav-item.active { opacity: 1; background: rgba(255,255,255,0.06); border-left-color: var(--accent-mate); }
-
-        main { flex-grow: 1; padding: 100px 50px; overflow-y: auto; background: transparent; transition: 0.4s; }
+        main { flex-grow: 1; padding: 100px 50px; overflow-y: auto; background: transparent; }
         .view-section { display: none; width: 100%; max-width: 1000px; margin: 0 auto; }
         .view-section.active { display: block; animation: fadeIn 0.5s ease; }
-
         .glass-card { background: var(--glass-panel); border-radius: 30px; padding: 40px; margin-bottom: 30px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.04); }
         h2 { font-weight: 300; font-size: 1.5rem; color: var(--text-bright); margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
-
         input, select, textarea { width: 100%; padding: 18px; margin: 10px 0; border-radius: 15px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); color: var(--text-mate); font-family: inherit; }
         .btn-action { background: var(--sidebar-mate); color: var(--text-bright); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
-
-        .admin-trigger { margin-top: auto; padding: 20px 25px; opacity: 0.05; cursor: pointer; display: flex; align-items: center; gap: 20px; font-size: 0.8rem; }
-
-        @media (max-width: 768px) {
-            nav { position: fixed; left: -280px; height: 100vh; }
-            nav.open { left: 0; }
-            main { padding: 100px 20px 30px; }
-        }
+        .admin-trigger { margin-top: auto; padding: 20px 25px; opacity: 0.05; cursor: pointer; display: flex; align-items: center; gap: 20px; }
+        @media (max-width: 768px) { nav { position: fixed; left: -280px; height: 100vh; } nav.open { left: 0; } main { padding: 100px 20px; } .brand-script { font-size: 3.5rem; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
     <div id="global-bg"></div>
-
     <div id="portada">
-        <div class="welcome-card animate__animated animate__zoomIn">
+        <div class="welcome-card">
             <h1 class="brand-script">Botánica</h1>
-            <p style="letter-spacing: 6px; text-transform: uppercase; opacity: 0.7;">Elite Research System</p>
             <button class="btn-enter" onclick="iniciarApp()">ENTRAR</button>
         </div>
     </div>
-
     <div id="top-bar">
         <button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
     </div>
-
     <div id="app-wrapper">
         <nav id="sidebar">
-            <div class="nav-item active" onclick="showSection('reg-section', this)"><i class="fas fa-pen-fancy"></i> <span>REGISTRO</span></div>
+            <div class="nav-item active" onclick="showSection('user-section', this)"><i class="fas fa-user"></i> <span>USUARIO</span></div>
+            <div class="nav-item" onclick="showSection('reg-section', this)"><i class="fas fa-pen-fancy"></i> <span>REGISTRO</span></div>
             <div class="nav-item" onclick="showSection('obs-section', this)"><i class="fas fa-microscope"></i> <span>OBSERVACIÓN</span></div>
             <div class="admin-trigger" onclick="abrirAdmin()"><i class="fas fa-cog"></i> <span>Config</span></div>
         </nav>
-
         <main>
-            <div id="reg-section" class="view-section active">
+            <div id="user-section" class="view-section active">
                 <div class="glass-card">
-                    <h2>Investigador</h2>
+                    <h2>Nuevo Investigador</h2>
                     <input type="text" id="reg_nombre" placeholder="Nombre completo...">
                     <button class="btn-action" onclick="registrarUser()">DAR DE ALTA</button>
                 </div>
-                
+            </div>
+            <div id="reg-section" class="view-section">
                 <div class="glass-card">
                     <h2>Entrada de Campo</h2>
                     <select id="sel_usuario"></select>
@@ -117,20 +74,18 @@
                         <select id="obs_estado"><option>Saludable</option><option>Floración</option><option>Estrés</option></select>
                     </div>
                     <textarea id="obs_notas" rows="3" placeholder="Notas..."></textarea>
-                    <button class="btn-action" style="background: var(--accent-mate);" onclick="guardarObs()">GUARDAR REGISTRO</button>
+                    <button class="btn-action" style="background: var(--accent-mate);" onclick="guardarObs()">GUARDAR</button>
                 </div>
             </div>
-
             <div id="obs-section" class="view-section">
-                <h2>Historial de Bitácora</h2>
+                <h2>Historial</h2>
                 <div id="pills-usuarios" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 25px;"></div>
                 <div id="grid-dinamico"></div>
             </div>
-
             <div id="admin-panel" class="view-section">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <h2 style="color:var(--danger-mate); border:none;">Mantenimiento</h2>
-                    <button onclick="showSection('reg-section')" style="background:none; border:1px solid var(--text-mate); color:var(--text-mate); padding:5px 15px; border-radius:10px; cursor:pointer;">SALIR DE ADMIN</button>
+                    <button onclick="showSection('user-section')" style="background:none; border:1px solid var(--text-mate); color:var(--text-mate); padding:5px 15px; border-radius:10px; cursor:pointer;">SALIR</button>
                 </div>
                 <div id="lista-borrar" class="glass-card"></div>
             </div>
@@ -140,23 +95,11 @@
 <script>
     const API = 'https://mi-api-hola.onrender.com';
     let dataCache = { usuarios: [], observaciones: [] };
-    let isAdminAuthenticated = false; // Estado de seguridad
 
-    function iniciarApp() {
-        document.getElementById('portada').style.transform = 'translateY(-100%)';
-        actualizarDatos();
-    }
-
-    function toggleMenu() {
-        const sidebar = document.getElementById('sidebar');
-        if (window.innerWidth <= 768) { sidebar.classList.toggle('open'); } 
-        else { sidebar.classList.toggle('collapsed'); }
-    }
+    function iniciarApp() { document.getElementById('portada').style.transform = 'translateY(-100%)'; actualizarDatos(); }
+    function toggleMenu() { const s = document.getElementById('sidebar'); window.innerWidth <= 768 ? s.classList.toggle('open') : s.classList.toggle('collapsed'); }
 
     function showSection(id, el) {
-        // Al salir de admin, reseteamos la autenticación para que vuelva a pedir clave
-        if (id !== 'admin-panel') { isAdminAuthenticated = false; }
-
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -171,62 +114,31 @@
             dataCache.usuarios = await uRes.json();
             dataCache.observaciones = await hRes.json();
             document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-            document.getElementById('pills-usuarios').innerHTML = `<div class="user-pill active" style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:50px; cursor:pointer;" onclick="renderObservaciones(dataCache.observaciones)">TODOS</div>` + 
-                dataCache.usuarios.map(u => `<div style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:50px; cursor:pointer;" onclick="filtrarPorUser(${u.id})">${u.nombre}</div>`).join('');
-            
-            // Si estamos en admin, refrescar la lista de borrado sin salir
-            if (document.getElementById('admin-panel').classList.contains('active')) {
-                renderListaBorrar();
-            }
+            document.getElementById('pills-usuarios').innerHTML = `<div class="user-pill" style="padding:8px 15px; background:rgba(255,255,255,0.05); border-radius:20px; cursor:pointer;" onclick="renderObservaciones(dataCache.observaciones)">TODOS</div>` + 
+                dataCache.usuarios.map(u => `<div style="padding:8px 15px; background:rgba(255,255,255,0.05); border-radius:20px; cursor:pointer;" onclick="filtrarPorUser(${u.id})">${u.nombre}</div>`).join('');
+            if (document.getElementById('admin-panel').classList.contains('active')) renderListaBorrar();
         } catch (e) { console.error(e); }
     }
 
     function renderObservaciones(lista) {
-        document.getElementById('grid-dinamico').innerHTML = lista.map(o => `
-            <div class="glass-card" style="padding:20px; margin-bottom:15px;">
-                <div style="color:var(--accent-mate); font-weight:600;">${o.nombre}</div>
-                <div style="margin:5px 0;">📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
-                <p style="opacity:0.7; font-size:0.9rem; margin:0;">"${o.observaciones}"</p>
-            </div>
-        `).join('');
+        document.getElementById('grid-dinamico').innerHTML = lista.map(o => `<div class="glass-card" style="padding:20px; margin-bottom:15px;"><div style="color:var(--accent-mate); font-weight:600;">${o.nombre}</div><div>📏 ${o.altura_cm}cm — ${o.estado_salud}</div><p style="opacity:0.7; font-size:0.9rem; margin:0;">"${o.observaciones}"</p></div>`).join('');
     }
 
     function filtrarPorUser(id) { renderObservaciones(dataCache.observaciones.filter(o => o.usuario_id == id)); }
 
     async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({ title: 'Contraseña', input: 'password', confirmButtonColor: '#0d1a16', background: '#14231e', color: '#c0c0b5' });
-        if (pass === 'osio2023') {
-            isAdminAuthenticated = true;
-            renderListaBorrar();
-            showSection('admin-panel');
-        } else if (pass) {
-            Swal.fire({ icon: 'error', title: 'Incorrecta', background: '#14231e', color: '#c0c0b5' });
-        }
+        const { value: pass } = await Swal.fire({ title: 'Clave de Acceso', input: 'password', confirmButtonColor: '#0d1a16', background: '#14231e', color: '#c0c0b5', inputAttributes: { autocomplete: 'off' } });
+        if (pass === 'osio2023') { renderListaBorrar(); showSection('admin-panel'); } 
+        else if (pass) { Swal.fire({ icon: 'error', title: 'Acceso Denegado', background: '#14231e', color: '#c0c0b5' }); }
     }
 
     function renderListaBorrar() {
-        document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `
-            <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-                <span>${u.nombre}</span>
-                <button onclick="borrarU(${u.id})" style="color:var(--danger-mate); background:none; border:none; cursor:pointer; font-weight:bold;">[ELIMINAR]</button>
-            </div>
-        `).join('');
+        document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `<div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>${u.nombre}</span><button onclick="borrarU(${u.id})" style="color:var(--danger-mate); background:none; border:none; cursor:pointer;">[ELIMINAR]</button></div>`).join('');
     }
 
     async function borrarU(id) {
-        const result = await Swal.fire({
-            title: '¿Confirmar eliminación?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#a63a50',
-            confirmButtonText: 'Eliminar',
-            background: '#14231e', color: '#c0c0b5'
-        });
-        if (result.isConfirmed) {
-            await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
-            await actualizarDatos(); // Esto refresca la lista y TE MANTIENE en el panel
-            Toast.fire({ icon: 'success', title: 'Usuario eliminado' });
-        }
+        const result = await Swal.fire({ title: '¿Borrar investigador?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#a63a50', background: '#14231e', color: '#c0c0b5' });
+        if (result.isConfirmed) { await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' }); await actualizarDatos(); }
     }
 
     async function registrarUser() {
@@ -239,19 +151,12 @@
     }
 
     async function guardarObs() {
-        const payload = {
-            usuario_id: document.getElementById('sel_usuario').value,
-            altura: document.getElementById('obs_altura').value,
-            estado: document.getElementById('obs_estado').value,
-            notas: document.getElementById('obs_notas').value
-        };
+        const payload = { usuario_id: document.getElementById('sel_usuario').value, altura: document.getElementById('obs_altura').value, estado: document.getElementById('obs_estado').value, notas: document.getElementById('obs_notas').value };
         await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        document.getElementById('obs_altura').value = "";
-        document.getElementById('obs_notas').value = "";
+        document.getElementById('obs_altura').value = ""; document.getElementById('obs_notas').value = "";
         actualizarDatos();
         Toast.fire({ icon: 'success', title: 'Guardado' });
     }
-
     const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2000, background: '#0d1a16', color: '#c0c0b5' });
 </script>
 </body>
