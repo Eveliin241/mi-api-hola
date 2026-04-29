@@ -21,7 +21,7 @@
 
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--main-bg); overflow: hidden; }
 
-        /* PORTADA ORIGINAL */
+        /* --- PORTADA ORIGINAL --- */
         #portada {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(26,60,52,0.6), rgba(26,60,52,0.8)), 
@@ -31,36 +31,45 @@
             transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        .hero-text { font-family: 'Cinzel', serif; font-size: clamp(2rem, 8vw, 4.5rem); letter-spacing: 15px; color: white; margin: 0; text-align: center; }
+        .hero-text { font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); letter-spacing: 15px; color: white; margin: 0; text-align: center; }
 
-        /* APP LAYOUT */
+        /* --- LAYOUT PRINCIPAL --- */
         #app-wrapper { display: flex; width: 100vw; height: 100vh; }
 
         nav { width: 280px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 40px 0; color: white; flex-shrink: 0; }
-        .nav-item { padding: 20px 30px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 15px; transition: 0.3s; font-size: 0.9rem; letter-spacing: 1px; }
+        .nav-item { padding: 18px 30px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 15px; transition: 0.3s; font-size: 0.85rem; letter-spacing: 1px; }
         .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 5px solid var(--accent-lavender); }
 
-        main { flex-grow: 1; padding: 50px; overflow-y: auto; box-sizing: border-box; }
+        main { flex-grow: 1; padding: 50px; overflow-y: auto; box-sizing: border-box; background: var(--main-bg); }
         .view-section { display: none; width: 100%; max-width: 900px; margin: 0 auto; }
         .view-section.active { display: block; animation: fadeIn 0.4s; }
 
-        .glass-panel { background: white; border-radius: 35px; padding: 40px; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); position: relative; }
-        .glass-panel::after { content: "🌿"; position: absolute; top: 15px; right: 25px; font-size: 30px; opacity: 0.15; }
+        .glass-panel { background: white; border-radius: 30px; padding: 35px; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); position: relative; }
+        .glass-panel::after { content: "🌿"; position: absolute; top: 15px; right: 25px; font-size: 25px; opacity: 0.15; }
 
-        h2 { font-family: 'Cinzel', serif; color: var(--sidebar-bg); font-size: 1.4rem; margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        h2 { font-family: 'Cinzel', serif; color: var(--sidebar-bg); font-size: 1.3rem; margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
-        .card-obs { background: white; padding: 25px; border-radius: 25px; margin-bottom: 20px; border-left: 6px solid var(--accent-lavender); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .card-obs { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 6px solid var(--accent-lavender); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
 
-        .user-pill { padding: 12px 25px; background: white; border: 1px solid #eee; border-radius: 50px; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 600; }
-        .user-pill.active { background: var(--sidebar-bg); color: white; border-color: var(--sidebar-bg); }
+        .user-pill { padding: 10px 20px; background: white; border: 1px solid #eee; border-radius: 50px; cursor: pointer; transition: 0.3s; font-size: 0.8rem; font-weight: 600; display: inline-block; margin: 5px; }
+        .user-pill.active { background: var(--sidebar-bg); color: white; }
 
-        input, select, textarea { width: 100%; padding: 18px; margin: 12px 0; border-radius: 15px; border: 1px solid #eee; background: #fdfdfd; font-size: 1rem; font-family: inherit; }
-        .btn-pro { background: var(--sidebar-bg); color: white; border: none; padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 600; font-size: 1rem; transition: 0.3s; }
-        .btn-pro:hover { filter: brightness(1.2); }
+        input, select, textarea { width: 100%; padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid #eee; background: #fdfdfd; font-size: 1rem; font-family: inherit; box-sizing: border-box; }
+        .btn-pro { background: var(--sidebar-bg); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.3s; }
+        .btn-pro:hover { filter: brightness(1.2); transform: translateY(-1px); }
 
-        /* TU OPCIÓN SECRETA */
-        .admin-trigger { margin-top: auto; padding: 20px; opacity: 0.02; cursor: pointer; text-align: center; font-size: 0.7rem; color: white; }
-        .admin-trigger:hover { opacity: 0.3; }
+        .admin-trigger { margin-top: auto; padding: 20px; opacity: 0.05; cursor: pointer; text-align: center; font-size: 0.7rem; color: white; }
+
+        /* --- RESPONSIVE (MÓVIL) --- */
+        @media (max-width: 768px) {
+            #app-wrapper { flex-direction: column; overflow-y: auto; }
+            nav { width: 100%; height: auto; padding: 10px 0; flex-direction: row; flex-wrap: wrap; justify-content: center; position: sticky; top: 0; z-index: 100; }
+            .nav-item { padding: 10px; flex: 1 1 40%; font-size: 0.7rem; gap: 8px; border-left: none !important; }
+            .nav-item.active { border-bottom: 3px solid var(--accent-lavender); }
+            main { padding: 20px; }
+            .hero-text { font-size: 2.2rem; letter-spacing: 5px; }
+            .admin-trigger { width: 100%; padding: 10px; }
+        }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -75,25 +84,29 @@
 
     <div id="app-wrapper">
         <nav>
-            <div style="padding: 0 30px 40px; font-family: 'Cinzel'; letter-spacing: 2px; color: var(--accent-lavender); font-size: 1.2rem;">OSIO v6</div>
-            <div class="nav-item active" onclick="showSection('reg-section', this)"><i class="fas fa-pen-nib"></i> REGISTROS</div>
-            <div class="nav-item" onclick="showSection('obs-section', this)"><i class="fas fa-microscope"></i> OBSERVACIONES</div>
+            <div style="padding: 10px 30px 20px; font-family: 'Cinzel'; color: var(--accent-lavender); font-size: 1rem; width: 100%;" class="desktop-only">OSIO v6</div>
+            <div class="nav-item active" onclick="showSection('reg-user-section', this)"><i class="fas fa-user-plus"></i> REGISTRO</div>
+            <div class="nav-item" onclick="showSection('reg-obs-section', this)"><i class="fas fa-pen-nib"></i> OBSERVACIÓN</div>
+            <div class="nav-item" onclick="showSection('history-section', this)"><i class="fas fa-list"></i> HISTORIAL</div>
+            <div class="nav-item" onclick="showSection('filter-section', this)"><i class="fas fa-search-leaf"></i> INVESTIGADOR</div>
             
             <div class="admin-trigger" onclick="abrirAdmin()">System Config</div>
         </nav>
 
         <main>
-            <div id="reg-section" class="view-section active">
+            <div id="reg-user-section" class="view-section active">
                 <div class="glass-panel">
-                    <h2>Nuevo Investigador</h2>
+                    <h2>Alta de Investigador</h2>
                     <input type="text" id="reg_nombre" placeholder="Nombre completo..." onkeydown="if(event.key==='Enter') registrarUser()">
                     <button class="btn-pro" onclick="registrarUser()">REGISTRAR</button>
                 </div>
-                
+            </div>
+
+            <div id="reg-obs-section" class="view-section">
                 <div class="glass-panel">
-                    <h2>Nueva Entrada de Campo</h2>
+                    <h2>Nueva Entrada</h2>
                     <select id="sel_usuario"><option>Cargando lista...</option></select>
-                    <div style="display:flex; gap:15px;">
+                    <div style="display:flex; gap:10px;">
                         <input type="number" id="obs_altura" placeholder="Altura (cm)">
                         <select id="obs_estado">
                             <option>Saludable</option>
@@ -101,21 +114,24 @@
                             <option>Estrés</option>
                         </select>
                     </div>
-                    <textarea id="obs_notas" rows="3" placeholder="Notas..." onkeydown="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); guardarObs(); }"></textarea>
+                    <textarea id="obs_notas" rows="3" placeholder="Observaciones..." onkeydown="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); guardarObs(); }"></textarea>
                     <button class="btn-pro" style="background: var(--accent-lavender);" onclick="guardarObs()">GUARDAR</button>
                 </div>
             </div>
 
-            <div id="obs-section" class="view-section">
-                <h2>Explorar Bitácora</h2>
-                <div style="margin-bottom: 30px;">
-                    <div id="pills-usuarios" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
-                </div>
-                <div id="grid-dinamico"></div>
+            <div id="history-section" class="view-section">
+                <h2>Bitácora General</h2>
+                <div id="grid-total"></div>
+            </div>
+
+            <div id="filter-section" class="view-section">
+                <h2>Investigador Individual</h2>
+                <div id="pills-usuarios" style="margin-bottom: 20px;"></div>
+                <div id="grid-especifico"></div>
             </div>
 
             <div id="admin-panel" class="view-section">
-                <h2 style="color:var(--danger)">Eliminar Investigadores</h2>
+                <h2 style="color:var(--danger)">Mantenimiento</h2>
                 <div id="lista-borrar" class="glass-panel"></div>
             </div>
         </main>
@@ -135,7 +151,7 @@
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         if(el) el.classList.add('active');
-        if(id === 'obs-section') renderObservaciones(dataCache.observaciones);
+        if(id === 'history-section') renderGeneral();
     }
 
     async function actualizarDatos() {
@@ -147,67 +163,52 @@
         dataCache.observaciones = await hRes.json();
         
         document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-        document.getElementById('pills-usuarios').innerHTML = `
-            <div class="user-pill active" onclick="renderObservaciones(dataCache.observaciones, this)">TODOS</div>
-        ` + dataCache.usuarios.map(u => `
-            <div class="user-pill" onclick="filtrarPorUser(${u.id}, this)">${u.nombre}</div>
+        document.getElementById('pills-usuarios').innerHTML = dataCache.usuarios.map(u => `
+            <div class="user-pill" onclick="filtrarUser(${u.id}, this)">${u.nombre}</div>
         `).join('');
+        renderGeneral();
     }
 
-    function renderObservaciones(lista, el) {
-        if(el) {
-            document.querySelectorAll('.user-pill').forEach(p => p.classList.remove('active'));
-            el.classList.add('active');
-        }
-        document.getElementById('grid-dinamico').innerHTML = lista.map(o => `
+    function renderGeneral() {
+        document.getElementById('grid-total').innerHTML = dataCache.observaciones.map(o => `
             <div class="card-obs animate__animated animate__fadeIn">
-                <div style="color:var(--accent-lavender); font-weight:bold; font-size:0.7rem;">${o.nombre.toUpperCase()}</div>
-                <div style="margin:5px 0; font-weight:500;">📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
-                <p style="opacity:0.7; font-size:0.9rem; margin:0;">"${o.observaciones}"</p>
+                <small style="color:var(--accent-lavender); font-weight:700;">${o.nombre.toUpperCase()}</small>
+                <div style="margin:5px 0;">📏 ${o.altura_cm}cm — <b>${o.estado_salud}</b></div>
+                <p style="opacity:0.8; font-size:0.9rem; margin:0;">"${o.observaciones}"</p>
             </div>
         `).join('');
     }
 
-    function filtrarPorUser(id, el) {
+    function filtrarUser(id, el) {
+        document.querySelectorAll('.user-pill').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
         const filtrados = dataCache.observaciones.filter(o => o.usuario_id == id);
-        renderObservaciones(filtrados, el);
+        document.getElementById('grid-especifico').innerHTML = filtrados.length ? filtrados.map(o => `
+            <div class="card-obs animate__animated animate__fadeIn">
+                <div>📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
+                <p>"${o.observaciones}"</p>
+            </div>
+        `).join('') : '<p>No hay registros para este usuario.</p>';
     }
 
     async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({ 
-            title: 'Configuración de Sistema', 
-            input: 'password', 
-            inputPlaceholder: 'Ingresa tu clave maestra',
-            confirmButtonColor: '#1a3c34' 
-        });
-
+        const { value: pass } = await Swal.fire({ title: 'Seguridad', input: 'password', confirmButtonColor: '#1a3c34' });
         if (pass === 'osio2023') {
             showSection('admin-panel');
             document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `
-                <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #eee;">
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
                     <span>${u.nombre}</span>
-                    <button onclick="borrarU(${u.id})" style="color:var(--danger); background:none; border:none; cursor:pointer; font-weight:bold;">BORRAR</button>
+                    <button onclick="borrarU(${u.id})" style="color:red; background:none; border:none; cursor:pointer;">Borrar</button>
                 </div>
             `).join('');
-        } else if(pass) {
-            Swal.fire('Error', 'Clave incorrecta', 'error');
         }
     }
 
     async function borrarU(id) {
-        const confirmacion = await Swal.fire({
-            title: '¿Confirmar eliminación?',
-            text: "Se borrarán todos sus registros asociados.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#e63946'
-        });
-
-        if(confirmacion.isConfirmed) {
+        if(confirm("¿Eliminar usuario y sus datos?")) {
             await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
             actualizarDatos();
-            showSection('reg-section');
-            Swal.fire('Eliminado', '', 'success');
+            showSection('reg-user-section');
         }
     }
 
@@ -217,7 +218,7 @@
         await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
         document.getElementById('reg_nombre').value = "";
         actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Registrado', showConfirmButton: false, timer: 1000 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Registrado', showConfirmButton: false, timer: 1500 });
     }
 
     async function guardarObs() {
@@ -231,7 +232,7 @@
         document.getElementById('obs_altura').value = "";
         document.getElementById('obs_notas').value = "";
         actualizarDatos();
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Sincronizado', showConfirmButton: false, timer: 1000 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Guardado', showConfirmButton: false, timer: 1500 });
     }
 </script>
 </body>
