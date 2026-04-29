@@ -1,7 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
-const path = require('path'); // Importante para manejar rutas de archivos
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -12,13 +12,12 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
-// --- RUTA PRINCIPAL PROFESIONAL ---
-// En lugar de enviar texto, enviamos el archivo HTML real
+// Cargar la página principal (tu HTML)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// LISTA DE USUARIOS PARA EL SELECTOR
+// Listar usuarios
 app.get('/lista-usuarios', async (req, res) => {
     try {
         const result = await pool.query('SELECT id, nombre FROM usuarios ORDER BY nombre ASC');
@@ -26,7 +25,7 @@ app.get('/lista-usuarios', async (req, res) => {
     } catch (err) { res.status(500).json([]); }
 });
 
-// GUARDAR NUEVA OBSERVACIÓN
+// Guardar nota del diario
 app.post('/nueva-observacion', async (req, res) => {
     const { usuario_id, altura, estado, notas } = req.body;
     try {
@@ -35,22 +34,22 @@ app.post('/nueva-observacion', async (req, res) => {
             [usuario_id, altura, estado, notas]
         );
         res.json({ status: "success" });
-    } catch (err) { res.status(500).json({ status: "error", message: err.message }); }
+    } catch (err) { res.status(500).json({ status: "error" }); }
 });
 
-// OBTENER ÚLTIMO DATO (Para el mensaje principal)
-app.get('/datos', async (req, res) => {
+// Borrar nota del diario (NUEVO)
+app.delete('/borrar-observacion/:id', async (req, res) => {
     try {
-        const query = await pool.query('SELECT observaciones FROM seguimiento_lavanda ORDER BY fecha DESC LIMIT 1');
-        res.json({ data: query.rows[0] || { observaciones: "Sin registros hoy." } });
-    } catch (err) { res.status(500).json({ data: { observaciones: "Error de conexión" } }); }
+        await pool.query('DELETE FROM seguimiento_lavanda WHERE id = $1', [req.params.id]);
+        res.json({ status: "success" });
+    } catch (err) { res.status(500).json({ status: "error" }); }
 });
 
-// HISTORIAL EN JSON PARA QUE EL HTML HAGA LA LISTA BONITA
+// Historial completo
 app.get('/lavandas_json', async (req, res) => {
     try {
         const query = await pool.query(`
-            SELECT s.*, u.nombre 
+            SELECT s.id, s.fecha, s.altura_cm, s.estado_salud, s.observaciones, u.nombre 
             FROM seguimiento_lavanda s 
             JOIN usuarios u ON s.usuario_id = u.id 
             ORDER BY s.fecha DESC
@@ -59,16 +58,16 @@ app.get('/lavandas_json', async (req, res) => {
     } catch (err) { res.status(500).json([]); }
 });
 
-// REGISTRO DE USUARIOS (Perfil de salud)
+// Registro de usuario
 app.post('/registrar', async (req, res) => {
-    const { nombre, email, password, peso, altura, edad, actividad_fisica, objetivo } = req.body;
+    const { nombre, email, password } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO usuarios (nombre, email, password, peso, altura, edad, actividad_fisica, objetivo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, nombre',
-            [nombre, email, password, peso, altura, edad, actividad_fisica, objetivo]
+            'INSERT INTO usuarios (nombre, email, password, peso, altura, edad, actividad_fisica, objetivo) VALUES ($1, $2, $3, 0, 0, 0, "baja", "mantener") RETURNING id, nombre',
+            [nombre, email, password]
         );
         res.status(201).json({ status: "success", usuario: result.rows[0] });
-    } catch (err) { res.status(400).json({ status: "error", message: "Error al registrar" }); }
+    } catch (err) { res.status(400).json({ status: "error" }); }
 });
 
 const PORT = process.env.PORT || 3000;
