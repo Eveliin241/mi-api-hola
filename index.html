@@ -16,25 +16,37 @@
         }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text-mate); overflow: hidden; }
         #global-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1501004318641-729e8e398642?auto=format&fit=crop&w=1600&q=80'); background-size: cover; z-index: -1; }
+        
+        /* PORTADA CON LA PLANTITA RETORNADA 🌿 */
         #portada { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 1000; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
-        .welcome-card { background: rgba(255, 255, 255, 0.03); border-radius: 40px; padding: 60px 80px; text-align: center; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+        .welcome-card { background: rgba(255, 255, 255, 0.03); border-radius: 40px; padding: 60px 80px; text-align: center; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); position: relative; }
+        .welcome-card::before { content: "🌿"; font-size: 3.5rem; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); opacity: 0.9; }
         .brand-script { font-family: 'Great Vibes', cursive; font-size: 5.5rem; color: var(--text-bright); margin: 0; }
         .btn-enter { margin-top: 50px; padding: 20px 60px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; text-transform: uppercase; background: var(--accent-mate); color: var(--text-bright); }
+
         #app-wrapper { display: flex; width: 100vw; height: 100vh; position: relative; }
         #top-bar { position: fixed; top: 0; left: 0; width: 100%; height: 70px; display: flex; align-items: center; padding: 0 25px; z-index: 900; }
         #menu-toggle { background: none; border: none; color: var(--text-bright); font-size: 1.6rem; cursor: pointer; opacity: 0.7; }
+        
         nav { width: 280px; background: var(--sidebar-mate); display: flex; flex-direction: column; padding: 90px 0 30px 0; color: var(--text-bright); transition: all 0.4s ease; overflow: hidden; z-index: 850; }
         nav.collapsed { width: 0; opacity: 0; pointer-events: none; }
         .nav-item { padding: 18px 25px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 20px; transition: 0.3s; white-space: nowrap; border-left: 4px solid transparent; }
         .nav-item.active { opacity: 1; background: rgba(255,255,255,0.06); border-left-color: var(--accent-mate); }
+        
         main { flex-grow: 1; padding: 100px 50px; overflow-y: auto; background: transparent; }
         .view-section { display: none; width: 100%; max-width: 1000px; margin: 0 auto; }
         .view-section.active { display: block; animation: fadeIn 0.5s ease; }
+        
         .glass-card { background: var(--glass-panel); border-radius: 30px; padding: 40px; margin-bottom: 30px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.04); }
         h2 { font-weight: 300; font-size: 1.5rem; color: var(--text-bright); margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
-        input, select, textarea { width: 100%; padding: 18px; margin: 10px 0; border-radius: 15px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); color: var(--text-mate); font-family: inherit; }
+        
+        /* CORRECCIÓN DE COLORES EN INPUTS Y SELECTS */
+        input, select, textarea { width: 100%; padding: 18px; margin: 10px 0; border-radius: 15px; border: 1px solid rgba(255,255,255,0.08); background: #0a1411; color: var(--text-mate); font-family: inherit; appearance: none; }
+        select option { background: #0d1a16; color: var(--text-mate); } /* Para que se vean las opciones */
+        
         .btn-action { background: var(--sidebar-mate); color: var(--text-bright); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
         .admin-trigger { margin-top: auto; padding: 20px 25px; opacity: 0.05; cursor: pointer; display: flex; align-items: center; gap: 20px; }
+        
         @media (max-width: 768px) { nav { position: fixed; left: -280px; height: 100vh; } nav.open { left: 0; } main { padding: 100px 20px; } .brand-script { font-size: 3.5rem; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -42,7 +54,7 @@
 <body>
     <div id="global-bg"></div>
     <div id="portada">
-        <div class="welcome-card">
+        <div class="welcome-card animate__animated animate__zoomIn">
             <h1 class="brand-script">Botánica</h1>
             <button class="btn-enter" onclick="iniciarApp()">ENTRAR</button>
         </div>
@@ -61,7 +73,7 @@
             <div id="user-section" class="view-section active">
                 <div class="glass-card">
                     <h2>Nuevo Investigador</h2>
-                    <input type="text" id="reg_nombre" placeholder="Nombre completo...">
+                    <input type="text" id="reg_nombre" placeholder="Nombre completo..." autocomplete="off">
                     <button class="btn-action" onclick="registrarUser()">DAR DE ALTA</button>
                 </div>
             </div>
@@ -83,9 +95,9 @@
                 <div id="grid-dinamico"></div>
             </div>
             <div id="admin-panel" class="view-section">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h2 style="color:var(--danger-mate); border:none;">Mantenimiento</h2>
-                    <button onclick="showSection('user-section')" style="background:none; border:1px solid var(--text-mate); color:var(--text-mate); padding:5px 15px; border-radius:10px; cursor:pointer;">SALIR</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                    <h2 style="color:var(--danger-mate); border:none; margin:0;">Mantenimiento</h2>
+                    <button onclick="cerrarAdmin()" style="background:none; border:1px solid var(--text-mate); color:var(--text-mate); padding:8px 20px; border-radius:12px; cursor:pointer; font-weight:600;">SALIR</button>
                 </div>
                 <div id="lista-borrar" class="glass-card"></div>
             </div>
@@ -114,30 +126,41 @@
             dataCache.usuarios = await uRes.json();
             dataCache.observaciones = await hRes.json();
             document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-            document.getElementById('pills-usuarios').innerHTML = `<div class="user-pill" style="padding:8px 15px; background:rgba(255,255,255,0.05); border-radius:20px; cursor:pointer;" onclick="renderObservaciones(dataCache.observaciones)">TODOS</div>` + 
-                dataCache.usuarios.map(u => `<div style="padding:8px 15px; background:rgba(255,255,255,0.05); border-radius:20px; cursor:pointer;" onclick="filtrarPorUser(${u.id})">${u.nombre}</div>`).join('');
+            document.getElementById('pills-usuarios').innerHTML = `<div class="user-pill" style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:30px; cursor:pointer;" onclick="renderObservaciones(dataCache.observaciones)">TODOS</div>` + 
+                dataCache.usuarios.map(u => `<div style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:30px; cursor:pointer;" onclick="filtrarPorUser(${u.id})">${u.nombre}</div>`).join('');
             if (document.getElementById('admin-panel').classList.contains('active')) renderListaBorrar();
         } catch (e) { console.error(e); }
     }
 
     function renderObservaciones(lista) {
-        document.getElementById('grid-dinamico').innerHTML = lista.map(o => `<div class="glass-card" style="padding:20px; margin-bottom:15px;"><div style="color:var(--accent-mate); font-weight:600;">${o.nombre}</div><div>📏 ${o.altura_cm}cm — ${o.estado_salud}</div><p style="opacity:0.7; font-size:0.9rem; margin:0;">"${o.observaciones}"</p></div>`).join('');
+        document.getElementById('grid-dinamico').innerHTML = lista.map(o => `<div class="glass-card" style="padding:20px; margin-bottom:15px;"><div style="color:var(--accent-mate); font-weight:600; text-transform:uppercase; font-size:0.8rem;">${o.nombre}</div><div style="margin:8px 0; color:var(--text-bright);">📏 ${o.altura_cm}cm — ${o.estado_salud}</div><p style="opacity:0.7; font-size:0.95rem; margin:0;">"${o.observaciones}"</p></div>`).join('');
     }
 
     function filtrarPorUser(id) { renderObservaciones(dataCache.observaciones.filter(o => o.usuario_id == id)); }
 
     async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({ title: 'Clave de Acceso', input: 'password', confirmButtonColor: '#0d1a16', background: '#14231e', color: '#c0c0b5', inputAttributes: { autocomplete: 'off' } });
+        // Bloqueo de memoria de input para la clave
+        const { value: pass } = await Swal.fire({ 
+            title: 'Clave de Acceso', 
+            input: 'password', 
+            confirmButtonColor: '#0d1a16', 
+            background: '#14231e', 
+            color: '#c0c0b5',
+            inputAttributes: { autocomplete: 'new-password', 'aria-autocomplete': 'none' } 
+        });
+        
         if (pass === 'osio2023') { renderListaBorrar(); showSection('admin-panel'); } 
         else if (pass) { Swal.fire({ icon: 'error', title: 'Acceso Denegado', background: '#14231e', color: '#c0c0b5' }); }
     }
 
+    function cerrarAdmin() { showSection('user-section', document.querySelector('.nav-item')); }
+
     function renderListaBorrar() {
-        document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `<div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>${u.nombre}</span><button onclick="borrarU(${u.id})" style="color:var(--danger-mate); background:none; border:none; cursor:pointer;">[ELIMINAR]</button></div>`).join('');
+        document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `<div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>${u.nombre}</span><button onclick="borrarU(${u.id})" style="color:var(--danger-mate); background:none; border:none; cursor:pointer; font-weight:600;">[ELIMINAR]</button></div>`).join('');
     }
 
     async function borrarU(id) {
-        const result = await Swal.fire({ title: '¿Borrar investigador?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#a63a50', background: '#14231e', color: '#c0c0b5' });
+        const result = await Swal.fire({ title: '¿Borrar investigador?', text: 'Esta acción no se puede deshacer.', icon: 'warning', showCancelButton: true, confirmButtonColor: '#a63a50', background: '#14231e', color: '#c0c0b5' });
         if (result.isConfirmed) { await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' }); await actualizarDatos(); }
     }
 
