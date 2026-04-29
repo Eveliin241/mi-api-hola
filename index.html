@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌿 Botánica OS | Elite System</title>
+    <title>Botánica OS | Elite System</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
@@ -13,17 +13,19 @@
     
     <style>
         :root {
-            --bg-deep: #050a09; 
-            --sidebar-mate: #0d1a16; 
-            --glass-panel: rgba(20, 35, 30, 0.6); 
-            --accent-mate: #7a6a75; 
-            --text-mate: #c0c0b5; 
+            /* Paleta Mate Profunda */
+            --bg-deep: #050a09; /* Negro botánico mate */
+            --sidebar-mate: #0d1a16; /* Verde oscuro mate */
+            --glass-panel: rgba(20, 35, 30, 0.6); /* Vidrio oscuro transparente */
+            --accent-mate: #7a6a75; /* Lavanda polvoriento mate */
+            --text-mate: #c0c0b5; /* Crema apagado mate */
             --text-bright: #ffffff;
             --danger-mate: #a63a50;
         }
 
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text-mate); overflow: hidden; }
 
+        /* --- FONDO BOTÁNICO GLOBAL (ADIÓS CAFÉ) --- */
         #global-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
@@ -31,6 +33,7 @@
             background-size: cover; background-position: center; z-index: -1;
         }
 
+        /* --- PORTADA FROSTED GLASS (TRANSPARENTOSA) --- */
         #portada {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center; z-index: 1000;
@@ -38,17 +41,18 @@
         }
 
         .welcome-card {
-            background: rgba(255, 255, 255, 0.03); 
+            background: rgba(255, 255, 255, 0.03); /* Base muy transparente */
             border-radius: 40px;
             padding: 60px 80px;
             text-align: center;
-            backdrop-filter: blur(20px) saturate(180%); 
+            backdrop-filter: blur(20px) saturate(180%); /* Efecto Vidrio Esmerilado Profundo */
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255,255,255,0.08);
             box-shadow: 0 25px 50px rgba(0,0,0,0.4);
             position: relative;
         }
 
+        /* Platita 🌿 */
         .welcome-card::before {
             content: "🌿"; font-size: 3.5rem; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); opacity: 0.9;
         }
@@ -64,27 +68,32 @@
         }
         .btn-enter:hover { background: var(--text-bright); color: var(--bg-deep); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
 
+        /* --- MAIN LAYOUT PRO --- */
         #app-wrapper { display: flex; width: 100vw; height: 100vh; position: relative; }
 
+        /* BARRA SUPERIOR (TOP BAR) */
         #top-bar {
             position: fixed; top: 0; left: 0; width: 100%; height: 70px;
             background: transparent; display: flex; align-items: center; padding: 0 25px;
             z-index: 900; box-sizing: border-box;
         }
 
+        /* Botón de Barras (Hamburguesa) Magico */
         #menu-toggle {
             background: none; border: none; color: var(--text-bright); font-size: 1.6rem; cursor: pointer;
             opacity: 0.7; transition: 0.3s; padding: 10px; border-radius: 10px;
         }
         #menu-toggle:hover { opacity: 1; background: rgba(255,255,255,0.05); }
 
+        /* MENÚ LATERAL PRO (SIDEBAR) */
         nav {
             width: 280px; background: var(--sidebar-mate); display: flex; flex-direction: column;
-            padding: 90px 0 30px 0; 
+            padding: 90px 0 30px 0; /* Espacio para la Top Bar */
             color: var(--text-bright); flex-shrink: 0; transition: width 0.4s cubic-bezier(0.77, 0, 0.175, 1);
             overflow: hidden; z-index: 850; position: relative;
         }
 
+        /* Estado colapsado del menú (PC) */
         nav.collapsed { width: 80px; }
 
         .nav-item {
@@ -94,14 +103,16 @@
         .nav-item i { font-size: 1.2rem; width: 25px; text-align: center; }
         .nav-item span { font-size: 0.95rem; font-weight: 400; letter-spacing: 0.5px; transition: opacity 0.3s; }
 
+        /* Ocultar texto cuando está colapsado */
         nav.collapsed .nav-item span, nav.collapsed .sidebar-header, nav.collapsed .admin-trigger span { opacity: 0; pointer-events: none; }
         nav.collapsed .admin-trigger i { margin: 0; font-size: 1.3rem; }
 
         .nav-item:hover { opacity: 1; background: rgba(255,255,255,0.03); }
         .nav-item.active { opacity: 1; background: rgba(255,255,255,0.06); border-left-color: var(--accent-mate); color: var(--text-bright); }
 
+        /* CONTENIDO PRINCIPAL (MAIN) */
         main {
-            flex-grow: 1; padding: 100px 50px 50px 50px; 
+            flex-grow: 1; padding: 100px 50px 50px 50px; /* Padding top para la barra */
             overflow-y: auto; background: transparent; box-sizing: border-box;
             transition: padding-left 0.4s;
         }
@@ -109,6 +120,7 @@
         .view-section { display: none; width: 100%; max-width: 1100px; margin: 0 auto; }
         .view-section.active { display: block; animation: fadeIn 0.5s ease; }
 
+        /* Paneles de Datos Transparentosos (Glassmorphism) */
         .glass-card {
             background: var(--glass-panel); border-radius: 30px; padding: 40px; margin-bottom: 30px;
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -117,6 +129,7 @@
 
         h2 { font-weight: 300; font-size: 1.6rem; color: var(--text-bright); margin-top: 0; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
 
+        /* Inputs Mate y Oscuros */
         input, select, textarea {
             width: 100%; padding: 18px; margin: 12px 0; border-radius: 15px;
             border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2);
@@ -131,25 +144,23 @@
         }
         .btn-action:hover { background: var(--accent-mate); transform: translateY(-2px); }
 
+        /* Trigger Secreto */
         .admin-trigger { margin-top: auto; padding: 20px 25px; opacity: 0.02; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 20px; color: var(--text-mate); }
         .admin-trigger:hover { opacity: 0.5; color: var(--text-bright); }
 
-        /* Estilos para las tarjetas del historial que faltaban */
-        .card-obs {
-            background: rgba(255,255,255,0.03); border-radius: 20px; padding: 25px; margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .user-pill {
-            padding: 8px 20px; background: rgba(255,255,255,0.05); border-radius: 50px; cursor: pointer; font-size: 0.8rem;
-        }
-        .user-pill.active { background: var(--accent-mate); color: white; }
-
+        /* --- RESPONSIVE PRO (MÓVIL TOTAL) --- */
         @media (max-width: 768px) {
             #portada .welcome-card { padding: 40px 30px; width: 85%; }
             #portada .brand-script { font-size: 3.5rem; }
-            nav { position: fixed; top: 0; left: -280px; height: 100vh; width: 280px; box-shadow: 15px 0 50px rgba(0,0,0,0.5); }
-            nav.open { left: 0; } 
-            nav.collapsed { width: 280px; left: -280px; } 
+
+            /* Sidebar se vuelve flotante en móvil */
+            nav {
+                position: fixed; top: 0; left: -280px; height: 100vh; width: 280px;
+                box-shadow: 15px 0 50px rgba(0,0,0,0.5);
+            }
+            nav.open { left: 0; } /* Clase para abrir en móvil */
+            nav.collapsed { width: 280px; left: -280px; } /* Ignorar colapso de PC en móvil */
+            
             main { padding: 90px 20px 30px 20px; }
             .glass-card { padding: 25px; border-radius: 20px; }
         }
@@ -198,12 +209,12 @@
                     <select id="sel_usuario"><option>Cargando lista...</option></select>
                     <div style="display:flex; gap:15px;">
                         <input type="number" id="obs_altura" placeholder="Altura (cm)">
-                        <input type="number" id="obs_ancho" placeholder="Ancho (cm)"> </div>
-                    <select id="obs_estado">
-                        <option>Saludable</option>
-                        <option>En Floración</option>
-                        <option>Estrés Hídrico</option>
-                    </select>
+                        <select id="obs_estado">
+                            <option>Saludable</option>
+                            <option>En Floración</option>
+                            <option>Estrés Hídrico</option>
+                        </select>
+                    </div>
                     <textarea id="obs_notas" rows="3" placeholder="Notas detalladas..." onkeydown="handleEnter(event, guardarObs, true)"></textarea>
                     <button class="btn-action" style="background: var(--accent-mate);" onclick="guardarObs()">GUARDAR</button>
                 </div>
@@ -220,7 +231,6 @@
             <div id="admin-panel" class="view-section">
                 <h2 style="color:var(--danger-mate)">Mantenimiento de Usuarios</h2>
                 <div id="lista-borrar" class="glass-card"></div>
-                <button class="btn-action" onclick="showSection('reg-section')">VOLVER</button>
             </div>
         </main>
     </div>
@@ -229,25 +239,39 @@
     const API = 'https://mi-api-hola.onrender.com';
     let dataCache = { usuarios: [], observaciones: [] };
 
+    // FUNCIÓN DE PORTADA (SE QUITA AL DAR ENTRAR O ENTER GLOBAL)
     function iniciarApp() {
         document.getElementById('portada').style.transform = 'translateY(-100%)';
         actualizarDatos();
     }
 
+    // ENTER GLOBAL PARA ENTRAR
     window.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && document.getElementById('portada').style.transform !== 'translateY(-100%)') {
             iniciarApp();
         }
     });
 
+    // --- FUNCIÓN PRO: TOGGLE MENÚ ---
     function toggleMenu() {
         const sidebar = document.getElementById('sidebar');
         if (window.innerWidth <= 768) {
+            // Comportamiento móvil: Abre/Cierra flotante
             sidebar.classList.toggle('open');
         } else {
+            // Comportamiento PC: Colapsa/Expande (Mini)
             sidebar.classList.toggle('collapsed');
         }
     }
+
+    // Cerrar menú al hacer clic en un ítem en móvil
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+    });
 
     function showSection(id, el) {
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
@@ -283,8 +307,7 @@
         document.getElementById('grid-dinamico').innerHTML = lista.map(o => `
             <div class="card-obs animate__animated animate__fadeIn">
                 <div style="color:var(--accent-mate); font-weight:600; font-size:0.8rem; text-transform:uppercase;">${o.nombre}</div>
-                <div style="margin:8px 0; font-weight:500; color:var(--text-bright);">
-                   📏 H: ${o.altura_cm}cm | W: ${o.ancho_cm || o.ancho || 0}cm — ${o.estado_salud} </div>
+                <div style="margin:8px 0; font-weight:500; color:var(--text-bright);">📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
                 <p style="opacity:0.8; font-size:0.9rem; margin:0;">"${o.observaciones}"</p>
                 <small style="opacity:0.3; font-size:0.7rem;">${new Date(o.fecha).toLocaleDateString()}</small>
             </div>
@@ -296,9 +319,10 @@
         renderObservaciones(filtrados, el);
     }
 
+    // HELPERS
     function handleEnter(event, func, isTextArea = false) {
         if (event.key === 'Enter') {
-            if (isTextArea && event.shiftKey) return;
+            if (isTextArea && event.shiftKey) return; // Permitir salto de línea con Shift+Enter
             event.preventDefault();
             func();
         }
@@ -340,14 +364,12 @@
         const payload = {
             usuario_id: document.getElementById('sel_usuario').value,
             altura: document.getElementById('obs_altura').value,
-            ancho_cm: document.getElementById('obs_ancho').value, // CORRECCIÓN 3: Enviar el valor del input
             estado: document.getElementById('obs_estado').value,
             notas: document.getElementById('obs_notas').value
         };
         if(!payload.notas) return;
         await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         document.getElementById('obs_altura').value = "";
-        document.getElementById('obs_ancho').value = "";
         document.getElementById('obs_notas').value = "";
         actualizarDatos();
         Toast.fire({ icon: 'success', title: 'Guardado' });
