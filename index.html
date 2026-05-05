@@ -26,23 +26,21 @@
         .card { background: var(--card); padding: 35px; border-radius: 10px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         h2 { color: var(--amz-gold); font-weight: 400; margin-top: 0; text-transform: uppercase; letter-spacing: 2px; font-size: 1.2rem; }
 
-        /* FORMULARIO PRO */
+        /* FORMULARIO */
         input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border-radius: 4px; border: 1px solid #888; background: white; color: black; font-size: 1rem; box-sizing: border-box; }
-        input:focus { border-color: var(--amz-gold); outline: 3px solid rgba(254, 189, 105, 0.2); }
         .btn-amazon { background: var(--amz-gold); color: #111; border: none; padding: 16px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 1rem; margin-top: 15px; }
         .btn-amazon:hover { background: #f3a847; transform: translateY(-1px); }
 
-        /* MÓDULO FOTO */
-        .img-drop { border: 2px dashed #444; border-radius: 8px; padding: 30px; text-align: center; cursor: pointer; margin: 15px 0; transition: 0.3s; background: rgba(255,255,255,0.02); }
-        .img-drop:hover { border-color: var(--amz-gold); background: rgba(254, 189, 105, 0.05); }
+        /* FOTO */
+        .img-drop { border: 2px dashed #444; border-radius: 8px; padding: 30px; text-align: center; cursor: pointer; margin: 15px 0; background: rgba(255,255,255,0.02); }
         #preview { width: 100%; max-height: 350px; object-fit: contain; display: none; margin-top: 15px; border-radius: 6px; border: 1px solid var(--amz-gold); }
 
-        /* HISTORIAL CARDS */
+        /* CARDS HISTORIAL */
         .obs-card { background: #232f3e; padding: 25px; border-radius: 8px; margin-bottom: 20px; position: relative; border: 1px solid #3a4553; }
         .obs-header { display: flex; justify-content: space-between; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px; }
         .user-tag { color: var(--amz-gold); font-weight: bold; }
         .badge { background: #1a1a1a; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; margin-right: 10px; border: 1px solid #444; }
-        .trash-btn { position: absolute; top: 20px; right: 20px; color: #ff6b6b; cursor: pointer; display: none; font-size: 1.2rem; }
+        .trash-btn { position: absolute; top: 20px; right: 20px; color: #ff6b6b; cursor: pointer; display: none; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -64,7 +62,7 @@
     <div id="v-reg" class="view active">
         <div class="card">
             <h2>Registro de Personal Científico</h2>
-            <input type="text" id="reg-name" placeholder="Nombre completo o ID de Equipo" autocomplete="off">
+            <input type="text" id="reg-name" placeholder="Nombre completo o ID de Equipo">
             <select id="reg-type">
                 <option value="IND">Investigador Individual 👤</option>
                 <option value="EQP">Equipo de Trabajo 👥</option>
@@ -78,43 +76,40 @@
             <h2>Nueva Entrada de Observación 🪻</h2>
             <select id="bit-user"><option>Cargando lista...</option></select>
             <div style="display:flex; gap:15px;">
-                <div><label style="font-size:0.8rem; color:var(--amz-gold)">ALTURA (CM)</label><input type="number" id="bit-h" placeholder="Ej: 25"></div>
-                <div><label style="font-size:0.8rem; color:var(--amz-gold)">AMPLITUD W (CM)</label><input type="number" id="bit-w" placeholder="Ej: 12"></div>
+                <input type="number" id="bit-h" placeholder="Altura (cm)">
+                <input type="number" id="bit-w" placeholder="Ancho W (cm)">
             </div>
             <div style="display:flex; gap:15px;">
                 <select id="bit-salud">
-                    <option value="Saludable">🌱 Estado: Saludable</option>
-                    <option value="Enferma">🍂 Estado: Enferma/Plaga</option>
-                    <option value="Seca">🔥 Estado: Seca/Marchita</option>
+                    <option value="Saludable">🌱 Saludable</option>
+                    <option value="Enferma">🍂 Enferma</option>
+                    <option value="Seca">🔥 Seca</option>
                 </select>
                 <select id="bit-riego">
-                    <option value="Abono Orgánico">🍃 Abono: Orgánico</option>
-                    <option value="Abono Químico">🧪 Abono: Químico</option>
+                    <option value="Abono Orgánico">🍃 Abono Orgánico</option>
+                    <option value="Abono Químico">🧪 Abono Químico</option>
                     <option value="Sin Abono">🚫 Sin Abono</option>
                 </select>
             </div>
-            <textarea id="bit-obs" rows="4" placeholder="Observaciones detalladas del espécimen..."></textarea>
+            <textarea id="bit-obs" rows="4" placeholder="Notas de campo..."></textarea>
             <div class="img-drop" onclick="document.getElementById('f-in').click()">
                 <i class="fas fa-camera" style="font-size: 2rem; color: var(--amz-gold);"></i><br>
-                <span>Subir Evidencia Fotográfica</span>
+                <span>Subir Foto Evidencia</span>
                 <input type="file" id="f-in" hidden accept="image/*" onchange="previewImg(this)">
                 <img id="preview">
             </div>
-            <button class="btn-amazon" onclick="submitData()">GUARDAR EN BASE DE DATOS</button>
+            <button class="btn-amazon" onclick="submitData()">GUARDAR REPORTE</button>
         </div>
     </div>
 
     <div id="v-hist" class="view">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2>Archivo Maestro de Campo</h2>
-            <button onclick="loadHistory()" class="btn-amazon" style="width:auto; padding:10px 20px;"><i class="fas fa-sync-alt"></i></button>
-        </div>
+        <h2>Archivo Maestro de Campo</h2>
         <div id="hist-list"></div>
     </div>
 
     <div id="v-admin" class="view">
         <div class="card">
-            <h2>Panel de Gestión de Usuarios</h2>
+            <h2>Gestión de Usuarios</h2>
             <div id="admin-user-list"></div>
         </div>
     </div>
@@ -139,13 +134,12 @@
         const { value: pw } = await Swal.fire({
             title: 'CLAVE GHOST',
             input: 'text',
-            inputAttributes: { style: '-webkit-text-security: disc; autocomplete: off;' },
             background: '#1a1a1a', color: '#febd69', confirmButtonColor: '#febd69'
         });
         if(pw === 'osio2023') {
             adminMode = true;
             document.getElementById('admin-only').style.display = 'block';
-            Swal.fire('Admin Unlock', 'Funciones de borrado activadas', 'success');
+            Swal.fire('Admin Unlock', 'Modo edición activado', 'success');
             loadHistory();
         }
     }
@@ -166,7 +160,7 @@
             altura: document.getElementById('bit-h').value || 0,
             ancho_cm: document.getElementById('bit-w').value || 0,
             estado: document.getElementById('bit-salud').value,
-            observaciones: `${document.getElementById('bit-riego').value}. Nota: ${document.getElementById('bit-obs').value}`,
+            observaciones: `${document.getElementById('bit-riego').value}. ${document.getElementById('bit-obs').value}`,
             imagen: base64Image
         };
 
@@ -177,8 +171,7 @@
         });
 
         if(res.ok) {
-            Swal.fire('Éxito', 'Reporte guardado y memoria liberada', 'success');
-            // RESET TOTAL
+            Swal.fire('Éxito', 'Reporte guardado', 'success');
             document.getElementById('bit-h').value = "";
             document.getElementById('bit-w').value = "";
             document.getElementById('bit-obs').value = "";
@@ -191,26 +184,26 @@
     async function loadHistory() {
         const list = document.getElementById('hist-list');
         list.innerHTML = '<p>Sincronizando...</p>';
-        const r = await fetch(`${API}/lavandas_json`);
-        const data = await r.json();
-        list.innerHTML = data.reverse().map(o => `
-            <div class="obs-card">
-                ${adminMode ? `<i class="fas fa-trash trash-btn" style="display:block" onclick="deleteObs(${o.id})"></i>` : ''}
-                <div class="obs-header">
-                    <span class="user-tag">${o.nombre}</span>
-                    <span style="opacity:0.5; font-size:0.8rem;">${new Date(o.fecha).toLocaleDateString()}</span>
+        try {
+            const r = await fetch(`${API}/lavandas_json`);
+            const data = await r.json();
+            list.innerHTML = data.reverse().map(o => `
+                <div class="obs-card">
+                    ${adminMode ? `<i class="fas fa-trash trash-btn" style="display:block" onclick="deleteObs(${o.id})"></i>` : ''}
+                    <div class="obs-header">
+                        <span class="user-tag">${o.nombre || 'Anónimo'}</span>
+                        <span style="opacity:0.5; font-size:0.8rem;">${new Date(o.fecha).toLocaleDateString()}</span>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <span class="badge">📏 H: ${o.altura_cm || 0}cm</span>
+                        <span class="badge">↔️ W: ${o.ancho_cm || 0}cm</span>
+                        <span class="badge">🩺 ${o.estado_salud || 'N/A'}</span>
+                    </div>
+                    <p style="font-size:0.9rem; color:#bbb;">"${o.observaciones || 'Sin notas'}"</p>
+                    ${o.foto_base64 ? `<img src="${o.foto_base64}" style="width:100%; border-radius:8px; margin-top:15px; border:1px solid #444;">` : ''}
                 </div>
-                <div style="margin-bottom:15px;">
-                    <span class="badge">📏 H: ${o.altura_cm}cm</span>
-                    <span class="badge">↔️ W: ${o.ancho_cm || 0}cm</span>
-                    <span class="badge">🩺 ${o.estado_salud || o.estado}</span>
-                </div>
-                <p style="background:rgba(0,0,0,0.2); padding:15px; border-radius:5px; font-size:0.9rem; line-height:1.5;">
-                    "${o.observaciones}"
-                </p>
-                ${o.foto_base64 ? `<img src="${o.foto_base64}" style="width:100%; border-radius:8px; margin-top:15px; border:1px solid #444;">` : ''}
-            </div>
-        `).join('');
+            `).join('');
+        } catch (e) { list.innerHTML = "Error al cargar historial."; }
     }
 
     async function fetchUsers() {
@@ -223,7 +216,7 @@
         const r = await fetch(`${API}/lista-usuarios`);
         const d = await r.json();
         document.getElementById('admin-user-list').innerHTML = d.map(u => `
-            <div style="display:flex; justify-content:space-between; background:#0f1111; padding:15px; margin-bottom:10px; border-radius:5px;">
+            <div style="display:flex; justify-content:space-between; background:#232f3e; padding:15px; margin-bottom:10px; border-radius:5px;">
                 <span>${u.nombre}</span>
                 <i class="fas fa-user-minus" style="color:#ff6b6b; cursor:pointer;" onclick="deleteUser(${u.id})"></i>
             </div>
@@ -241,7 +234,7 @@
             body: JSON.stringify({ nombre: finalName })
         });
         document.getElementById('reg-name').value = "";
-        Swal.fire('Registrado', 'Entidad añadida con éxito', 'success');
+        Swal.fire('Registrado', 'Usuario añadido', 'success');
     }
 
     async function deleteObs(id) {
