@@ -1,177 +1,190 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botánica OS | Elite System</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-deep: #050a09;
-            --sidebar-mate: #0d1a16;
-            --glass-panel: rgba(20, 35, 30, 0.6);
-            --accent-mate: #7a6a75;
-            --text-mate: #c0c0b5;
-            --text-bright: #ffffff;
-            --danger-mate: #a63a50;
-        }
-
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text-mate); overflow: hidden; }
-
-        #global-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1501004318641-729e8e398642?auto=format&fit=crop&w=1600&q=80');
-            background-size: cover; background-position: center; z-index: -1;
-        }
-
-        #portada {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center; z-index: 1000;
-            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-
-        .welcome-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 40px;
-            padding: 60px 80px;
-            text-align: center;
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            position: relative;
-        }
-
-        .welcome-card::before { content: "🌿"; font-size: 3.5rem; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); opacity: 0.9; }
-        .brand-script { font-family: 'Great Vibes', cursive; font-size: 5.5rem; color: var(--text-bright); margin: 0; line-height: 1; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .sub-brand { font-size: 1rem; color: var(--text-mate); letter-spacing: 6px; text-transform: uppercase; margin-top: 10px; opacity: 0.7; }
-        .btn-enter { margin-top: 50px; padding: 20px 60px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; background: var(--accent-mate); color: var(--text-bright); transition: 0.4s; }
-
-        #app-wrapper { display: flex; width: 100vw; height: 100vh; position: relative; }
-
-        #top-bar { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: transparent; display: flex; align-items: center; padding: 0 25px; z-index: 900; }
-
-        #menu-toggle { background: none; border: none; color: var(--text-bright); font-size: 1.6rem; cursor: pointer; opacity: 0.7; transition: 0.3s; padding: 10px; }
-
-        nav {
-            width: 280px; background: var(--sidebar-mate); display: flex; flex-direction: column;
-            padding: 90px 0 30px 0; color: var(--text-bright); flex-shrink: 0; 
-            transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-            overflow: hidden; z-index: 850;
-        }
-
-        nav.collapsed { width: 0; opacity: 0; pointer-events: none; }
-
-        .nav-item { padding: 18px 25px; cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 20px; transition: 0.3s; white-space: nowrap; border-left: 4px solid transparent; }
-        .nav-item i { font-size: 1.1rem; width: 20px; }
-        .nav-item span { font-size: 0.9rem; letter-spacing: 1px; }
-        .nav-item:hover { opacity: 1; background: rgba(255,255,255,0.03); }
-        .nav-item.active { opacity: 1; background: rgba(255,255,255,0.06); border-left-color: var(--accent-mate); }
-
-        main { flex-grow: 1; padding: 100px 50px; overflow-y: auto; background: transparent; transition: 0.4s; }
-        .view-section { display: none; width: 100%; max-width: 1000px; margin: 0 auto; }
-        .view-section.active { display: block; animation: fadeIn 0.5s ease; }
-
-        .glass-card { background: var(--glass-panel); border-radius: 30px; padding: 40px; margin-bottom: 30px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.04); }
-        h2 { font-weight: 300; font-size: 1.5rem; color: var(--text-bright); margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
-
-        input, select, textarea { width: 100%; padding: 18px; margin: 10px 0; border-radius: 15px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); color: var(--text-mate); font-size: 1rem; font-family: inherit; }
-        .btn-action { background: var(--sidebar-mate); color: var(--text-bright); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
-
-        .admin-trigger { margin-top: auto; padding: 20px 25px; opacity: 0.02; cursor: pointer; display: flex; align-items: center; gap: 20px; font-size: 0.8rem; }
-
-        @media (max-width: 768px) {
-            nav { position: fixed; left: -280px; height: 100vh; }
-            nav.open { left: 0; }
-            main { padding: 100px 20px 30px; }
-            .brand-script { font-size: 3.5rem; }
-            .welcome-card { padding: 40px 20px; width: 85%; }
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body>
-
-    <div id="global-bg"></div>
-
-    <div id="portada">
-        <div class="welcome-card animate__animated animate__zoomIn">
-            <h1 class="brand-script">Botánica</h1>
-            <p class="sub-brand">Elite Research System</p>
-            <button class="btn-enter" onclick="iniciarApp()">ENTRAR</button>
+<main>
+    <div id="user-section" class="view-section active">
+        <div class="glass-card">
+            <h2><i class="fas fa-user-shield"></i> Investigador Autorizado</h2>
+            <input type="text" id="reg_nombre" placeholder="Nombre completo del alumno/equipo...">
+            <button class="btn-action" onclick="registrarUser()">DAR DE ALTA EN SISTEMA</button>
         </div>
     </div>
 
-    <div id="top-bar">
-        <button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+    <div id="reg-section" class="view-section">
+        <div class="glass-card">
+            <h2><i class="fas fa-microscope"></i> Bitácora de Campo - Semana #8</h2>
+            <p style="font-size: 0.8rem; margin-bottom: 20px; opacity: 0.7;">Proyecto PAEC: Jardín Polinizador</p>
+            
+            <label>Seleccionar Investigador:</label>
+            <select id="sel_usuario"></select>
+
+            <h3>1. Crecimiento (Lavanda)</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <input type="number" id="obs_altura" placeholder="Altura Actual (cm)">
+                <input type="number" id="obs_hojas" placeholder="Nº de Hojas">
+            </div>
+
+            <h3>2. Nutrición y Suelo (Abono)</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <select id="obs_abono">
+                    <option value="">Tipo de Abono...</option>
+                    <option>Orgánico (Composta)</option>
+                    <option>Líquido</option>
+                    <option>Mineral</option>
+                    <option>Ninguno</option>
+                </select>
+                <input type="text" id="obs_cantidad_abono" placeholder="Cantidad (ej: 200g)">
+            </div>
+
+            <h3>3. Evaluación de Riego (Post-Vacacional)</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <select id="obs_suelo">
+                    <option value="">Estado del Suelo...</option>
+                    <option>Seco</option>
+                    <option>Húmedo</option>
+                    <option>Encharcado</option>
+                </select>
+                <select id="obs_riego_ok">
+                    <option value="">¿Riego Adecuado?</option>
+                    <option>SÍ</option>
+                    <option>NO (Requiere ajuste)</option>
+                </select>
+            </div>
+
+            <select id="obs_estado" style="margin-top:15px;">
+                <option value="">Clasificación de Salud...</option>
+                <option>Sana</option>
+                <option>Dañada</option>
+                <option>Seca</option>
+                <option>Floración</option>
+            </select>
+
+            <textarea id="obs_notas" rows="4" placeholder="Análisis crítico: Cambios visibles, problemas detectados y causas posibles..."></textarea>
+            
+            <button class="btn-action" style="background: var(--accent-mate); margin-top:20px;" onclick="guardarObs()">
+                <i class="fas fa-save"></i> GUARDAR REPORTE CIENTÍFICO
+            </button>
+        </div>
     </div>
 
-    <div id="app-wrapper">
-        <nav id="sidebar">
-            <div class="nav-item active" onclick="showSection('user-section', this)"><i class="fas fa-user-tie"></i> <span>PERSONA A CARGO</span></div>
-            <div class="nav-item" onclick="showSection('reg-section', this)"><i class="fas fa-plus-circle"></i> <span>NUEVO REGISTRO</span></div>
-            <div class="nav-item" onclick="showSection('obs-section', this)"><i class="fas fa-search"></i> <span>EXPLORAR DATOS</span></div>
-            <div class="admin-trigger" onclick="abrirAdmin()"><i class="fas fa-cog"></i> <span>Config</span></div>
-        </nav>
-
-        <main>
-            <div id="user-section" class="view-section active">
-                <div class="glass-card">
-                    <h2>Investigador Autorizado</h2>
-                    <input type="text" id="reg_nombre" placeholder="Nombre completo...">
-                    <button class="btn-action" onclick="registrarUser()">DAR DE ALTA</button>
-                </div>
-            </div>
-
-            <div id="reg-section" class="view-section">
-                <div class="glass-card">
-                    <h2>Nueva Entrada de Campo</h2>
-                    <select id="sel_usuario"></select>
-                    <div style="display:flex; gap:15px;">
-                        <input type="number" id="obs_altura" placeholder="Altura (cm)">
-                        <select id="obs_estado"><option>Saludable</option><option>Floración</option><option>Estrés</option></select>
-                    </div>
-                    <textarea id="obs_notas" rows="3" placeholder="Notas detalladas..."></textarea>
-                    <button class="btn-action" style="background: var(--accent-mate);" onclick="guardarObs()">GUARDAR</button>
-                </div>
-            </div>
-
-            <div id="obs-section" class="view-section">
-                <h2>Historial de Bitácora</h2>
-                <div id="pills-usuarios" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 25px;"></div>
-                <div id="grid-dinamico"></div>
-            </div>
-
-            <div id="admin-panel" class="view-section">
-                <h2 style="color:var(--danger-mate)">Administración</h2>
-                <div id="lista-borrar" class="glass-card"></div>
-            </div>
-        </main>
+    <div id="obs-section" class="view-section">
+        <h2><i class="fas fa-database"></i> Historial de Bitácora</h2>
+        <div id="pills-usuarios" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 25px;"></div>
+        <div id="grid-dinamico"></div>
     </div>
+</main>
 
 <script>
     const API = 'https://mi-api-hola.onrender.com';
     let dataCache = { usuarios: [], observaciones: [] };
+    const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2500, background: '#0d1a16', color: '#c0c0b5' });
 
     function iniciarApp() {
         document.getElementById('portada').style.transform = 'translateY(-100%)';
         actualizarDatos();
     }
 
+    async function actualizarDatos() {
+        try {
+            const [uRes, hRes] = await Promise.all([
+                fetch(`${API}/lista-usuarios`), 
+                fetch(`${API}/lavandas_json`)
+            ]);
+            dataCache.usuarios = await uRes.json();
+            dataCache.observaciones = await hRes.json();
+            
+            document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+            
+            const pillsContainer = document.getElementById('pills-usuarios');
+            pillsContainer.innerHTML = `<div class="user-pill" style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:50px; cursor:pointer;" onclick="renderObservaciones(dataCache.observaciones)">VER TODOS</div>`;
+            dataCache.usuarios.forEach(u => {
+                pillsContainer.innerHTML += `<div style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:50px; cursor:pointer;" onclick="filtrarPorUser(${u.id})">${u.nombre}</div>`;
+            });
+        } catch (e) { console.error("Error cargando datos:", e); }
+    }
+
+    async function guardarObs() {
+        // VALIDACIÓN ESTRICTA: No permitir campos vacíos
+        const campos = {
+            usuario_id: document.getElementById('sel_usuario').value,
+            altura: document.getElementById('obs_altura').value,
+            hojas: document.getElementById('obs_hojas').value,
+            abono: document.getElementById('obs_abono').value,
+            suelo: document.getElementById('obs_suelo').value,
+            riego: document.getElementById('obs_riego_ok').value,
+            estado: document.getElementById('obs_estado').value,
+            notas: document.getElementById('obs_notas').value
+        };
+
+        if (Object.values(campos).some(v => v === "" || v === null)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Registro Incompleto',
+                text: 'Para la validez científica de la bitácora, todos los campos deben estar llenos.',
+                background: '#14231e',
+                color: '#c0c0b5',
+                confirmButtonColor: '#a63a50'
+            });
+            return;
+        }
+
+        const payload = {
+            usuario_id: campos.usuario_id,
+            altura: campos.altura,
+            ancho_cm: campos.hojas, // Usamos este campo para hojas en tu BD actual
+            estado: campos.estado,
+            notas: `[Suelo: ${campos.suelo} | Riego: ${campos.riego} | Abono: ${campos.abono}] - ${campos.notas}`
+        };
+
+        try {
+            const res = await fetch(`${API}/nueva-observacion`, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(payload) 
+            });
+            
+            if(res.ok) {
+                Toast.fire({ icon: 'success', title: 'Entrada de bitácora registrada' });
+                // Limpiar campos
+                document.querySelectorAll('#reg-section input, #reg-section textarea, #reg-section select').forEach(el => {
+                    if(el.id !== 'sel_usuario') el.value = "";
+                });
+                actualizarDatos();
+            }
+        } catch (e) {
+            Toast.fire({ icon: 'error', title: 'Error de conexión' });
+        }
+    }
+
+    function renderObservaciones(lista) {
+        const container = document.getElementById('grid-dinamico');
+        if (lista.length === 0) {
+            container.innerHTML = `<p style="text-align:center; opacity:0.5;">No hay registros para este criterio.</p>`;
+            return;
+        }
+        container.innerHTML = lista.map(o => `
+            <div class="glass-card animate__animated animate__fadeIn" style="padding:25px; margin-bottom:20px; border-left: 5px solid var(--accent-mate);">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:var(--accent-mate); font-weight:600; font-size:1.1rem;">${o.nombre}</span>
+                    <span style="font-size:0.7rem; opacity:0.5;">${new Date().toLocaleDateString()}</span>
+                </div>
+                <div style="margin:15px 0; display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.9rem;">
+                    <div><i class="fas fa-ruler-vertical"></i> Altura: <b>${o.altura_cm}cm</b></div>
+                    <div><i class="fas fa-leaf"></i> Estado: <b>${o.estado_salud}</b></div>
+                </div>
+                <p style="background:rgba(0,0,0,0.2); padding:15px; border-radius:10px; font-style:italic; font-size:0.9rem; line-height:1.5;">
+                    "${o.observaciones}"
+                </p>
+            </div>
+        `).join('');
+    }
+
+    function filtrarPorUser(id) {
+        renderObservaciones(dataCache.observaciones.filter(o => o.usuario_id == id));
+    }
+
+    // Funciones de navegación y menú se mantienen igual...
     function toggleMenu() {
         const sidebar = document.getElementById('sidebar');
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('open');
-        } else {
-            sidebar.classList.toggle('collapsed');
-        }
+        if (window.innerWidth <= 768) sidebar.classList.toggle('open');
+        else sidebar.classList.toggle('collapsed');
     }
 
     function showSection(id, el) {
@@ -183,87 +196,15 @@
         if(window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
     }
 
-    async function actualizarDatos() {
-        try {
-            const [uRes, hRes] = await Promise.all([fetch(`${API}/lista-usuarios`), fetch(`${API}/lavandas_json`)]);
-            dataCache.usuarios = await uRes.json();
-            dataCache.observaciones = await hRes.json();
-            document.getElementById('sel_usuario').innerHTML = dataCache.usuarios.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-            document.getElementById('pills-usuarios').innerHTML = `<div class="user-pill active" style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:50px; cursor:pointer;" onclick="renderObservaciones(dataCache.observaciones)">TODOS</div>` + 
-                dataCache.usuarios.map(u => `<div style="padding:10px 20px; background:rgba(255,255,255,0.05); border-radius:50px; cursor:pointer;" onclick="filtrarPorUser(${u.id})">${u.nombre}</div>`).join('');
-        } catch (e) { console.error(e); }
-    }
-
-    function renderObservaciones(lista) {
-        document.getElementById('grid-dinamico').innerHTML = lista.map(o => `
-            <div class="glass-card animate__animated animate__fadeIn" style="padding:20px; margin-bottom:15px;">
-                <div style="color:var(--accent-mate); font-weight:600;">${o.nombre}</div>
-                <div style="margin:5px 0;">📏 ${o.altura_cm}cm — ${o.estado_salud}</div>
-                <p style="opacity:0.7; font-size:0.9rem; margin:0;">"${o.observaciones}"</p>
-            </div>
-        `).join('');
-    }
-
-    function filtrarPorUser(id) {
-        renderObservaciones(dataCache.observaciones.filter(o => o.usuario_id == id));
-    }
-
-    async function abrirAdmin() {
-        const { value: pass } = await Swal.fire({ title: 'Acceso', input: 'password', confirmButtonColor: '#0d1a16', background: '#14231e', color: '#c0c0b5' });
-        if (pass === 'osio2023') {
-            showSection('admin-panel');
-            document.getElementById('lista-borrar').innerHTML = dataCache.usuarios.map(u => `
-                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <span>${u.nombre}</span>
-                    <button onclick="borrarU(${u.id})" style="color:var(--danger-mate); background:none; border:none; cursor:pointer;">BORRAR</button>
-                </div>
-            `).join('');
-        }
-    }
-
-    async function borrarU(id) {
-        const result = await Swal.fire({
-            title: '¿Eliminar usuario?',
-            text: "Se borrarán sus registros.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#a63a50',
-            cancelButtonColor: '#7a6a75',
-            confirmButtonText: 'Sí, eliminar',
-            background: '#14231e',
-            color: '#c0c0b5'
-        });
-        if (result.isConfirmed) {
-            await fetch(`${API}/admin/borrar-usuario/${id}`, { method: 'DELETE' });
-            actualizarDatos();
-            showSection('user-section');
-        }
-    }
-
     async function registrarUser() {
         const nombre = document.getElementById('reg_nombre').value;
-        if(!nombre) return;
+        if(!nombre) {
+            Toast.fire({ icon: 'warning', title: 'Escribe un nombre' });
+            return;
+        }
         await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
         document.getElementById('reg_nombre').value = "";
         actualizarDatos();
-        Toast.fire({ icon: 'success', title: 'Registrado' });
+        Toast.fire({ icon: 'success', title: 'Investigador dado de alta' });
     }
-
-    async function guardarObs() {
-        const payload = {
-            usuario_id: document.getElementById('sel_usuario').value,
-            altura: document.getElementById('obs_altura').value,
-            estado: document.getElementById('obs_estado').value,
-            notas: document.getElementById('obs_notas').value
-        };
-        await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        document.getElementById('obs_altura').value = "";
-        document.getElementById('obs_notas').value = "";
-        actualizarDatos();
-        Toast.fire({ icon: 'success', title: 'Guardado' });
-    }
-
-    const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2000, background: '#0d1a16', color: '#c0c0b5' });
 </script>
-</body>
-</html>
