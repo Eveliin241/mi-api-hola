@@ -4,240 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌿 Botánica OS | Global Enterprise</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root {
-            --bg-deep: #030706; --sidebar: #08120f; --glass: rgba(15, 25, 22, 0.7);
-            --accent: #7a6a75; --text: #c0c0b5; --bright: #ffffff; --elite: #1a3c34;
-        }
-
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text); overflow: hidden; }
-
-        #global-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.98)), 
-                        url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1600&q=80');
-            background-size: cover; z-index: -1;
-        }
-
-        /* SIDEBAR PRO */
-        nav {
-            width: 280px; background: var(--sidebar); height: 100vh;
-            display: flex; flex-direction: column; transition: 0.3s; z-index: 1000;
-            border-right: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
-        }
-        .nav-header { padding: 30px; font-family: 'Great Vibes'; font-size: 2.2rem; color: var(--accent); text-align: center; }
+        :root { --bg: #020504; --card: rgba(10, 20, 18, 0.9); --accent: #7a6a75; --text: #d1d1c7; --gold: #c5a059; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
         
-        .menu-label { padding: 15px 25px 5px; font-size: 0.65rem; letter-spacing: 2px; opacity: 0.4; text-transform: uppercase; }
-        .nav-item { 
-            padding: 15px 25px; cursor: pointer; display: flex; align-items: center; gap: 15px;
-            transition: 0.2s; font-size: 0.9rem; border-left: 3px solid transparent;
-        }
-        .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--bright); }
-        .nav-item.active { background: rgba(255,255,255,0.05); border-left-color: var(--accent); color: var(--bright); }
+        /* SIDEBAR ELITE */
+        nav { width: 300px; background: #050a09; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; z-index: 100; }
+        .nav-logo { padding: 40px 20px; font-family: 'Great Vibes'; font-size: 2.8rem; color: var(--gold); text-align: center; }
+        .nav-btn { padding: 18px 30px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px; font-size: 0.9rem; border-left: 4px solid transparent; opacity: 0.6; }
+        .nav-btn:hover { background: rgba(255,255,255,0.02); opacity: 1; }
+        .nav-btn.active { background: rgba(197, 160, 89, 0.05); border-left-color: var(--gold); opacity: 1; color: #fff; }
 
-        .submenu { background: rgba(0,0,0,0.3); display: none; padding-left: 10px; }
-        .submenu.open { display: block; }
-        .sub-item { padding: 12px 25px; font-size: 0.8rem; opacity: 0.6; cursor: pointer; display: flex; align-items: center; gap: 10px; }
-        .sub-item:hover { opacity: 1; color: var(--accent); }
+        main { flex-grow: 1; padding: 50px; overflow-y: auto; background: radial-gradient(circle at top right, #0a1512, #020504); }
+        .view { display: none; max-width: 900px; margin: 0 auto; }
+        .view.active { display: block; animation: fadeIn 0.5s ease; }
 
-        main { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
-        .view-section { width: 100%; max-width: 850px; display: none; }
-        .view-section.active { display: block; }
+        .glass { background: var(--card); padding: 45px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+        h2 { font-weight: 300; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: #fff; }
 
-        .glass-card {
-            background: var(--glass); border-radius: 25px; padding: 40px;
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.03);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
+        input, select, textarea { width: 100%; padding: 20px; margin: 12px 0; border-radius: 18px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.4); color: #fff; font-size: 1rem; outline: none; transition: 0.3s; box-sizing: border-box; }
+        input:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(197, 160, 89, 0.1); }
 
-        input, select, textarea {
-            width: 100%; padding: 16px; margin: 10px 0; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.4);
-            color: var(--bright); font-size: 0.95rem; outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: var(--accent); background: rgba(0,0,0,0.6); }
+        .btn-main { background: var(--gold); color: #000; border: none; padding: 22px; border-radius: 18px; width: 100%; font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: 0.4s; margin-top: 25px; }
+        .btn-main:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(197, 160, 89, 0.2); background: #dcb66b; }
 
-        .btn-elite {
-            background: var(--accent); color: white; border: none; padding: 18px;
-            border-radius: 12px; cursor: pointer; width: 100%; font-weight: 600;
-            letter-spacing: 2px; transition: 0.3s; margin-top: 15px; text-transform: uppercase;
-        }
-        .btn-elite:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); background: #8a7a85; }
+        /* HISTORIAL PROFESIONAL */
+        .report-item { background: rgba(255,255,255,0.02); padding: 30px; border-radius: 25px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.03); transition: 0.3s; }
+        .report-item:hover { background: rgba(255,255,255,0.04); transform: scale(1.01); }
+        .data-badge { display: inline-block; padding: 8px 15px; border-radius: 10px; background: rgba(0,0,0,0.3); font-size: 0.85rem; font-weight: 600; margin-right: 10px; color: var(--gold); }
 
-        /* PHOTO UPLOAD ELITE */
-        .photo-zone {
-            border: 2px dashed rgba(255,255,255,0.1); border-radius: 15px;
-            padding: 30px; text-align: center; cursor: pointer; transition: 0.3s; margin: 15px 0;
-        }
-        .photo-zone:hover { border-color: var(--accent); background: rgba(255,255,255,0.02); }
-        #preview-img { max-width: 100%; border-radius: 10px; margin-top: 15px; display: none; }
-
-        .report-card {
-            background: rgba(255,255,255,0.02); border-radius: 20px; padding: 25px;
-            margin-bottom: 25px; border-left: 5px solid var(--accent);
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div id="global-bg"></div>
-    <div style="display: flex; height: 100vh; width: 100vw;">
-        <nav>
-            <div class="nav-header">Botánica OS</div>
-            
-            <div class="menu-label">Administración</div>
-            <div class="nav-item" onclick="toggleSub('sub-reg')"><i class="fas fa-id-card"></i> <span>Gestión de Altas</span></div>
-            <div id="sub-reg" class="submenu">
-                <div class="sub-item" onclick="showSec('sec-persona')"><i class="fas fa-user-plus"></i> Nueva Persona</div>
-                <div class="sub-item" onclick="showSec('sec-equipo')"><i class="fas fa-users"></i> Nuevo Equipo</div>
+    <nav>
+        <div class="nav-logo">Botánica</div>
+        <div class="nav-btn active" onclick="nav('v-reg')"><i class="fas fa-user-plus"></i> Altas de Sistema</div>
+        <div class="nav-btn" onclick="nav('v-bit')"><i class="fas fa-leaf"></i> Nueva Observación</div>
+        <div class="nav-btn" onclick="nav('v-hist')"><i class="fas fa-database"></i> Historial Maestro</div>
+        <div style="margin-top: auto; padding: 30px;">
+            <div class="nav-btn" style="opacity: 0.3; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;" onclick="ghostLogin()">
+                <i class="fas fa-fingerprint"></i> Ghost Mode
             </div>
+        </div>
+    </nav>
 
-            <div class="menu-label">Operaciones</div>
-            <div class="nav-item" onclick="showSec('sec-bitacora')"><i class="fas fa-pen-nib"></i> <span>Bitácora Digital</span></div>
-            <div class="nav-item" onclick="showSec('sec-historial')"><i class="fas fa-archive"></i> <span>Historial Maestro</span></div>
-
-            <div style="margin-top: auto; padding: 20px;">
-                <div class="nav-item" onclick="safeLogin()" style="opacity: 0.3; font-size: 0.7rem;"><i class="fas fa-shield-alt"></i> Seguridad Ghost</div>
+    <main>
+        <div id="v-reg" class="view active">
+            <div class="glass">
+                <h2>Cédula de Identidad 👤</h2>
+                <input type="text" id="reg-name" placeholder="Nombre completo o Nombre del Equipo..." autocomplete="off">
+                <select id="reg-type">
+                    <option value="IND">INVESTIGADOR INDIVIDUAL</option>
+                    <option value="EQP">EQUIPO CIENTÍFICO</option>
+                </select>
+                <button class="btn-main" onclick="masterRegister()">DAR DE ALTA AL INSTANTE</button>
             </div>
-        </nav>
+        </div>
 
-        <main>
-            <div id="sec-persona" class="view-section active">
-                <div class="glass-card animate__animated animate__fadeInUp">
-                    <h2>Investigador Individual 👤</h2>
-                    <input type="text" id="p_name" placeholder="Nombre completo del alumno..." autocomplete="off">
-                    <button class="btn-elite" onclick="savePersona()">REGISTRAR EN BASE DE DATOS</button>
+        <div id="v-bit" class="view">
+            <div class="glass">
+                <h2>Bitácora Semanal 🌿</h2>
+                <select id="bit-user"><option>Cargando personal...</option></select>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <input type="number" id="bit-h" placeholder="Altura (cm)">
+                    <input type="number" id="bit-w" placeholder="Amplitud (W) cm">
                 </div>
+                <textarea id="bit-obs" rows="4" placeholder="Análisis detallado de salud, suelo y riego..."></textarea>
+                <button class="btn-main" onclick="submitObservation()">ENVIAR A NUBE PRIVADA</button>
             </div>
+        </div>
 
-            <div id="sec-equipo" class="view-section">
-                <div class="glass-card">
-                    <h2>Registro de Equipo 👥</h2>
-                    <input type="text" id="eq_name" placeholder="Nombre del Equipo (ej: Los Polinizadores)...">
-                    <button class="btn-elite" onclick="saveEquipo()">CREAR GRUPO DE TRABAJO</button>
-                </div>
+        <div id="v-hist" class="view">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2>Registros de Campo</h2>
+                <button onclick="loadHistory()" style="background:none; border:1px solid var(--gold); color:var(--gold); padding:10px 20px; border-radius:10px; cursor:pointer;"><i class="fas fa-sync"></i></button>
             </div>
-
-            <div id="sec-bitacora" class="view-section">
-                <div class="glass-card">
-                    <h2>Evidencia de Campo - Sem #8 🌿</h2>
-                    <select id="sel_entidad_final"><option>Cargando investigadores...</option></select>
-
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                        <input type="number" id="val_h" placeholder="Altura (cm)">
-                        <input type="number" id="val_w" placeholder="Amplitud (W) cm">
-                    </div>
-
-                    <div class="photo-zone" onclick="document.getElementById('f_input').click()">
-                        <i class="fas fa-camera-retro" style="font-size: 2rem; opacity: 0.5;"></i>
-                        <p>Subir Evidencia Fotográfica Élite</p>
-                        <input type="file" id="f_input" hidden accept="image/*" onchange="handleImg(this)">
-                        <img id="preview-img">
-                    </div>
-
-                    <textarea id="val_notas" rows="3" placeholder="Análisis de abono, suelo y riego..."></textarea>
-                    <button class="btn-elite" onclick="uploadBitacora()">SUBIR REPORTE A LA NUBE</button>
-                </div>
-            </div>
-
-            <div id="sec-historial" class="view-section">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <h2>Historial de Investigaciones</h2>
-                    <select id="filter_type" style="width:200px;" onchange="renderHistorial()">
-                        <option value="ALL">TODOS</option>
-                        <option value="IND">PERSONAS</option>
-                        <option value="EQ">EQUIPOS</option>
-                    </select>
-                </div>
-                <div id="master-grid"></div>
-            </div>
-        </main>
-    </div>
+            <div id="hist-container"></div>
+        </div>
+    </main>
 
 <script>
-    const API = 'https://mi-api-hola.onrender.com';
-    let localData = { personas: [], equipos: [] };
+    const ENDPOINT = 'https://mi-api-hola.onrender.com';
 
-    // FUNCIÓN DE SEGURIDAD GHOST (Blindada contra autoguardado)
-    async function safeLogin() {
-        const { value: pass } = await Swal.fire({
+    // SEGURIDAD ANTI-HUMILLACIÓN (Ghost Login)
+    async function ghostLogin() {
+        const { value: key } = await Swal.fire({
             title: 'AUTENTICACIÓN GHOST',
-            input: 'password',
-            inputAttributes: { autocomplete: 'off', readonly: 'on', onfocus: "this.removeAttribute('readonly');" },
-            background: '#08120f', color: '#fff', confirmButtonColor: '#7a6a75'
+            input: 'text', // Usamos text para que el navegador no sepa que es password
+            inputAttributes: { style: '-webkit-text-security: disc; autocomplete: off;' },
+            background: '#050a09', color: '#fff', confirmButtonColor: '#c5a059'
         });
-        if(pass === 'osio2023') Swal.fire('Acceso Total', 'Nivel Pro activado', 'success');
-        else Swal.fire('Error', 'Intento de intrusión registrado', 'error');
+        if(key === 'osio2023') Swal.fire('Acceso Total', 'Nivel Pro activado', 'success');
     }
 
-    function toggleSub(id) { document.getElementById(id).classList.toggle('open'); }
-    function showSec(id) {
-        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+    function nav(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(id === 'sec-bitacora') updateSelects();
-        if(id === 'sec-historial') renderHistorial();
+        event.currentTarget.classList.add('active');
+        if(id === 'v-bit') fetchUsers();
+        if(id === 'v-hist') loadHistory();
     }
 
-    // MANEJO DE IMÁGENES ELITE
-    function handleImg(input) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const preview = document.getElementById('preview-img');
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    // REGISTRO MASTER (Personas y Equipos)
+    async function masterRegister() {
+        const name = document.getElementById('reg-name').value;
+        const type = document.getElementById('reg-type').value;
+        if(!name) return Swal.fire('Error', 'Falta el nombre de la entidad', 'error');
 
-    async function savePersona() {
-        const nombre = document.getElementById('p_name').value;
-        if(!nombre) return;
-        await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
-        document.getElementById('p_name').value = '';
-        Swal.fire('Éxito', 'Persona agregada al sistema', 'success');
-    }
-
-    async function updateSelects() {
-        const res = await fetch(`${API}/lista-usuarios`);
-        const data = await res.json();
-        document.getElementById('sel_entidad_final').innerHTML = data.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
-    }
-
-    async function uploadBitacora() {
-        const payload = {
-            usuario_id: document.getElementById('sel_entidad_final').value,
-            altura: document.getElementById('val_h').value,
-            ancho_cm: document.getElementById('val_w').value,
-            estado: "Vigoroso",
-            observaciones: document.getElementById('val_notas').value
-        };
-        if(!payload.altura || !payload.ancho_cm) return Swal.fire('Error', 'Datos insuficientes', 'error');
+        const finalName = type === 'EQP' ? `[EQUIPO] ${name}` : name;
         
-        await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        Swal.fire('Botánica OS', 'Reporte Semanal Enviado', 'success');
-        showSec('sec-historial');
+        await fetch(`${ENDPOINT}/registrar`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ nombre: finalName })
+        });
+
+        document.getElementById('reg-name').value = '';
+        Swal.fire('Botánica OS', `${finalName} registrado en la Red Global`, 'success');
     }
 
-    async function renderHistorial() {
-        const res = await fetch(`${API}/lavandas_json`);
-        const data = await res.json();
-        const grid = document.getElementById('master-grid');
-        grid.innerHTML = data.map(o => `
-            <div class="report-card animate__animated animate__fadeIn">
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem; opacity:0.6;">
-                    <span><b>ID:</b> ${o.usuario_id} | ${o.nombre}</span>
-                    <span>2026-05-05</span>
+    async function fetchUsers() {
+        const r = await fetch(`${ENDPOINT}/lista-usuarios`);
+        const d = await r.json();
+        document.getElementById('bit-user').innerHTML = d.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+    }
+
+    // ENVÍO Y LIMPIEZA TOTAL
+    async function submitObservation() {
+        const payload = {
+            usuario_id: document.getElementById('bit-user').value,
+            altura: document.getElementById('bit-h').value,
+            ancho_cm: document.getElementById('bit-w').value,
+            estado: "Vigoroso",
+            observaciones: document.getElementById('bit-obs').value
+        };
+
+        if(!payload.altura || !payload.ancho_cm) return Swal.fire('Dato Faltante', 'La amplitud (W) es obligatoria', 'warning');
+
+        await fetch(`${ENDPOINT}/nueva-observacion`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+
+        // LIMPIEZA DE MEMORIA (Reset)
+        document.getElementById('bit-h').value = '';
+        document.getElementById('bit-w').value = '';
+        document.getElementById('bit-obs').value = '';
+        
+        Swal.fire('Élite', 'Reporte guardado y memoria liberada', 'success');
+        nav('v-hist');
+    }
+
+    async function loadHistory() {
+        const container = document.getElementById('hist-container');
+        container.innerHTML = '<p style="text-align:center; opacity:0.5;">Sincronizando con satélite...</p>';
+        
+        const r = await fetch(`${ENDPOINT}/lavandas_json`);
+        const data = await r.json();
+        
+        container.innerHTML = data.reverse().map(o => `
+            <div class="report-item">
+                <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                    <span style="font-weight:700; color:#fff;">${o.nombre || 'Anónimo'}</span>
+                    <span style="font-size:0.8rem; opacity:0.4;">ID: ${o.usuario_id}</span>
                 </div>
-                <div style="margin:15px 0; display:grid; grid-template-columns: 1fr 1fr; font-weight:600;">
-                    <span>📏 H: ${o.altura_cm}cm</span>
-                    <span>↔️ W: ${o.ancho_cm}cm</span>
+                <div style="margin: 15px 0;">
+                    <span class="data-badge">📏 Altura: ${o.altura_cm}cm</span>
+                    <span class="data-badge">↔️ Amplitud: ${o.ancho_cm || '--'}cm</span>
                 </div>
-                <p style="background:rgba(0,0,0,0.3); padding:12px; border-radius:10px; font-size:0.85rem;">"${o.observaciones}"</p>
+                <p style="background:rgba(0,0,0,0.2); padding:20px; border-radius:15px; line-height:1.6; border:1px solid rgba(255,255,255,0.02);">
+                    ${o.observaciones && o.observaciones !== 'null' ? o.observaciones : '<span style="opacity:0.3;">Sin notas analíticas</span>'}
+                </p>
             </div>
         `).join('');
     }
