@@ -79,7 +79,7 @@ app.delete('/eliminar-observacion/:id', async (req, res) => {
     }
 });
 
-// PUERTO: Obligatorio para que Render no dé error de Status 1
+// PUERTO: Obligatorio para que Render no dé error de Status 1 y cosa nose
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Botánica OS activa en puerto ${PORT}`);
