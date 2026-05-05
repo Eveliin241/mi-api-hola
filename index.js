@@ -1,51 +1,40 @@
-const express = require('express');
-const { Pool } = require('pg');
-const cors = require('cors');
-const path = require('path');
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
-});
-
-// Forzar que siempre se vea el index elegante
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/lavandas', (req, res) => res.redirect('/'));
-
-app.get('/lista-usuarios', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT id, nombre FROM usuarios ORDER BY id DESC');
-        res.json(result.rows);
-    } catch (err) { res.status(500).send([]); }
-});
-
-app.post('/registrar', async (req, res) => {
-    const { nombre } = req.body;
-    await pool.query('INSERT INTO usuarios (nombre, email, password, peso, altura, edad, actividad_fisica, objetivo) VALUES ($1, $2, $3, 0,0,0, $4, $5)', 
-    [nombre, `${Date.now()}@huerto.com`, '123', 'baja', 'mantener']);
-    res.json({ status: "ok" });
-});
-
-app.post('/nueva-observacion', async (req, res) => {
-    const { usuario_id, altura, estado, notas } = req.body;
-    await pool.query('INSERT INTO seguimiento_lavanda (usuario_id, altura_cm, estado_salud, observaciones) VALUES ($1, $2, $3, $4)', 
-    [usuario_id, altura, estado, notas]);
-    res.json({ status: "ok" });
-});
-
+// BUSCAR OBSERVACIONES (Para el Historial)
 app.get('/lavandas_json', async (req, res) => {
-    const query = await pool.query(`SELECT s.*, u.nombre FROM seguimiento_lavanda s JOIN usuarios u ON s.usuario_id = u.id ORDER BY s.fecha DESC`);
-    res.json(query.rows);
+    try {
+        // Hacemos un JOIN para traer el nombre del usuario junto con la observación
+        const result = await pool.query(`
+             antiquity.nombre, o.* FROM observaciones o 
+            JOIN usuarios u ON o.usuario_id = u.id 
+            ORDER BY o.fecha DESC
+        `);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 });
 
-app.delete('/admin/borrar-usuario/:id', async (req, res) => {
-    await pool.query('DELETE FROM seguimiento_lavanda WHERE usuario_id = $1', [req.params.id]);
-    await pool.query('DELETE FROM usuarios WHERE id = $1', [req.params.id]);
-    res.json({ status: "ok" });
+// GUARDAR NUEVA OBSERVACIÓN
+app.post('/nueva-observacion', async (req, res) => {
+    const { usuario_id, altura, ancho_cm, estado, observaciones, imagen } = req.body;
+    try {
+        await pool.query(
+            `INSERT INTO observaciones (usuario_id, altura_cm, ancho_cm, estado_salud, observaciones, foto_base64) 
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [usuario_id, altura, ancho_cm, estado, observaciones, imagen]
+        );
+        res.json({ message: "Guardado con éxito" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error al guardar: " + err.message);
+    }
 });
 
-app.listen(process.env.PORT || 3000);
+// ELIMINAR OBSERVACIÓN
+app.delete('/eliminar-observacion/:id', async (req, res) => {
+    try {
+        await pool.query('DELETE FROM observaciones WHERE id = $1', [req.params.id]);
+        res.json({ message: "Borrado" });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
