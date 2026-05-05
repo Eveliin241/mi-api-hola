@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌿 Botánica OS | Global Enterprise Edition</title>
+    <title>🌿 Botánica OS | Global Enterprise</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -12,31 +12,28 @@
     
     <style>
         :root {
-            --bg-deep: #030706; --sidebar-mate: #08120f; --glass: rgba(15, 25, 22, 0.7);
+            --bg-deep: #030706; --sidebar: #08120f; --glass: rgba(15, 25, 22, 0.7);
             --accent: #7a6a75; --text: #c0c0b5; --bright: #ffffff; --elite: #1a3c34;
         }
 
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text); overflow: hidden; }
 
-        /* FONDO DINÁMICO */
         #global-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.98)), 
                         url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1600&q=80');
             background-size: cover; z-index: -1;
         }
 
-        /* SIDEBAR ESTILO AMAZON PRO */
+        /* SIDEBAR PRO */
         nav {
-            width: 260px; background: var(--sidebar-mate); height: 100vh;
+            width: 280px; background: var(--sidebar); height: 100vh;
             display: flex; flex-direction: column; transition: 0.3s; z-index: 1000;
-            border-right: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
         }
-        .nav-header { padding: 30px; font-family: 'Great Vibes'; font-size: 2.2rem; color: var(--accent); }
+        .nav-header { padding: 30px; font-family: 'Great Vibes'; font-size: 2.2rem; color: var(--accent); text-align: center; }
         
-        .menu-group { margin-bottom: 10px; }
-        .menu-label { padding: 10px 25px; font-size: 0.65rem; letter-spacing: 2px; opacity: 0.4; text-transform: uppercase; }
-        
+        .menu-label { padding: 15px 25px 5px; font-size: 0.65rem; letter-spacing: 2px; opacity: 0.4; text-transform: uppercase; }
         .nav-item { 
             padding: 15px 25px; cursor: pointer; display: flex; align-items: center; gap: 15px;
             transition: 0.2s; font-size: 0.9rem; border-left: 3px solid transparent;
@@ -44,211 +41,206 @@
         .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--bright); }
         .nav-item.active { background: rgba(255,255,255,0.05); border-left-color: var(--accent); color: var(--bright); }
 
-        /* SUBMENÚS */
-        .submenu { background: rgba(0,0,0,0.2); display: none; padding-left: 20px; }
+        .submenu { background: rgba(0,0,0,0.3); display: none; padding-left: 10px; }
         .submenu.open { display: block; }
-        .sub-item { padding: 10px 25px; font-size: 0.8rem; opacity: 0.6; cursor: pointer; }
+        .sub-item { padding: 12px 25px; font-size: 0.8rem; opacity: 0.6; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .sub-item:hover { opacity: 1; color: var(--accent); }
 
-        main { flex-grow: 1; padding: 40px; overflow-y: auto; position: relative; }
+        main { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+        .view-section { width: 100%; max-width: 850px; display: none; }
+        .view-section.active { display: block; }
+
         .glass-card {
-            background: var(--glass); border-radius: 20px; padding: 35px;
-            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.03);
-            max-width: 900px; margin: 0 auto 30px;
+            background: var(--glass); border-radius: 25px; padding: 40px;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* INPUTS ELITE CON NO-AUTOCOMPLETE */
         input, select, textarea {
-            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3);
-            color: var(--bright); font-size: 0.95rem; outline: none;
+            width: 100%; padding: 16px; margin: 10px 0; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.4);
+            color: var(--bright); font-size: 0.95rem; outline: none; transition: 0.3s;
         }
-        input:focus { border-color: var(--accent); background: rgba(0,0,0,0.5); }
+        input:focus { border-color: var(--accent); background: rgba(0,0,0,0.6); }
 
         .btn-elite {
-            background: var(--accent); color: white; border: none; padding: 15px;
+            background: var(--accent); color: white; border: none; padding: 18px;
             border-radius: 12px; cursor: pointer; width: 100%; font-weight: 600;
-            letter-spacing: 1px; transition: 0.3s; margin-top: 10px;
+            letter-spacing: 2px; transition: 0.3s; margin-top: 15px; text-transform: uppercase;
         }
-        .btn-elite:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn-elite:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); background: #8a7a85; }
 
-        /* TARJETAS DE HISTORIAL DETALLADAS */
-        .report-box {
-            background: rgba(255,255,255,0.02); border-radius: 15px; padding: 20px;
-            margin-bottom: 20px; border-left: 4px solid var(--accent);
+        /* PHOTO UPLOAD ELITE */
+        .photo-zone {
+            border: 2px dashed rgba(255,255,255,0.1); border-radius: 15px;
+            padding: 30px; text-align: center; cursor: pointer; transition: 0.3s; margin: 15px 0;
         }
-        .report-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.8rem; }
-        .tag { background: var(--elite); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; }
+        .photo-zone:hover { border-color: var(--accent); background: rgba(255,255,255,0.02); }
+        #preview-img { max-width: 100%; border-radius: 10px; margin-top: 15px; display: none; }
+
+        .report-card {
+            background: rgba(255,255,255,0.02); border-radius: 20px; padding: 25px;
+            margin-bottom: 25px; border-left: 5px solid var(--accent);
+        }
     </style>
 </head>
 <body>
     <div id="global-bg"></div>
-    
-    <div style="display: flex;">
+    <div style="display: flex; height: 100vh; width: 100vw;">
         <nav>
-            <div class="nav-header">Botánica</div>
+            <div class="nav-header">Botánica OS</div>
             
-            <div class="menu-group">
-                <div class="menu-label">Gestión de Personal</div>
-                <div class="nav-item" onclick="toggleSub('sub-registro')"><i class="fas fa-users-cog"></i> <span>Altas Élite</span></div>
-                <div id="sub-registro" class="submenu">
-                    <div class="sub-item" onclick="showSection('reg-persona')">👤 Nueva Persona</div>
-                    <div class="sub-item" onclick="showSection('reg-equipo')">👥 Nuevo Equipo</div>
-                    <div class="sub-item" onclick="showSection('vincular-equipo')">🔗 Vincular Miembros</div>
-                </div>
+            <div class="menu-label">Administración</div>
+            <div class="nav-item" onclick="toggleSub('sub-reg')"><i class="fas fa-id-card"></i> <span>Gestión de Altas</span></div>
+            <div id="sub-reg" class="submenu">
+                <div class="sub-item" onclick="showSec('sec-persona')"><i class="fas fa-user-plus"></i> Nueva Persona</div>
+                <div class="sub-item" onclick="showSec('sec-equipo')"><i class="fas fa-users"></i> Nuevo Equipo</div>
             </div>
 
-            <div class="menu-group">
-                <div class="menu-label">Investigación</div>
-                <div class="nav-item" onclick="showSection('section-obs')"><i class="fas fa-flask"></i> <span>Nueva Bitácora</span></div>
-                <div class="nav-item" onclick="showSection('section-historial')"><i class="fas fa-database"></i> <span>Historial Completo</span></div>
-            </div>
+            <div class="menu-label">Operaciones</div>
+            <div class="nav-item" onclick="showSec('sec-bitacora')"><i class="fas fa-pen-nib"></i> <span>Bitácora Digital</span></div>
+            <div class="nav-item" onclick="showSec('sec-historial')"><i class="fas fa-archive"></i> <span>Historial Maestro</span></div>
 
             <div style="margin-top: auto; padding: 20px;">
-                <div class="nav-item" onclick="loginElite()" style="opacity: 0.3; font-size: 0.7rem;"><i class="fas fa-lock"></i> Mantenimiento</div>
+                <div class="nav-item" onclick="safeLogin()" style="opacity: 0.3; font-size: 0.7rem;"><i class="fas fa-shield-alt"></i> Seguridad Ghost</div>
             </div>
         </nav>
 
         <main>
-            <div id="reg-persona" class="view-section" style="display: none;">
-                <div class="glass-card animate__animated animate__fadeIn">
-                    <h2>Registrar Nuevo Investigador</h2>
-                    <input type="text" id="p_nombre" placeholder="Nombre completo..." autocomplete="off">
-                    <button class="btn-elite" onclick="crearPersona()">GUARDAR PERSONA</button>
+            <div id="sec-persona" class="view-section active">
+                <div class="glass-card animate__animated animate__fadeInUp">
+                    <h2>Investigador Individual 👤</h2>
+                    <input type="text" id="p_name" placeholder="Nombre completo del alumno..." autocomplete="off">
+                    <button class="btn-elite" onclick="savePersona()">REGISTRAR EN BASE DE DATOS</button>
                 </div>
             </div>
 
-            <div id="section-obs" class="view-section">
-                <div class="glass-card animate__animated animate__fadeIn">
-                    <h2>Reporte Científico Semana #8 🌿</h2>
-                    <select id="sel_entidad"></select>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                        <input type="number" id="h_altura" placeholder="Altura (cm)">
-                        <input type="number" id="h_ancho" placeholder="Ancho (W) cm">
-                        <input type="number" id="h_hojas" placeholder="Nº Hojas">
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="text" id="h_abono" placeholder="Tipo de Abono">
-                        <input type="text" id="h_cantidad" placeholder="Cantidad (g/ml)">
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <select id="h_suelo">
-                            <option value="">Estado Suelo...</option>
-                            <option>Seco</option><option>Húmedo</option><option>Encharcado</option>
-                        </select>
-                        <select id="h_riego">
-                            <option value="">¿Riego OK?</option>
-                            <option>SÍ</option><option>NO</option>
-                        </select>
-                    </div>
-
-                    <textarea id="h_notas" rows="4" placeholder="Observaciones críticas y análisis..."></textarea>
-                    <button class="btn-elite" onclick="guardarTodo()">PUBLICAR REPORTE</button>
+            <div id="sec-equipo" class="view-section">
+                <div class="glass-card">
+                    <h2>Registro de Equipo 👥</h2>
+                    <input type="text" id="eq_name" placeholder="Nombre del Equipo (ej: Los Polinizadores)...">
+                    <button class="btn-elite" onclick="saveEquipo()">CREAR GRUPO DE TRABAJO</button>
                 </div>
             </div>
 
-            <div id="section-historial" class="view-section" style="display: none;">
-                <h2>Base de Datos Maestra 📊</h2>
-                <div id="contenedor-historial"></div>
+            <div id="sec-bitacora" class="view-section">
+                <div class="glass-card">
+                    <h2>Evidencia de Campo - Sem #8 🌿</h2>
+                    <select id="sel_entidad_final"><option>Cargando investigadores...</option></select>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                        <input type="number" id="val_h" placeholder="Altura (cm)">
+                        <input type="number" id="val_w" placeholder="Amplitud (W) cm">
+                    </div>
+
+                    <div class="photo-zone" onclick="document.getElementById('f_input').click()">
+                        <i class="fas fa-camera-retro" style="font-size: 2rem; opacity: 0.5;"></i>
+                        <p>Subir Evidencia Fotográfica Élite</p>
+                        <input type="file" id="f_input" hidden accept="image/*" onchange="handleImg(this)">
+                        <img id="preview-img">
+                    </div>
+
+                    <textarea id="val_notas" rows="3" placeholder="Análisis de abono, suelo y riego..."></textarea>
+                    <button class="btn-elite" onclick="uploadBitacora()">SUBIR REPORTE A LA NUBE</button>
+                </div>
+            </div>
+
+            <div id="sec-historial" class="view-section">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2>Historial de Investigaciones</h2>
+                    <select id="filter_type" style="width:200px;" onchange="renderHistorial()">
+                        <option value="ALL">TODOS</option>
+                        <option value="IND">PERSONAS</option>
+                        <option value="EQ">EQUIPOS</option>
+                    </select>
+                </div>
+                <div id="master-grid"></div>
             </div>
         </main>
     </div>
 
 <script>
     const API = 'https://mi-api-hola.onrender.com';
-    let dataCache = { usuarios: [], observaciones: [] };
+    let localData = { personas: [], equipos: [] };
+
+    // FUNCIÓN DE SEGURIDAD GHOST (Blindada contra autoguardado)
+    async function safeLogin() {
+        const { value: pass } = await Swal.fire({
+            title: 'AUTENTICACIÓN GHOST',
+            input: 'password',
+            inputAttributes: { autocomplete: 'off', readonly: 'on', onfocus: "this.removeAttribute('readonly');" },
+            background: '#08120f', color: '#fff', confirmButtonColor: '#7a6a75'
+        });
+        if(pass === 'osio2023') Swal.fire('Acceso Total', 'Nivel Pro activado', 'success');
+        else Swal.fire('Error', 'Intento de intrusión registrado', 'error');
+    }
 
     function toggleSub(id) { document.getElementById(id).classList.toggle('open'); }
-
-    function showSection(id) {
-        document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
-        document.getElementById(id).style.display = 'block';
-        if(id === 'section-historial') cargarHistorial();
+    function showSec(id) {
+        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'sec-bitacora') updateSelects();
+        if(id === 'sec-historial') renderHistorial();
     }
 
-    // SEGURIDAD ÉLITE: Cero guardado de contraseña en navegador
-    async function loginElite() {
-        const { value: pass } = await Swal.fire({
-            title: 'Acceso Restringido',
-            html: '<input type="password" id="swal-input1" class="swal2-input" autocomplete="new-password" placeholder="Clave Elite">',
-            focusConfirm: false,
-            background: '#08120f', color: '#fff',
-            preConfirm: () => document.getElementById('swal-input1').value
-        });
-        
-        if (pass === 'osio2023') {
-            Swal.fire('Bienvenido, Encargado Elite', '', 'success');
-        } else {
-            Swal.fire('Acceso Denegado', 'No eres nivel Pro', 'error');
-        }
-    }
-
-    async function guardarTodo() {
-        const payload = {
-            usuario_id: document.getElementById('sel_entidad').value,
-            altura: document.getElementById('h_altura').value,
-            ancho_cm: document.getElementById('h_ancho').value,
-            estado: "Registrado",
-            observaciones: JSON.stringify({
-                hojas: document.getElementById('h_hojas').value,
-                abono: document.getElementById('h_abono').value,
-                cantidad: document.getElementById('h_cantidad').value,
-                suelo: document.getElementById('h_suelo').value,
-                riego: document.getElementById('h_riego').value,
-                notas: document.getElementById('h_notas').value
-            })
+    // MANEJO DE IMÁGENES ELITE
+    function handleImg(input) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const preview = document.getElementById('preview-img');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
         };
-
-        // VALIDACIÓN PRO: No vacíos
-        if(!payload.altura || !payload.ancho_cm) return Swal.fire('Error', 'Completa los datos técnicos', 'error');
-
-        await fetch(`${API}/nueva-observacion`, {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
-        });
-        Swal.fire('Éxito', 'Bitácora actualizada', 'success');
-        actualizarSelects();
+        reader.readAsDataURL(input.files[0]);
     }
 
-    async function cargarHistorial() {
-        const res = await fetch(`${API}/lavandas_json`);
-        const obs = await res.json();
-        const container = document.getElementById('contenedor-historial');
-        
-        container.innerHTML = obs.map(o => {
-            let detalles = {hojas: '?', abono: '?', suelo: '?', notas: o.observaciones};
-            try { detalles = JSON.parse(o.observaciones); } catch(e){}
-
-            return `
-                <div class="report-box animate__animated animate__fadeInUp">
-                    <div class="report-header">
-                        <span style="color:var(--accent); font-weight:bold;">${o.nombre}</span>
-                        <span class="tag">SEMANA #8</span>
-                    </div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; margin-bottom:15px;">
-                        <div>📏 H: ${o.altura_cm}cm</div>
-                        <div>↔️ W: ${o.ancho_cm}cm</div>
-                        <div>🌿 Hojas: ${detalles.hojas || '0'}</div>
-                    </div>
-                    <div style="font-size:0.85rem; opacity:0.8; border-top:1px solid rgba(255,255,255,0.05); pt-10px;">
-                        <b>Nutrición:</b> ${detalles.abono} | <b>Suelo:</b> ${detalles.suelo} | <b>Riego:</b> ${detalles.riego}<br>
-                        <p style="margin-top:10px; font-style:italic;">"${detalles.notas}"</p>
-                    </div>
-                </div>
-            `;
-        }).join('');
+    async function savePersona() {
+        const nombre = document.getElementById('p_name').value;
+        if(!nombre) return;
+        await fetch(`${API}/registrar`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ nombre }) });
+        document.getElementById('p_name').value = '';
+        Swal.fire('Éxito', 'Persona agregada al sistema', 'success');
     }
 
-    async function actualizarSelects() {
+    async function updateSelects() {
         const res = await fetch(`${API}/lista-usuarios`);
-        const users = await res.json();
-        document.getElementById('sel_entidad').innerHTML = users.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
+        const data = await res.json();
+        document.getElementById('sel_entidad_final').innerHTML = data.map(u => `<option value="${u.id}">${u.nombre}</option>`).join('');
     }
 
-    window.onload = actualizarSelects;
+    async function uploadBitacora() {
+        const payload = {
+            usuario_id: document.getElementById('sel_entidad_final').value,
+            altura: document.getElementById('val_h').value,
+            ancho_cm: document.getElementById('val_w').value,
+            estado: "Vigoroso",
+            observaciones: document.getElementById('val_notas').value
+        };
+        if(!payload.altura || !payload.ancho_cm) return Swal.fire('Error', 'Datos insuficientes', 'error');
+        
+        await fetch(`${API}/nueva-observacion`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        Swal.fire('Botánica OS', 'Reporte Semanal Enviado', 'success');
+        showSec('sec-historial');
+    }
+
+    async function renderHistorial() {
+        const res = await fetch(`${API}/lavandas_json`);
+        const data = await res.json();
+        const grid = document.getElementById('master-grid');
+        grid.innerHTML = data.map(o => `
+            <div class="report-card animate__animated animate__fadeIn">
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; opacity:0.6;">
+                    <span><b>ID:</b> ${o.usuario_id} | ${o.nombre}</span>
+                    <span>2026-05-05</span>
+                </div>
+                <div style="margin:15px 0; display:grid; grid-template-columns: 1fr 1fr; font-weight:600;">
+                    <span>📏 H: ${o.altura_cm}cm</span>
+                    <span>↔️ W: ${o.ancho_cm}cm</span>
+                </div>
+                <p style="background:rgba(0,0,0,0.3); padding:12px; border-radius:10px; font-size:0.85rem;">"${o.observaciones}"</p>
+            </div>
+        `).join('');
+    }
 </script>
 </body>
 </html>
